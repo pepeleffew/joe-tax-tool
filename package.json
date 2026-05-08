@@ -1,8 +1,9 @@
 {
   "name": "joe-tax-tool",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Hamilton County address-to-tax-projection lookup for joeleffew.com",
   "private": true,
+  "type": "module",
   "dependencies": {
     "cheerio": "^1.0.0"
   }
