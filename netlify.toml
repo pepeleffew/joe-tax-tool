@@ -3,11 +3,13 @@
 # =============================================================================
 
 [build]
+  command = "npm install"
   functions = "netlify/functions"
   publish = "public"
 
 [functions]
   node_bundler = "esbuild"
+  external_node_modules = ["cheerio"]
 
 # Friendly URL: /api/lookup → /.netlify/functions/lookup
 [[redirects]]
