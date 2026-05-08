@@ -1,50 +1,778 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Joe Leffew Properties — Tax Tool API</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What will my Chattanooga property taxes be? | Joe Leffew Properties</title>
+  <meta name="description" content="Hamilton County reappraises in 2029. See what your property taxes will jump to — based on what you actually paid for the home." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
   <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      max-width: 720px;
-      margin: 60px auto;
-      padding: 0 24px;
-      color: #2c2c2c;
-      line-height: 1.6;
+    :root {
+      --steel:        #3B7EA6;
+      --steel-light:  #6AAFD4;
+      --steel-dark:   #2A5F7A;
+      --gold:         #BA7517;
+      --gold-light:   #D4983F;
+      --ink:          #1a2530;
+      --gray-text:    #5A5A6A;
+      --gray-soft:    #8a93a0;
+      --gray-line:    #e4e7ec;
+      --paper:        #fafaf7;
+      --paper-warm:   #f5f1e8;
+      --white:        #ffffff;
+      --red:          #b3331f;
     }
-    h1 { color: #0f2035; font-family: Georgia, serif; }
-    code {
-      background: #f4f4f4;
-      padding: 2px 6px;
-      border-radius: 3px;
-      font-size: 0.9em;
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 16px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
     }
-    .endpoint {
-      background: #0f2035;
-      color: #c8a96e;
-      padding: 16px;
+
+    .wrap {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 56px 28px 80px;
+    }
+
+    /* ─── Header ─────────────────────────────────────────────────────── */
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      color: var(--steel-dark);
+      text-transform: uppercase;
+      margin-bottom: 40px;
+    }
+    .brand::before {
+      content: '';
+      width: 28px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    h1 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 600;
+      font-size: clamp(34px, 5vw, 52px);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin: 0 0 18px;
+      color: var(--ink);
+    }
+    h1 em {
+      font-style: italic;
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    .lede {
+      font-size: 18px;
+      color: var(--gray-text);
+      max-width: 640px;
+      margin: 0 0 44px;
+    }
+
+    /* ─── Search form ────────────────────────────────────────────────── */
+    .search {
+      display: flex;
+      gap: 0;
+      border: 1px solid var(--gray-line);
+      border-radius: 4px;
+      background: var(--white);
+      box-shadow: 0 1px 2px rgba(15,32,53,0.04);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .search:focus-within {
+      border-color: var(--steel);
+      box-shadow: 0 0 0 3px rgba(59,126,166,0.12);
+    }
+    .search input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 18px 20px;
+      font-family: inherit;
+      font-size: 17px;
+      color: var(--ink);
+      outline: none;
+      min-width: 0;
+    }
+    .search input::placeholder { color: var(--gray-soft); }
+    .search button {
+      border: none;
+      background: var(--steel-dark);
+      color: var(--white);
+      padding: 0 28px;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      transition: background 0.15s;
+      border-radius: 0 4px 4px 0;
+    }
+    .search button:hover:not(:disabled) { background: var(--steel); }
+    .search button:disabled { background: var(--gray-soft); cursor: wait; }
+
+    .search-hint {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--gray-soft);
+    }
+
+    /* ─── States: loading / error ────────────────────────────────────── */
+    .state {
+      margin-top: 36px;
+      padding: 18px 20px;
+      border-radius: 4px;
+      font-size: 15px;
+    }
+    .state.error {
+      background: #fdf2f0;
+      border-left: 3px solid var(--red);
+      color: #6e1f10;
+    }
+    .state.loading {
+      background: var(--white);
+      border-left: 3px solid var(--steel);
+      color: var(--gray-text);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .spinner {
+      width: 14px; height: 14px;
+      border: 2px solid var(--gray-line);
+      border-top-color: var(--steel);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ─── Results ────────────────────────────────────────────────────── */
+    .results { margin-top: 56px; display: none; }
+    .results.show { display: block; animation: fadeUp 0.5s ease-out; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .parcel-header {
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--gray-line);
+      margin-bottom: 36px;
+    }
+    .parcel-header .addr {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 24px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin: 0 0 6px;
+    }
+    .parcel-header .meta {
+      font-size: 13px;
+      color: var(--gray-soft);
+      letter-spacing: 0.02em;
+    }
+    .parcel-header .meta span + span::before {
+      content: '·';
+      margin: 0 8px;
+      color: var(--gray-line);
+    }
+
+    /* ─── The three numbers — THE MOMENT ─────────────────────────────── */
+    .moment {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      background: var(--white);
+      border: 1px solid var(--gray-line);
       border-radius: 6px;
-      font-family: monospace;
-      font-size: 0.9em;
-      overflow-x: auto;
+      overflow: hidden;
+      margin-bottom: 36px;
+    }
+    .num {
+      padding: 28px 28px 32px;
+      position: relative;
+    }
+    .num.current { border-right: 1px solid var(--gray-line); }
+    .num.projected { background: linear-gradient(180deg, #fdf6ea 0%, #faedd6 100%); }
+    .num .label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gray-soft);
+      margin-bottom: 14px;
+    }
+    .num.projected .label { color: var(--gold); }
+    .num .big {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: clamp(36px, 5.5vw, 56px);
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      line-height: 1;
+      color: var(--ink);
+    }
+    .num .big sup {
+      font-size: 0.42em;
+      font-weight: 500;
+      vertical-align: top;
+      color: var(--gray-soft);
+      margin-right: 2px;
+      top: 0.7em;
+      position: relative;
+    }
+    .num .sub {
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--gray-text);
+    }
+
+    .delta {
+      grid-column: 1 / -1;
+      background: var(--ink);
+      color: var(--white);
+      padding: 22px 28px;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .delta .label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--steel-light);
+    }
+    .delta .amount {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: clamp(22px, 3.2vw, 32px);
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+    .delta .amount strong {
+      color: var(--gold-light);
+      font-weight: 700;
+    }
+
+    /* ─── Slider ─────────────────────────────────────────────────────── */
+    .slider-block {
+      background: var(--white);
+      border: 1px solid var(--gray-line);
+      border-radius: 6px;
+      padding: 26px 28px;
+      margin-bottom: 36px;
+    }
+    .slider-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 14px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .slider-head .lbl {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--gray-text);
+    }
+    .slider-head .val {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--steel-dark);
+      letter-spacing: -0.01em;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 4px;
+      background: var(--gray-line);
+      border-radius: 2px;
+      outline: none;
+      margin: 8px 0 4px;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--gold);
+      cursor: grab;
+      border: 3px solid var(--white);
+      box-shadow: 0 0 0 1px var(--gold), 0 2px 6px rgba(186,117,23,0.3);
+      transition: transform 0.1s;
+    }
+    input[type="range"]::-webkit-slider-thumb:active { transform: scale(1.1); cursor: grabbing; }
+    input[type="range"]::-moz-range-thumb {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--gold);
+      cursor: grab;
+      border: 3px solid var(--white);
+      box-shadow: 0 0 0 1px var(--gold), 0 2px 6px rgba(186,117,23,0.3);
+    }
+    .slider-bounds {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--gray-soft);
+      letter-spacing: 0.04em;
+      margin-top: 6px;
+    }
+
+    /* ─── Detail strip ───────────────────────────────────────────────── */
+    .detail {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 24px;
+      padding: 24px 28px;
+      background: var(--white);
+      border: 1px solid var(--gray-line);
+      border-radius: 6px;
+      margin-bottom: 24px;
+    }
+    .detail .item .k {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gray-soft);
+      margin-bottom: 4px;
+    }
+    .detail .item .v {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    /* ─── Disclaimer + footer ────────────────────────────────────────── */
+    .disclaimer {
+      font-size: 12px;
+      line-height: 1.65;
+      color: var(--gray-soft);
+      padding: 18px 0;
+      border-top: 1px solid var(--gray-line);
+    }
+    .disclaimer a { color: var(--steel-dark); text-decoration: underline; text-underline-offset: 2px; }
+
+    .why-section {
+      margin-top: 72px;
+      padding-top: 40px;
+      border-top: 1px solid var(--gray-line);
+    }
+    .why-section h2 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 500;
+      font-size: 24px;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin: 0 0 14px;
+    }
+    .why-section p {
+      color: var(--gray-text);
+      font-size: 15px;
+      max-width: 640px;
+      margin: 0 0 14px;
+    }
+
+    .cta {
+      margin-top: 28px;
+      display: inline-block;
+      background: var(--steel-dark);
+      color: var(--white);
+      padding: 14px 26px;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background 0.15s;
+    }
+    .cta:hover { background: var(--steel); }
+
+    .signature {
+      margin-top: 56px;
+      font-size: 12px;
+      color: var(--gray-soft);
+      letter-spacing: 0.04em;
+    }
+    .signature a { color: var(--steel-dark); text-decoration: none; }
+
+    /* ─── Candidate list (multiple matches) ──────────────────────────── */
+    .candidates {
+      background: var(--white);
+      border: 1px solid var(--gray-line);
+      border-radius: 6px;
+      padding: 8px;
+      margin-top: 36px;
+    }
+    .candidates .head {
+      padding: 10px 16px;
+      font-size: 13px;
+      color: var(--gray-text);
+    }
+    .candidate-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 12px 16px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--ink);
+      transition: background 0.1s;
+    }
+    .candidate-btn:hover { background: var(--paper-warm); }
+    .candidate-btn .addr-line { font-weight: 600; }
+    .candidate-btn .owner-line { font-size: 12px; color: var(--gray-soft); margin-top: 2px; }
+
+    @media (max-width: 540px) {
+      .moment { grid-template-columns: 1fr; }
+      .num.current { border-right: none; border-bottom: 1px solid var(--gray-line); }
+      .search { flex-direction: column; }
+      .search button { padding: 14px; border-radius: 0 0 4px 4px; }
     }
   </style>
 </head>
 <body>
-  <h1>Chattanooga Tax Lookup API</h1>
-  <p>Backend service for the Joe Leffew Properties property tax lookup tool.
-     This page is the public root; the actual API lives at the endpoint below.</p>
 
-  <h2>Endpoint</h2>
-  <div class="endpoint">GET /api/lookup?address=1524+Green+Pond+Rd&amp;price=750000</div>
+  <main class="wrap">
 
-  <h2>Parameters</h2>
-  <ul>
-    <li><code>address</code> — required. Hamilton County street address.</li>
-    <li><code>price</code> — optional. Purchase price for tax projection.</li>
-  </ul>
+    <div class="brand">Joe Leffew Properties</div>
 
-  <p>This is an internal API. For tax estimates, use the calculator on
-     <a href="https://joeleffew.com">joeleffew.com</a>.</p>
+    <h1>What will your taxes <em>actually</em> be in 2029?</h1>
+
+    <p class="lede">
+      Hamilton County reappraises every four years — last in 2025, next in 2029. Buyers
+      paying today's prices are taxed on the old assessment until then. Type any
+      Chattanooga-area address to see what's coming.
+    </p>
+
+    <form class="search" id="search-form" autocomplete="off">
+      <input
+        type="text"
+        id="address-input"
+        placeholder="e.g. 1524 Green Pond Rd"
+        required
+      />
+      <button type="submit" id="submit-btn">Look up</button>
+    </form>
+    <div class="search-hint">Hamilton County addresses only · we look this up live from the county GIS</div>
+
+    <div id="loading" class="state loading" style="display:none;">
+      <div class="spinner"></div>
+      <span>Pulling parcel data from Hamilton County…</span>
+    </div>
+
+    <div id="error" class="state error" style="display:none;"></div>
+
+    <div id="candidates" class="candidates" style="display:none;"></div>
+
+    <!-- ─── Results ─── -->
+    <section id="results" class="results">
+
+      <div class="parcel-header">
+        <div class="addr" id="r-address"></div>
+        <div class="meta">
+          <span id="r-owner"></span>
+          <span id="r-acres"></span>
+          <span id="r-neighborhood"></span>
+        </div>
+      </div>
+
+      <div class="slider-block">
+        <div class="slider-head">
+          <div class="lbl">Your projected purchase price</div>
+          <div class="val" id="r-price-display">$500,000</div>
+        </div>
+        <input type="range" id="price-slider" min="100000" max="2000000" step="10000" value="500000" />
+        <div class="slider-bounds">
+          <span>$100K</span>
+          <span>$2M</span>
+        </div>
+      </div>
+
+      <div class="moment">
+        <div class="num current">
+          <div class="label">Today's annual tax</div>
+          <div class="big"><sup>$</sup><span id="r-current">—</span></div>
+          <div class="sub">Based on county appraisal of <span id="r-appraised">—</span></div>
+        </div>
+        <div class="num projected">
+          <div class="label">After 2029 reappraisal</div>
+          <div class="big"><sup>$</sup><span id="r-projected">—</span></div>
+          <div class="sub">If you bought at <span id="r-purchase">—</span></div>
+        </div>
+        <div class="delta">
+          <div class="label">Plan ahead for</div>
+          <div class="amount"><strong id="r-delta-monthly">—</strong> more per month <span id="r-delta-annual" style="opacity:0.6; font-size:0.7em; font-weight:400;"></span></div>
+        </div>
+      </div>
+
+      <div class="detail">
+        <div class="item">
+          <div class="k">Tax District</div>
+          <div class="v" id="r-district">—</div>
+        </div>
+        <div class="item">
+          <div class="k">Combined Rate</div>
+          <div class="v" id="r-rate">—</div>
+        </div>
+        <div class="item">
+          <div class="k">Last Sale</div>
+          <div class="v" id="r-last-sale">—</div>
+        </div>
+        <div class="item">
+          <div class="k">Parcel ID</div>
+          <div class="v" id="r-parcel-id" style="font-size:14px;">—</div>
+        </div>
+      </div>
+
+      <div class="disclaimer" id="r-disclaimer"></div>
+
+    </section>
+
+    <section class="why-section">
+      <h2>Why these numbers matter.</h2>
+      <p>
+        In 2025, residential values across Hamilton County rose roughly 59% in the
+        countywide reappraisal. Tennessee's "certified tax rate" mechanism rolls
+        millage <em>down</em> after a reappraisal so total county revenue stays flat — but
+        the next big assessment-jump is locked in for 2029. If you buy today, your
+        tax bill is calculated against the <em>old</em> appraisal until then.
+      </p>
+      <p>
+        Roughly translated: the gap between what you're paying now and what you'll pay
+        in 2029 is real, knowable, and worth folding into your monthly budget — not
+        a surprise to discover three years in.
+      </p>
+      <a class="cta" href="https://joeleffew.com" target="_top">Talk to Joe →</a>
+
+      <div class="signature">
+        Joe Leffew · Keller Williams Realty · Chattanooga, TN ·
+        <a href="tel:4234326869">423.432.6869</a>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // -------------------------------------------------------------------------
+    // STATE
+    // -------------------------------------------------------------------------
+    let currentParcel = null;   // last loaded parcel
+    let currentTaxes  = null;   // { combinedRate, current.annualTax, ... }
+
+    // -------------------------------------------------------------------------
+    // FORMATTERS
+    // -------------------------------------------------------------------------
+    const fmt = (n) => Number(Math.round(n)).toLocaleString('en-US');
+    const fmtUSD = (n) => '$' + fmt(n);
+
+    // -------------------------------------------------------------------------
+    // ELEMENTS
+    // -------------------------------------------------------------------------
+    const el = {
+      form:      document.getElementById('search-form'),
+      input:     document.getElementById('address-input'),
+      btn:       document.getElementById('submit-btn'),
+      loading:   document.getElementById('loading'),
+      error:     document.getElementById('error'),
+      candidates:document.getElementById('candidates'),
+      results:   document.getElementById('results'),
+      slider:    document.getElementById('price-slider'),
+      priceDisp: document.getElementById('r-price-display'),
+      addr:      document.getElementById('r-address'),
+      owner:     document.getElementById('r-owner'),
+      acres:     document.getElementById('r-acres'),
+      hood:      document.getElementById('r-neighborhood'),
+      current:   document.getElementById('r-current'),
+      projected: document.getElementById('r-projected'),
+      appraised: document.getElementById('r-appraised'),
+      purchase:  document.getElementById('r-purchase'),
+      deltaMo:   document.getElementById('r-delta-monthly'),
+      deltaYr:   document.getElementById('r-delta-annual'),
+      district:  document.getElementById('r-district'),
+      rate:      document.getElementById('r-rate'),
+      lastSale:  document.getElementById('r-last-sale'),
+      parcelId:  document.getElementById('r-parcel-id'),
+      disclaimer:document.getElementById('r-disclaimer'),
+    };
+
+    // -------------------------------------------------------------------------
+    // UI HELPERS
+    // -------------------------------------------------------------------------
+    function showError(msg) {
+      el.error.textContent = msg;
+      el.error.style.display = 'block';
+      el.results.classList.remove('show');
+      el.candidates.style.display = 'none';
+    }
+    function clearMessages() {
+      el.error.style.display = 'none';
+      el.candidates.style.display = 'none';
+    }
+    function setLoading(on) {
+      el.loading.style.display = on ? 'flex' : 'none';
+      el.btn.disabled = on;
+      el.btn.textContent = on ? 'Looking up…' : 'Look up';
+    }
+
+    // -------------------------------------------------------------------------
+    // SEARCH
+    // -------------------------------------------------------------------------
+    el.form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const address = el.input.value.trim();
+      if (!address) return;
+      await doLookup(address);
+    });
+
+    async function doLookup(address) {
+      clearMessages();
+      el.results.classList.remove('show');
+      setLoading(true);
+      try {
+        const url = `/api/lookup?address=${encodeURIComponent(address)}&price=${el.slider.value}`;
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if (data.multipleMatches) {
+          renderCandidates(data.candidates);
+          return;
+        }
+        if (!res.ok || !data.success) {
+          showError(data.error || 'Lookup failed. Please try again.');
+          return;
+        }
+        renderResults(data);
+      } catch (err) {
+        showError('Network error. Please try again.');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    function renderCandidates(list) {
+      let html = '<div class="head">Multiple parcels match — pick one:</div>';
+      for (const c of list) {
+        html += `
+          <button class="candidate-btn" data-addr="${c.address.replace(/"/g,'&quot;')}">
+            <div class="addr-line">${c.address}</div>
+            <div class="owner-line">${c.owner || ''}${c.city ? ' · ' + c.city : ''}</div>
+          </button>`;
+      }
+      el.candidates.innerHTML = html;
+      el.candidates.style.display = 'block';
+      el.candidates.querySelectorAll('.candidate-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          el.input.value = btn.dataset.addr;
+          doLookup(btn.dataset.addr);
+        });
+      });
+    }
+
+    // -------------------------------------------------------------------------
+    // RENDER RESULTS
+    // -------------------------------------------------------------------------
+    function renderResults(data) {
+      currentParcel = data.parcel;
+      currentTaxes  = data.taxes;
+
+      // Header
+      el.addr.textContent = data.parcel.address || '';
+      el.owner.textContent = data.parcel.owner || '';
+      el.acres.textContent = data.parcel.acres ? `${Number(data.parcel.acres).toFixed(2)} acres` : '';
+      el.hood.textContent = data.parcel.neighborhood || '';
+
+      // Current numbers
+      el.current.textContent = fmt(data.taxes.current.annualTax);
+      el.appraised.textContent = fmtUSD(data.taxes.current.appraisedValue);
+
+      // Tax detail
+      el.district.textContent = data.taxes.district === 'COUNTY'
+        ? 'Hamilton County (unincorporated)'
+        : titleCase(data.taxes.district);
+      el.rate.textContent = data.taxes.combinedRate.toFixed(4) + '%';
+      el.lastSale.textContent = data.parcel.lastSale
+        ? `${fmtUSD(data.parcel.lastSale.price)} (${data.parcel.lastSale.date.slice(0,4)})`
+        : 'No recent sale';
+      el.parcelId.textContent = data.parcel.parcelId || '—';
+
+      // Disclaimer
+      const cardLink = data.parcel.assessorCardUrl
+        ? ` <a href="${data.parcel.assessorCardUrl}" target="_blank" rel="noopener">View official assessor record →</a>`
+        : '';
+      el.disclaimer.innerHTML = data.disclaimer + cardLink;
+
+      // Auto-set slider to a sensible default — current appraisal × 1.6 (rough
+      // 2025-onward market markup) as starting estimate, capped to bounds.
+      const suggested = Math.min(2000000, Math.max(100000,
+        Math.round((data.parcel.appraisedValue || 500000) * 1.6 / 10000) * 10000));
+      el.slider.value = suggested;
+      updateProjection();
+
+      el.results.classList.add('show');
+    }
+
+    function titleCase(s) {
+      return s.toLowerCase().replace(/(^|[\s-])\w/g, c => c.toUpperCase());
+    }
+
+    // -------------------------------------------------------------------------
+    // SLIDER — re-runs projection client-side, no API hit
+    // -------------------------------------------------------------------------
+    el.slider.addEventListener('input', updateProjection);
+
+    function updateProjection() {
+      const price = parseInt(el.slider.value, 10);
+      el.priceDisp.textContent = fmtUSD(price);
+
+      if (!currentTaxes) return;
+
+      const rate = currentTaxes.combinedRate;
+      const projectedAnnual = (price * 0.25 * rate) / 100;
+      const currentAnnual   = currentTaxes.current.annualTax;
+      const annualDiff      = projectedAnnual - currentAnnual;
+      const monthlyDiff     = annualDiff / 12;
+
+      el.projected.textContent = fmt(projectedAnnual);
+      el.purchase.textContent  = fmtUSD(price);
+
+      const sign = monthlyDiff >= 0 ? '+' : '−';
+      el.deltaMo.textContent = `${sign}$${fmt(Math.abs(monthlyDiff))}`;
+      el.deltaYr.textContent = `(${sign}$${fmt(Math.abs(annualDiff))} per year)`;
+    }
+  </script>
 </body>
 </html>
