@@ -17,11 +17,14 @@
 // so we can surface parcels where mailing city ≠ taxing jurisdiction.
 //
 // Data sources:
-//   Parcels:        https://mapsdev.hamiltontn.gov/hcwa03/rest/services/Live_Parcels/MapServer/0
+//   Parcels:        https://mapsdev.hamiltontn.gov/hcwa03/rest/services/Live_Assessor_Anno/MapServer/399
 //   Municipalities: https://mapsdev.hamiltontn.gov/hcwa03/rest/services/Live_Administrative/MapServer/2
 //
-// Both layers use spatialReference wkid 103152 (TN State Plane, US Feet) —
+// Both layers use spatialReference wkid 102736 / latestWkid 2274 (TN State Plane, US Feet) —
 // no reprojection required.
+//
+// NOTE: Live_Parcels (original source) went down 2026-05. Live_Assessor_Anno/399 is the
+// replacement — identical schema, same spatial reference, same data.
 //
 // No external dependencies. Netlify Functions v2 (export default).
 // =============================================================================
@@ -47,12 +50,12 @@ const CITY_RATES = {
 };
 
 const PARCELS_QUERY_URL =
-  'https://mapsdev.hamiltontn.gov/hcwa03/rest/services/Live_Parcels/MapServer/0/query';
+  'https://mapsdev.hamiltontn.gov/hcwa03/rest/services/Live_Assessor_Anno/MapServer/399/query';
 
 const MUNICIPALITIES_QUERY_URL =
   'https://mapsdev.hamiltontn.gov/hcwa03/rest/services/Live_Administrative/MapServer/2/query';
 
-const SPATIAL_REF_WKID = 103152;
+const SPATIAL_REF_WKID = 102736;
 
 // -----------------------------------------------------------------------------
 // PARSE ADDRESS — extract street number + street name for LIKE query
