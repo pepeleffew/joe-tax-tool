@@ -1,59 +1,58 @@
 // =============================================================================
-// JOE LEFFEW PROPERTIES — CHATTANOOGA TAX LOOKUP FUNCTION (v4)
+// JOE LEFFEW PROPERTIES — CHATTANOOGA TAX LOOKUP FUNCTION (v5)
 // =============================================================================
-// v4 (2026-05): Pivoted from scraping assessor.hamiltontn.gov (Blazor app —
-// not scrapable) to querying Hamilton County's public GIS REST API directly.
-// Same data, clean JSON, no auth required.
+// v5 (2026-05): Replaced MACITY-based jurisdiction detection with a true
+// point-in-polygon spatial join against the Municipalities layer. MACITY is a
+// USPS mailing artifact and misclassifies unincorporated parcels with city
+// mailing addresses (e.g. 1524 Green Pond Rd has MACITY "Soddy Daisy" but is
+// actually unincorporated Hamilton County — should bill at county-only rate).
 //
-// Data source: Live_Parcels MapServer, layer 0
-//   https://mapsdev.hamiltontn.gov/hcwa03/rest/services/Live_Parcels/MapServer/0
+// v5 logic:
+//   1. Query Live_Parcels with returnGeometry=true (same SR as Municipalities).
+//   2. Compute centroid of the parcel polygon.
+//   3. Spatial-query Municipalities/2 (esriSpatialRelIntersects) for the NAME.
+//   4. Use that NAME (or "COUNTY" if empty/Hamilton County) for tax calc.
 //
-// Tax-district determination note: the GIS DISTRICT field is a Hamilton County
-// civil district code (1-9 for elections/admin), NOT a city code. We use
-// MACITY as the proxy for taxing jurisdiction with explicit confidence flags.
-// A future v5 should spatially join parcel centroids against a city-limits
-// polygon layer for pixel-perfect accuracy.
+// MACITY is retained in the response for transparency and rollout diagnostics
+// so we can surface parcels where mailing city ≠ taxing jurisdiction.
+//
+// Data sources:
+//   Parcels:        https://mapsdev.hamiltontn.gov/hcwa03/rest/services/Live_Parcels/MapServer/0
+//   Municipalities: https://mapsdev.hamiltontn.gov/hcwa03/rest/services/Live_Administrative/MapServer/2
+//
+// Both layers use spatialReference wkid 103152 (TN State Plane, US Feet) —
+// no reprojection required.
 //
 // No external dependencies. Netlify Functions v2 (export default).
 // =============================================================================
 
 // -----------------------------------------------------------------------------
 // 2025 CERTIFIED MILLAGE RATES (per $100 of assessed value)
-// Source: Hamilton County Assessor + city certifications, June 2025.
-// In effect through the next reappraisal cycle (2029).
 // -----------------------------------------------------------------------------
 const COUNTY_RATE = 1.5157;
 
-// City rates keyed by MACITY values as they appear in the GIS data.
+// City rates keyed to the exact NAME values returned by Municipalities/2.
+// Verified spelling/casing against the layer's own attribute list.
 const CITY_RATES = {
-  'CHATTANOOGA':       1.5500,
-  'COLLEGEDALE':       1.0690,
-  'EAST RIDGE':        0.7993,
-  'LAKESITE':          0.1336,
-  'LOOKOUT MOUNTAIN':  1.5500,
-  'RED BANK':          0.8968,
-  'RIDGESIDE':         1.9150,
-  'SIGNAL MOUNTAIN':   1.1002,
-  'SODDY DAISY':       0.9070,
-  'SODDY-DAISY':       0.9070,
-  'WALDEN':            0.6900, // approximate — verify
+  'Chattanooga':      1.5500,
+  'Collegedale':      1.0690,
+  'East Ridge':       0.7993,
+  'Lakesite':         0.1336,
+  'Lookout Mountain': 1.5500,
+  'Red Bank':         0.8968,
+  'Ridgeside':        1.9150,
+  'Signal Mountain':  1.1002,
+  'Soddy Daisy':      0.9070,
+  'Walden':           0.6900, // approximate — verify
 };
 
-// MACITY values that are mailing-address artifacts of unincorporated
-// Hamilton County (not actual taxing cities).
-const NON_TAXING_MAILING_CITIES = new Set([
-  'HIXSON',
-  'OOLTEWAH',
-  'HARRISON',
-  'SALE CREEK',
-  'BIRCHWOOD',
-  'APISON',
-  'FLAT TOP MOUNTAIN',
-  'GEORGETOWN',
-]);
-
-const GIS_QUERY_URL =
+const PARCELS_QUERY_URL =
   'https://mapsdev.hamiltontn.gov/hcwa03/rest/services/Live_Parcels/MapServer/0/query';
+
+const MUNICIPALITIES_QUERY_URL =
+  'https://mapsdev.hamiltontn.gov/hcwa03/rest/services/Live_Administrative/MapServer/2/query';
+
+const SPATIAL_REF_WKID = 103152;
 
 // -----------------------------------------------------------------------------
 // PARSE ADDRESS — extract street number + street name for LIKE query
@@ -77,7 +76,7 @@ function parseAddress(raw) {
 }
 
 // -----------------------------------------------------------------------------
-// QUERY GIS — find parcels matching the address
+// QUERY GIS — find parcels matching the address (with geometry for v5 join)
 // -----------------------------------------------------------------------------
 async function queryParcels(streetNumber, streetName) {
   const tries = [
@@ -92,15 +91,16 @@ async function queryParcels(streetNumber, streetName) {
       where,
       outFields: '*',
       f: 'json',
-      returnGeometry: 'false',
+      returnGeometry: 'true',           // v5: need geometry for centroid
+      outSR: String(SPATIAL_REF_WKID),  // v5: lock to State Plane (matches Municipalities/2)
       resultRecordCount: '10',
     });
 
-    const url = `${GIS_QUERY_URL}?${params.toString()}`;
+    const url = `${PARCELS_QUERY_URL}?${params.toString()}`;
     const res = await fetch(url, { headers: { Accept: 'application/json' } });
 
     if (!res.ok) {
-      throw new Error(`GIS query failed: HTTP ${res.status}`);
+      throw new Error(`GIS parcels query failed: HTTP ${res.status}`);
     }
 
     const data = await res.json();
@@ -109,7 +109,11 @@ async function queryParcels(streetNumber, streetName) {
     }
 
     if (data.features && data.features.length > 0) {
-      return data.features.map(f => f.attributes);
+      // Return both attributes and geometry as a unified record
+      return data.features.map(f => ({
+        ...f.attributes,
+        _geometry: f.geometry,
+      }));
     }
   }
 
@@ -130,34 +134,110 @@ function pickBestMatch(records, streetNumber) {
 }
 
 // -----------------------------------------------------------------------------
-// DETERMINE TAXING CITY from MACITY (with confidence flag)
+// COMPUTE CENTROID from polygon rings
+// Averages all unique vertices across all rings. Drops the closing-duplicate
+// vertex (last == first) per ring. Adequate for point-in-polygon membership;
+// not a true area-weighted centroid, but parcels are convex enough that the
+// averaged-vertex centroid reliably falls inside the parcel.
 // -----------------------------------------------------------------------------
-function determineTaxingCity(macity) {
-  if (!macity) return { name: 'COUNTY', cityRate: 0, confidence: 'low' };
+function computeCentroid(geometry) {
+  if (!geometry || !Array.isArray(geometry.rings) || geometry.rings.length === 0) {
+    return null;
+  }
 
-  const normalized = macity.trim().toUpperCase();
+  let sumX = 0;
+  let sumY = 0;
+  let count = 0;
 
-  if (CITY_RATES[normalized] !== undefined) {
+  for (const ring of geometry.rings) {
+    if (!Array.isArray(ring) || ring.length < 4) continue;
+    // Last vertex closes the ring (== first); drop it.
+    for (let i = 0; i < ring.length - 1; i++) {
+      const [x, y] = ring[i];
+      if (typeof x === 'number' && typeof y === 'number') {
+        sumX += x;
+        sumY += y;
+        count++;
+      }
+    }
+  }
+
+  if (count === 0) return null;
+  return { x: sumX / count, y: sumY / count };
+}
+
+// -----------------------------------------------------------------------------
+// SPATIAL QUERY — point-in-polygon against Municipalities/2
+// Returns the municipality NAME, or null if the centroid falls outside all
+// city limits (i.e. unincorporated). Treats "Hamilton County" as unincorporated.
+// -----------------------------------------------------------------------------
+async function querySpatialJurisdiction(centroid) {
+  if (!centroid) return null;
+
+  const geometryJson = JSON.stringify({
+    x: centroid.x,
+    y: centroid.y,
+    spatialReference: { wkid: SPATIAL_REF_WKID },
+  });
+
+  const params = new URLSearchParams({
+    geometry: geometryJson,
+    geometryType: 'esriGeometryPoint',
+    spatialRel: 'esriSpatialRelIntersects',
+    outFields: 'NAME',
+    returnGeometry: 'false',
+    f: 'json',
+  });
+
+  const url = `${MUNICIPALITIES_QUERY_URL}?${params.toString()}`;
+  const res = await fetch(url, { headers: { Accept: 'application/json' } });
+
+  if (!res.ok) {
+    throw new Error(`GIS municipalities query failed: HTTP ${res.status}`);
+  }
+
+  const data = await res.json();
+  if (data.error) {
+    throw new Error(`GIS error: ${data.error.message || JSON.stringify(data.error)}`);
+  }
+
+  if (!data.features || data.features.length === 0) {
+    return null; // unincorporated
+  }
+
+  // Filter out "Hamilton County" — it represents the county polygon itself,
+  // not a taxing city. If it's the only match, the parcel is unincorporated.
+  const cityFeatures = data.features.filter(
+    f => f.attributes && f.attributes.NAME && f.attributes.NAME !== 'Hamilton County'
+  );
+
+  if (cityFeatures.length === 0) return null;
+  return cityFeatures[0].attributes.NAME;
+}
+
+// -----------------------------------------------------------------------------
+// DETERMINE TAXING CITY from spatial-join result
+// -----------------------------------------------------------------------------
+function determineTaxingCity(spatialName) {
+  if (!spatialName) {
+    return { name: 'COUNTY', cityRate: 0, confidence: 'high' };
+  }
+
+  if (CITY_RATES[spatialName] !== undefined) {
     return {
-      name: normalized,
-      cityRate: CITY_RATES[normalized],
-      confidence: 'medium', // MACITY is mailing, not situs — usually right
+      name: spatialName,
+      cityRate: CITY_RATES[spatialName],
+      confidence: 'high', // verified by point-in-polygon, not mailing address
     };
   }
 
-  if (NON_TAXING_MAILING_CITIES.has(normalized)) {
-    return {
-      name: 'COUNTY',
-      cityRate: 0,
-      confidence: 'high',
-    };
-  }
-
+  // Spatial join returned a NAME we don't have a rate for. Shouldn't happen
+  // given the 10 known NAMEs in Municipalities/2, but surface it loudly.
   return {
     name: 'COUNTY',
     cityRate: 0,
     confidence: 'low',
-    unknownMacity: normalized,
+    unknownJurisdiction: spatialName,
   };
 }
 
@@ -184,9 +264,6 @@ function extractLastSale(rec) {
 function calculateTaxes(rec, taxingCity, purchasePrice) {
   const combinedRate = COUNTY_RATE + taxingCity.cityRate;
 
-  // Always derive current assessed from APPVALUE × 0.25 for residential.
-  // ASSVALUE comes back as 0 for some commercial/exempt parcels — APPVALUE
-  // is the reliable signal.
   const appraised = rec.APPVALUE || 0;
   const currentAssessed = appraised * 0.25;
   const currentAnnual = (currentAssessed * combinedRate) / 100;
@@ -226,11 +303,12 @@ function calculateTaxes(rec, taxingCity, purchasePrice) {
 // -----------------------------------------------------------------------------
 // SHAPE THE PARCEL OBJECT for the response
 // -----------------------------------------------------------------------------
-function shapeParcel(rec) {
+function shapeParcel(rec, taxingJurisdiction) {
   return {
     parcelId: rec.TAX_MAP_NO || rec.GISLINK,
     address: rec.ADDRESS,
-    mailingCity: rec.MACITY,
+    mailingCity: rec.MACITY,                 // for transparency / debugging
+    taxingJurisdiction: taxingJurisdiction,  // v5: from spatial join
     owner: (rec.OWNERNAME1 || '').trim() || null,
     coOwner: (rec.OWNERNAME2 || '').trim() || null,
     appraisedValue: rec.APPVALUE,
@@ -331,8 +409,13 @@ export default async (req) => {
     }
 
     const best = pickBestMatch(records, parsed.number);
-    const parcel = shapeParcel(best);
-    const taxingCity = determineTaxingCity(best.MACITY);
+
+    // v5: Spatial join — point-in-polygon against Municipalities/2
+    const centroid = computeCentroid(best._geometry);
+    const spatialName = await querySpatialJurisdiction(centroid);
+    const taxingCity = determineTaxingCity(spatialName);
+
+    const parcel = shapeParcel(best, taxingCity.name);
     const taxes = calculateTaxes(best, taxingCity, purchasePrice);
 
     return new Response(
@@ -340,12 +423,26 @@ export default async (req) => {
         success: true,
         parcel,
         taxes,
+        // Diagnostic block — surfaces parcels where mailing city ≠ taxing
+        // jurisdiction. Useful during v5 rollout; remove once confident.
+        _diagnostic: {
+          version: 'v5',
+          mailingCity: best.MACITY,
+          spatialJurisdiction: spatialName || 'Unincorporated',
+          mailingMatchesSpatial:
+            (best.MACITY || '').trim().toUpperCase() ===
+            (spatialName || 'COUNTY').toUpperCase(),
+          centroid: centroid
+            ? { x: Math.round(centroid.x), y: Math.round(centroid.y) }
+            : null,
+        },
         disclaimer:
           'Estimated using 2025 certified Hamilton County millage rates and ' +
           "Tennessee's 25% residential assessment ratio. Actual taxes may " +
           'vary at the next county-wide reappraisal in 2029, when certified ' +
           'rates are recalibrated. Verify with the Hamilton County Assessor.',
-        dataSource: 'Hamilton County GIS — Live_Parcels',
+        dataSource:
+          'Hamilton County GIS — Live_Parcels + Live_Administrative (Municipalities)',
       }),
       {
         status: 200,
