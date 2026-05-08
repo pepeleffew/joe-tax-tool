@@ -1,0 +1,16 @@
+# =============================================================================
+# Netlify configuration for joe-tax-tool
+# =============================================================================
+
+[build]
+  functions = "netlify/functions"
+  publish = "public"
+
+[functions]
+  node_bundler = "esbuild"
+
+# Friendly URL: /api/lookup → /.netlify/functions/lookup
+[[redirects]]
+  from = "/api/lookup"
+  to = "/.netlify/functions/lookup"
+  status = 200
