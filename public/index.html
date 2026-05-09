@@ -662,7 +662,7 @@
       el.results.classList.remove('show');
       setLoading(true);
       try {
-        const url = `/api/lookup?address=${encodeURIComponent(address)}&price=${el.slider.value}`;
+        const url = `https://deluxe-paprenjak-5b05c8.netlify.app/api/lookup?address=${encodeURIComponent(address)}&price=${el.slider.value}`;
         const res = await fetch(url);
         const data = await res.json();
 
