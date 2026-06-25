@@ -924,15 +924,20 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 .hittrax-badge {
   display: inline-flex;
   align-items: center;
-  gap: 16px;
-  background: linear-gradient(135deg, var(--ink), var(--ink-2));
+  gap: 18px;
+  background:
+    radial-gradient(120% 160% at 22% 30%, rgba(74,111,165,0.28), transparent 60%),
+    linear-gradient(135deg, #11233d, #0a1626);
   border: 1px solid var(--line-str);
   border-radius: var(--r-md);
-  padding: 14px 22px;
+  padding: 16px 26px;
   margin-bottom: 32px;
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--shadow-card), 0 0 0 1px rgba(154,184,216,0.06), 0 0 38px rgba(74,111,165,0.22);
 }
-.hittrax-badge .ht-logo { height: 38px; width: auto; max-width: 170px; object-fit: contain; }
+.hittrax-badge .ht-logo {
+  height: 46px; width: auto; max-width: 210px; object-fit: contain;
+  filter: drop-shadow(0 0 1px rgba(255,255,255,0.5)) drop-shadow(0 2px 10px rgba(0,0,0,0.55));
+}
 .hittrax-badge .ht-sep { width: 1px; height: 28px; background: var(--line-str); }
 .hittrax-badge .ht-live {
   display: flex;
@@ -3020,7 +3025,7 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
     <div class="tech-layout" style="margin-top:52px;">
       <div class="reveal-left">
         <div class="hittrax-badge">
-          <img class="ht-logo" loading="lazy" decoding="async" src="assets/hittrax-logo-full.png" alt="HitTrax" />
+          <img class="ht-logo" loading="lazy" decoding="async" src="assets/hittrax-logo-r2.png" alt="HitTrax" />
           <div class="ht-sep"></div>
           <div class="ht-live"><span class="dot"></span>Live in the Cage</div>
         </div>
