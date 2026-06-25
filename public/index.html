@@ -1,778 +1,1339 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>What will my Chattanooga property taxes be? | Joe Leffew Properties</title>
-  <meta name="description" content="Hamilton County reappraises in 2029. See what your property taxes will jump to — based on what you actually paid for the home." />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Strike Zone Chattanooga — Baseball &amp; Softball Training in Hixson, TN</title>
+<meta name="description" content="Strike Zone Chattanooga is a premier baseball and softball training facility in Hixson, TN. Pro and collegiate coaching for youth hitting and pitching. Book a lane online." />
+<meta name="theme-color" content="#0a1a2f" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<!-- Open Graph / social -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Strike Zone Chattanooga — Where Young Players Get Serious" />
+<meta property="og:description" content="Pro-level baseball &amp; softball training in Hixson, TN. Reserve a hitting or pitching lane online." />
+<meta property="og:site_name" content="Strike Zone Chattanooga" />
 
-  <style>
-    :root {
-      --steel:        #3B7EA6;
-      --steel-light:  #6AAFD4;
-      --steel-dark:   #2A5F7A;
-      --gold:         #BA7517;
-      --gold-light:   #D4983F;
-      --ink:          #1a2530;
-      --gray-text:    #5A5A6A;
-      --gray-soft:    #8a93a0;
-      --gray-line:    #e4e7ec;
-      --paper:        #fafaf7;
-      --paper-warm:   #f5f1e8;
-      --white:        #ffffff;
-      --red:          #b3331f;
-    }
+<!-- Favicon (inline SVG baseball) -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%230a1a2f' stroke='%23e9e0cf' stroke-width='1.5'/%3E%3Cpath d='M16 2a14 14 0 0 0-7 26' fill='none' stroke='%23c8483a' stroke-width='1.4' stroke-dasharray='2 2'/%3E%3Cpath d='M16 2a14 14 0 0 1 7 26' fill='none' stroke='%23c8483a' stroke-width='1.4' stroke-dasharray='2 2'/%3E%3C/svg%3E" />
 
-    *, *::before, *::after { box-sizing: border-box; }
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: var(--paper);
-      color: var(--ink);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      font-size: 16px;
-      line-height: 1.55;
-      -webkit-font-smoothing: antialiased;
-    }
+<style>
+  :root{
+    --navy-900:#06101f;
+    --navy-800:#0a1a2f;
+    --navy-700:#0d2342;
+    --navy-600:#12365f;
+    --steel:#5b7fb0;
+    --steel-light:#8fb0d6;
+    --steel-bright:#a9c8ef;
+    --cream:#efe7d6;
+    --cream-dim:#cfc6b6;
+    --lace:#c8483a;
+    --lace-bright:#e85d4a;
+    --line:rgba(143,176,214,0.18);
+    --line-strong:rgba(143,176,214,0.32);
+    --white:#ffffff;
+  }
 
-    .wrap {
-      max-width: 880px;
-      margin: 0 auto;
-      padding: 56px 28px 80px;
-    }
+  *,*::before,*::after{box-sizing:border-box;}
 
-    /* ─── Header ─────────────────────────────────────────────────────── */
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-family: 'Fraunces', Georgia, serif;
-      font-weight: 600;
-      font-size: 14px;
-      letter-spacing: 0.02em;
-      color: var(--steel-dark);
-      text-transform: uppercase;
-      margin-bottom: 40px;
-    }
-    .brand::before {
-      content: '';
-      width: 28px;
-      height: 1px;
-      background: var(--gold);
-    }
+  html{scroll-behavior:smooth;}
 
-    h1 {
-      font-family: 'Fraunces', Georgia, serif;
-      font-weight: 600;
-      font-size: clamp(34px, 5vw, 52px);
-      line-height: 1.05;
-      letter-spacing: -0.02em;
-      margin: 0 0 18px;
-      color: var(--ink);
-    }
-    h1 em {
-      font-style: italic;
-      color: var(--gold);
-      font-weight: 500;
-    }
+  body{
+    margin:0;
+    background:var(--navy-800);
+    color:var(--cream);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    font-size:17px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
 
-    .lede {
-      font-size: 18px;
-      color: var(--gray-text);
-      max-width: 640px;
-      margin: 0 0 44px;
-    }
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
 
-    /* ─── Search form ────────────────────────────────────────────────── */
-    .search {
-      display: flex;
-      gap: 0;
-      border: 1px solid var(--gray-line);
-      border-radius: 4px;
-      background: var(--white);
-      box-shadow: 0 1px 2px rgba(15,32,53,0.04);
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    .search:focus-within {
-      border-color: var(--steel);
-      box-shadow: 0 0 0 3px rgba(59,126,166,0.12);
-    }
-    .search input {
-      flex: 1;
-      border: none;
-      background: transparent;
-      padding: 18px 20px;
-      font-family: inherit;
-      font-size: 17px;
-      color: var(--ink);
-      outline: none;
-      min-width: 0;
-    }
-    .search input::placeholder { color: var(--gray-soft); }
-    .search button {
-      border: none;
-      background: var(--steel-dark);
-      color: var(--white);
-      padding: 0 28px;
-      font-family: inherit;
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      cursor: pointer;
-      transition: background 0.15s;
-      border-radius: 0 4px 4px 0;
-    }
-    .search button:hover:not(:disabled) { background: var(--steel); }
-    .search button:disabled { background: var(--gray-soft); cursor: wait; }
+  ::selection{background:var(--lace);color:var(--white);}
 
-    .search-hint {
-      margin-top: 10px;
-      font-size: 13px;
-      color: var(--gray-soft);
-    }
+  .container{
+    width:100%;
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 28px;
+  }
 
-    /* ─── States: loading / error ────────────────────────────────────── */
-    .state {
-      margin-top: 36px;
-      padding: 18px 20px;
-      border-radius: 4px;
-      font-size: 15px;
-    }
-    .state.error {
-      background: #fdf2f0;
-      border-left: 3px solid var(--red);
-      color: #6e1f10;
-    }
-    .state.loading {
-      background: var(--white);
-      border-left: 3px solid var(--steel);
-      color: var(--gray-text);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .spinner {
-      width: 14px; height: 14px;
-      border: 2px solid var(--gray-line);
-      border-top-color: var(--steel);
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
+  /* ── Type helpers ──────────────────────────────── */
+  .display{
+    font-family:'Anton',Impact,sans-serif;
+    font-weight:400;
+    text-transform:uppercase;
+    letter-spacing:0.01em;
+    line-height:0.95;
+  }
+  .eyebrow{
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:0.28em;
+    font-size:14px;
+    color:var(--steel-light);
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+  }
+  .eyebrow::before{
+    content:'';
+    width:30px;height:2px;background:var(--lace);
+    display:inline-block;
+  }
+  .eyebrow.center::before{display:none;}
 
-    /* ─── Results ────────────────────────────────────────────────────── */
-    .results { margin-top: 56px; display: none; }
-    .results.show { display: block; animation: fadeUp 0.5s ease-out; }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(12px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+  /* ── Buttons ───────────────────────────────────── */
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:700;
+    font-size:18px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    padding:15px 30px;
+    border-radius:4px;
+    cursor:pointer;
+    border:2px solid transparent;
+    transition:transform .15s ease, box-shadow .2s ease, background .2s ease, color .2s ease;
+    white-space:nowrap;
+  }
+  .btn-primary{
+    background:var(--lace);
+    color:var(--white);
+    box-shadow:0 8px 24px rgba(200,72,58,0.32);
+  }
+  .btn-primary:hover{
+    background:var(--lace-bright);
+    transform:translateY(-2px);
+    box-shadow:0 12px 30px rgba(200,72,58,0.45);
+  }
+  .btn-ghost{
+    background:transparent;
+    color:var(--cream);
+    border-color:var(--line-strong);
+  }
+  .btn-ghost:hover{
+    border-color:var(--steel-light);
+    background:rgba(143,176,214,0.08);
+    transform:translateY(-2px);
+  }
+  .btn svg{width:18px;height:18px;}
 
-    .parcel-header {
-      padding-bottom: 24px;
-      border-bottom: 1px solid var(--gray-line);
-      margin-bottom: 36px;
-    }
-    .parcel-header .addr {
-      font-family: 'Fraunces', Georgia, serif;
-      font-size: 24px;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      color: var(--ink);
-      margin: 0 0 6px;
-    }
-    .parcel-header .meta {
-      font-size: 13px;
-      color: var(--gray-soft);
-      letter-spacing: 0.02em;
-    }
-    .parcel-header .meta span + span::before {
-      content: '·';
-      margin: 0 8px;
-      color: var(--gray-line);
-    }
+  /* ── Stitch divider ────────────────────────────── */
+  .stitch{
+    height:2px;
+    width:100%;
+    background-image:repeating-linear-gradient(90deg,var(--lace) 0 14px,transparent 14px 26px);
+    opacity:.5;
+  }
 
-    /* ─── The three numbers — THE MOMENT ─────────────────────────────── */
-    .moment {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0;
-      background: var(--white);
-      border: 1px solid var(--gray-line);
-      border-radius: 6px;
-      overflow: hidden;
-      margin-bottom: 36px;
-    }
-    .num {
-      padding: 28px 28px 32px;
-      position: relative;
-    }
-    .num.current { border-right: 1px solid var(--gray-line); }
-    .num.projected { background: linear-gradient(180deg, #fdf6ea 0%, #faedd6 100%); }
-    .num .label {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--gray-soft);
-      margin-bottom: 14px;
-    }
-    .num.projected .label { color: var(--gold); }
-    .num .big {
-      font-family: 'Fraunces', Georgia, serif;
-      font-size: clamp(36px, 5.5vw, 56px);
-      font-weight: 600;
-      letter-spacing: -0.025em;
-      line-height: 1;
-      color: var(--ink);
-    }
-    .num .big sup {
-      font-size: 0.42em;
-      font-weight: 500;
-      vertical-align: top;
-      color: var(--gray-soft);
-      margin-right: 2px;
-      top: 0.7em;
-      position: relative;
-    }
-    .num .sub {
-      margin-top: 12px;
-      font-size: 13px;
-      color: var(--gray-text);
-    }
+  /* ── NAV ───────────────────────────────────────── */
+  header.nav{
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:100;
+    transition:background .3s ease, box-shadow .3s ease, padding .3s ease;
+    padding:18px 0;
+  }
+  header.nav.scrolled{
+    background:rgba(6,16,31,0.92);
+    backdrop-filter:blur(10px);
+    box-shadow:0 1px 0 var(--line);
+    padding:12px 0;
+  }
+  .nav-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:24px;
+  }
+  .logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-family:'Anton',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.02em;
+    font-size:21px;
+    color:var(--cream);
+    line-height:1;
+  }
+  .logo .mark{width:38px;height:38px;flex:none;}
+  .logo small{
+    display:block;
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:11px;
+    letter-spacing:0.34em;
+    color:var(--steel-light);
+    font-weight:600;
+  }
+  .nav-links{
+    display:flex;
+    align-items:center;
+    gap:30px;
+  }
+  .nav-links a.link{
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:600;
+    font-size:16px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--cream-dim);
+    transition:color .2s;
+  }
+  .nav-links a.link:hover{color:var(--white);}
+  .nav-toggle{
+    display:none;
+    flex-direction:column;
+    gap:5px;
+    background:none;border:none;cursor:pointer;padding:8px;
+  }
+  .nav-toggle span{width:26px;height:2px;background:var(--cream);transition:.3s;}
 
-    .delta {
-      grid-column: 1 / -1;
-      background: var(--ink);
-      color: var(--white);
-      padding: 22px 28px;
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-    .delta .label {
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--steel-light);
-    }
-    .delta .amount {
-      font-family: 'Fraunces', Georgia, serif;
-      font-size: clamp(22px, 3.2vw, 32px);
-      font-weight: 500;
-      letter-spacing: -0.01em;
-    }
-    .delta .amount strong {
-      color: var(--gold-light);
-      font-weight: 700;
-    }
+  /* ── HERO ──────────────────────────────────────── */
+  .hero{
+    position:relative;
+    min-height:100svh;
+    display:flex;
+    align-items:center;
+    padding:140px 0 80px;
+    overflow:hidden;
+    background:
+      radial-gradient(120% 90% at 78% 8%, rgba(91,127,176,0.22) 0%, transparent 55%),
+      radial-gradient(90% 70% at 12% 95%, rgba(200,72,58,0.12) 0%, transparent 50%),
+      linear-gradient(180deg,var(--navy-900) 0%, var(--navy-800) 45%, var(--navy-700) 100%);
+  }
+  /* faint field-line backdrop */
+  .hero::before{
+    content:'';
+    position:absolute;inset:0;
+    background-image:
+      linear-gradient(transparent 0, transparent calc(100% - 1px), var(--line) 100%),
+      linear-gradient(90deg,transparent 0, transparent calc(100% - 1px), var(--line) 100%);
+    background-size:64px 64px;
+    -webkit-mask-image:radial-gradient(120% 100% at 70% 30%, #000 0%, transparent 70%);
+    mask-image:radial-gradient(120% 100% at 70% 30%, #000 0%, transparent 70%);
+    opacity:.5;
+    pointer-events:none;
+  }
+  .hero-grid{
+    position:relative;
+    z-index:2;
+    display:grid;
+    grid-template-columns:1.15fr 0.85fr;
+    gap:48px;
+    align-items:center;
+    width:100%;
+  }
+  .hero-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:600;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    font-size:13px;
+    color:var(--steel-bright);
+    background:rgba(91,127,176,0.12);
+    border:1px solid var(--line-strong);
+    padding:8px 16px;
+    border-radius:100px;
+    margin-bottom:26px;
+  }
+  .hero-badge .dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--lace-bright);
+    box-shadow:0 0 0 0 rgba(232,93,74,0.7);
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(232,93,74,0.6);}
+    70%{box-shadow:0 0 0 10px rgba(232,93,74,0);}
+    100%{box-shadow:0 0 0 0 rgba(232,93,74,0);}
+  }
+  .hero h1{
+    font-family:'Anton',sans-serif;
+    text-transform:uppercase;
+    font-weight:400;
+    font-size:clamp(46px,8vw,104px);
+    line-height:0.9;
+    letter-spacing:0.005em;
+    margin:0 0 22px;
+    color:var(--white);
+  }
+  .hero h1 .accent{
+    color:transparent;
+    -webkit-text-stroke:2px var(--steel-light);
+    text-stroke:2px var(--steel-light);
+  }
+  .hero h1 .lace-word{color:var(--lace-bright);}
+  .hero p.lede{
+    font-size:clamp(17px,2vw,20px);
+    color:var(--cream-dim);
+    max-width:540px;
+    margin:0 0 36px;
+  }
+  .hero-cta{display:flex;gap:16px;flex-wrap:wrap;align-items:center;}
+  .hero-note{
+    margin-top:22px;
+    font-family:'Barlow Condensed',sans-serif;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    font-size:14px;
+    color:var(--steel-light);
+  }
 
-    /* ─── Slider ─────────────────────────────────────────────────────── */
-    .slider-block {
-      background: var(--white);
-      border: 1px solid var(--gray-line);
-      border-radius: 6px;
-      padding: 26px 28px;
-      margin-bottom: 36px;
-    }
-    .slider-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 14px;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .slider-head .lbl {
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: var(--gray-text);
-    }
-    .slider-head .val {
-      font-family: 'Fraunces', Georgia, serif;
-      font-size: 22px;
-      font-weight: 600;
-      color: var(--steel-dark);
-      letter-spacing: -0.01em;
-    }
+  /* Hero emblem (diamond) */
+  .emblem{
+    position:relative;
+    aspect-ratio:1;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .emblem svg{width:100%;height:auto;filter:drop-shadow(0 24px 60px rgba(0,0,0,0.5));}
+  .emblem .spin-ring{
+    position:absolute;
+    inset:-2%;
+    border-radius:50%;
+    border:1px dashed var(--line-strong);
+    animation:rotate 40s linear infinite;
+  }
+  @keyframes rotate{to{transform:rotate(360deg);}}
 
-    input[type="range"] {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 100%;
-      height: 4px;
-      background: var(--gray-line);
-      border-radius: 2px;
-      outline: none;
-      margin: 8px 0 4px;
-    }
-    input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 22px; height: 22px;
-      border-radius: 50%;
-      background: var(--gold);
-      cursor: grab;
-      border: 3px solid var(--white);
-      box-shadow: 0 0 0 1px var(--gold), 0 2px 6px rgba(186,117,23,0.3);
-      transition: transform 0.1s;
-    }
-    input[type="range"]::-webkit-slider-thumb:active { transform: scale(1.1); cursor: grabbing; }
-    input[type="range"]::-moz-range-thumb {
-      width: 22px; height: 22px;
-      border-radius: 50%;
-      background: var(--gold);
-      cursor: grab;
-      border: 3px solid var(--white);
-      box-shadow: 0 0 0 1px var(--gold), 0 2px 6px rgba(186,117,23,0.3);
-    }
-    .slider-bounds {
-      display: flex;
-      justify-content: space-between;
-      font-size: 11px;
-      color: var(--gray-soft);
-      letter-spacing: 0.04em;
-      margin-top: 6px;
-    }
+  .scroll-cue{
+    position:absolute;
+    bottom:26px;left:50%;
+    transform:translateX(-50%);
+    z-index:3;
+    font-family:'Barlow Condensed',sans-serif;
+    letter-spacing:0.3em;
+    text-transform:uppercase;
+    font-size:11px;
+    color:var(--steel-light);
+    display:flex;flex-direction:column;align-items:center;gap:8px;
+    opacity:.8;
+  }
+  .scroll-cue .bar{width:1px;height:34px;background:linear-gradient(var(--steel-light),transparent);animation:cue 1.8s ease-in-out infinite;}
+  @keyframes cue{0%,100%{transform:scaleY(.4);opacity:.4;}50%{transform:scaleY(1);opacity:1;}}
 
-    /* ─── Detail strip ───────────────────────────────────────────────── */
-    .detail {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 24px;
-      padding: 24px 28px;
-      background: var(--white);
-      border: 1px solid var(--gray-line);
-      border-radius: 6px;
-      margin-bottom: 24px;
-    }
-    .detail .item .k {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--gray-soft);
-      margin-bottom: 4px;
-    }
-    .detail .item .v {
-      font-family: 'Fraunces', Georgia, serif;
-      font-size: 17px;
-      font-weight: 500;
-      color: var(--ink);
-    }
+  /* ── Marquee strip ─────────────────────────────── */
+  .marquee{
+    background:var(--lace);
+    color:var(--white);
+    padding:14px 0;
+    overflow:hidden;
+    border-top:1px solid rgba(255,255,255,0.15);
+    border-bottom:1px solid rgba(0,0,0,0.2);
+  }
+  .marquee-track{
+    display:flex;
+    gap:48px;
+    white-space:nowrap;
+    width:max-content;
+    animation:marq 28s linear infinite;
+    font-family:'Anton',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    font-size:18px;
+  }
+  .marquee-track span{display:inline-flex;align-items:center;gap:48px;}
+  .marquee-track span::after{content:'●';color:rgba(255,255,255,0.6);font-size:10px;}
+  @keyframes marq{to{transform:translateX(-50%);}}
 
-    /* ─── Disclaimer + footer ────────────────────────────────────────── */
-    .disclaimer {
-      font-size: 12px;
-      line-height: 1.65;
-      color: var(--gray-soft);
-      padding: 18px 0;
-      border-top: 1px solid var(--gray-line);
-    }
-    .disclaimer a { color: var(--steel-dark); text-decoration: underline; text-underline-offset: 2px; }
+  /* ── Section base ──────────────────────────────── */
+  section.block{padding:104px 0;position:relative;}
+  .section-head{max-width:720px;margin:0 0 56px;}
+  .section-head.center{margin-left:auto;margin-right:auto;text-align:center;}
+  .section-head h2{
+    font-family:'Anton',sans-serif;
+    text-transform:uppercase;
+    font-weight:400;
+    font-size:clamp(34px,5vw,60px);
+    line-height:0.98;
+    margin:18px 0 18px;
+    color:var(--white);
+  }
+  .section-head p{
+    font-size:18px;
+    color:var(--cream-dim);
+    margin:0;
+  }
+  .lace-text{color:var(--lace-bright);}
 
-    .why-section {
-      margin-top: 72px;
-      padding-top: 40px;
-      border-top: 1px solid var(--gray-line);
-    }
-    .why-section h2 {
-      font-family: 'Fraunces', Georgia, serif;
-      font-weight: 500;
-      font-size: 24px;
-      letter-spacing: -0.01em;
-      color: var(--ink);
-      margin: 0 0 14px;
-    }
-    .why-section p {
-      color: var(--gray-text);
-      font-size: 15px;
-      max-width: 640px;
-      margin: 0 0 14px;
-    }
+  /* ── Stats ─────────────────────────────────────── */
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:0;
+    border:1px solid var(--line);
+    border-radius:10px;
+    overflow:hidden;
+    background:rgba(13,35,66,0.4);
+  }
+  .stat{
+    padding:34px 26px;
+    border-right:1px solid var(--line);
+  }
+  .stat:last-child{border-right:none;}
+  .stat .n{
+    font-family:'Anton',sans-serif;
+    font-size:clamp(36px,4.5vw,52px);
+    color:var(--white);
+    line-height:1;
+  }
+  .stat .n .lace-text{color:var(--lace-bright);}
+  .stat .l{
+    font-family:'Barlow Condensed',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    font-size:14px;
+    color:var(--steel-light);
+    margin-top:10px;
+  }
 
-    .cta {
-      margin-top: 28px;
-      display: inline-block;
-      background: var(--steel-dark);
-      color: var(--white);
-      padding: 14px 26px;
-      font-weight: 600;
-      font-size: 14px;
-      letter-spacing: 0.04em;
-      text-decoration: none;
-      border-radius: 4px;
-      transition: background 0.15s;
-    }
-    .cta:hover { background: var(--steel); }
+  /* ── Training cards ────────────────────────────── */
+  .cards{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:24px;
+  }
+  .card{
+    position:relative;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:38px 34px 34px;
+    background:linear-gradient(180deg,rgba(18,54,95,0.35),rgba(10,26,47,0.35));
+    overflow:hidden;
+    transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+  }
+  .card:hover{
+    transform:translateY(-4px);
+    border-color:var(--line-strong);
+    box-shadow:0 18px 40px rgba(0,0,0,0.35);
+  }
+  .card .icon{
+    width:54px;height:54px;
+    border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(91,127,176,0.14);
+    border:1px solid var(--line-strong);
+    margin-bottom:22px;
+  }
+  .card .icon svg{width:28px;height:28px;stroke:var(--steel-bright);}
+  .card h3{
+    font-family:'Barlow Condensed',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    font-weight:700;
+    font-size:26px;
+    margin:0 0 12px;
+    color:var(--white);
+  }
+  .card p{margin:0 0 18px;color:var(--cream-dim);font-size:16px;}
+  .card .tags{display:flex;flex-wrap:wrap;gap:8px;}
+  .tag{
+    font-family:'Barlow Condensed',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    font-size:13px;
+    font-weight:600;
+    color:var(--steel-light);
+    border:1px solid var(--line-strong);
+    border-radius:100px;
+    padding:5px 12px;
+  }
+  .card .num-bg{
+    position:absolute;
+    right:18px;top:8px;
+    font-family:'Anton',sans-serif;
+    font-size:120px;
+    color:rgba(143,176,214,0.05);
+    line-height:1;
+    pointer-events:none;
+  }
 
-    .signature {
-      margin-top: 56px;
-      font-size: 12px;
-      color: var(--gray-soft);
-      letter-spacing: 0.04em;
-    }
-    .signature a { color: var(--steel-dark); text-decoration: none; }
+  /* ── Coaches ───────────────────────────────────── */
+  .coaches{display:grid;grid-template-columns:repeat(2,1fr);gap:30px;}
+  .coach{
+    border:1px solid var(--line);
+    border-radius:14px;
+    overflow:hidden;
+    background:rgba(13,35,66,0.4);
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .coach:hover{transform:translateY(-4px);box-shadow:0 20px 44px rgba(0,0,0,0.4);}
+  .coach-photo{
+    position:relative;
+    aspect-ratio:4/3;
+    background:
+      radial-gradient(120% 120% at 50% 0%, rgba(91,127,176,0.3), transparent 60%),
+      linear-gradient(160deg,var(--navy-600),var(--navy-800));
+    display:flex;align-items:center;justify-content:center;
+    overflow:hidden;
+  }
+  .coach-photo svg.silhouette{width:62%;height:auto;opacity:.5;}
+  .ph-tag{
+    position:absolute;
+    top:14px;left:14px;
+    font-family:'Barlow Condensed',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.16em;
+    font-size:11px;
+    font-weight:600;
+    color:var(--cream-dim);
+    background:rgba(6,16,31,0.7);
+    border:1px solid var(--line-strong);
+    border-radius:100px;
+    padding:5px 12px;
+    backdrop-filter:blur(4px);
+  }
+  .coach-badge{
+    position:absolute;bottom:14px;right:14px;
+    font-family:'Barlow Condensed',sans-serif;
+    text-transform:uppercase;letter-spacing:0.08em;font-weight:700;
+    font-size:13px;color:var(--white);
+    background:var(--lace);padding:6px 14px;border-radius:4px;
+  }
+  .coach-body{padding:28px 30px 32px;}
+  .coach-body .role{
+    font-family:'Barlow Condensed',sans-serif;
+    text-transform:uppercase;letter-spacing:0.16em;font-weight:600;
+    font-size:13px;color:var(--steel-light);
+  }
+  .coach-body h3{
+    font-family:'Anton',sans-serif;text-transform:uppercase;font-weight:400;
+    font-size:30px;margin:6px 0 14px;color:var(--white);
+  }
+  .coach-body p{margin:0;color:var(--cream-dim);font-size:16px;}
 
-    /* ─── Candidate list (multiple matches) ──────────────────────────── */
-    .candidates {
-      background: var(--white);
-      border: 1px solid var(--gray-line);
-      border-radius: 6px;
-      padding: 8px;
-      margin-top: 36px;
-    }
-    .candidates .head {
-      padding: 10px 16px;
-      font-size: 13px;
-      color: var(--gray-text);
-    }
-    .candidate-btn {
-      display: block;
-      width: 100%;
-      text-align: left;
-      padding: 12px 16px;
-      border: none;
-      background: transparent;
-      cursor: pointer;
-      border-radius: 4px;
-      font-family: inherit;
-      font-size: 14px;
-      color: var(--ink);
-      transition: background 0.1s;
-    }
-    .candidate-btn:hover { background: var(--paper-warm); }
-    .candidate-btn .addr-line { font-weight: 600; }
-    .candidate-btn .owner-line { font-size: 12px; color: var(--gray-soft); margin-top: 2px; }
+  /* ── Booking / app section ─────────────────────── */
+  .booking{
+    position:relative;
+    background:
+      radial-gradient(80% 120% at 90% 10%, rgba(91,127,176,0.18), transparent 55%),
+      linear-gradient(180deg,var(--navy-700),var(--navy-900));
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .booking-grid{
+    display:grid;
+    grid-template-columns:1.05fr 0.95fr;
+    gap:56px;
+    align-items:center;
+  }
+  .steps{display:grid;gap:18px;margin:34px 0 0;}
+  .step{
+    display:flex;gap:18px;align-items:flex-start;
+    padding:20px 22px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    background:rgba(10,26,47,0.5);
+    transition:border-color .2s, transform .2s;
+  }
+  .step:hover{border-color:var(--line-strong);transform:translateX(4px);}
+  .step .s-num{
+    font-family:'Anton',sans-serif;
+    font-size:24px;color:var(--lace-bright);line-height:1;flex:none;width:34px;
+  }
+  .step h4{
+    font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;
+    letter-spacing:0.05em;font-weight:700;font-size:19px;margin:0 0 4px;color:var(--white);
+  }
+  .step p{margin:0;font-size:15px;color:var(--cream-dim);}
 
-    @media (max-width: 540px) {
-      .moment { grid-template-columns: 1fr; }
-      .num.current { border-right: none; border-bottom: 1px solid var(--gray-line); }
-      .search { flex-direction: column; }
-      .search button { padding: 14px; border-radius: 0 0 4px 4px; }
+  /* Phone mock */
+  .phone{
+    position:relative;
+    margin:0 auto;
+    width:min(300px,80%);
+    aspect-ratio:9/18.5;
+    border-radius:38px;
+    background:linear-gradient(160deg,#1c2c42,#0a1a2f);
+    border:2px solid var(--line-strong);
+    box-shadow:0 30px 70px rgba(0,0,0,0.55), inset 0 0 0 8px rgba(0,0,0,0.25);
+    padding:14px;
+  }
+  .phone::before{
+    content:'';position:absolute;top:14px;left:50%;transform:translateX(-50%);
+    width:42%;height:22px;background:#06101f;border-radius:0 0 14px 14px;z-index:3;
+  }
+  .phone-screen{
+    height:100%;border-radius:28px;overflow:hidden;
+    background:linear-gradient(180deg,var(--navy-800),var(--navy-700));
+    display:flex;flex-direction:column;
+  }
+  .ps-top{padding:30px 18px 14px;text-align:center;border-bottom:1px solid var(--line);}
+  .ps-top .ps-logo{font-family:'Anton',sans-serif;font-size:18px;color:var(--white);text-transform:uppercase;letter-spacing:0.04em;}
+  .ps-top .ps-sub{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:0.2em;color:var(--steel-light);text-transform:uppercase;margin-top:2px;}
+  .ps-body{padding:16px 16px;flex:1;display:flex;flex-direction:column;gap:10px;}
+  .ps-day{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.14em;font-size:12px;color:var(--steel-light);}
+  .ps-slot{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 14px;border-radius:9px;border:1px solid var(--line);
+    background:rgba(91,127,176,0.06);font-size:13px;
+  }
+  .ps-slot.taken{opacity:.4;}
+  .ps-slot.open{border-color:rgba(143,176,214,0.4);}
+  .ps-slot .t{font-weight:600;color:var(--cream);}
+  .ps-slot .badge{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;font-size:10px;letter-spacing:0.12em;padding:3px 8px;border-radius:100px;}
+  .ps-slot.open .badge{background:rgba(91,127,176,0.25);color:var(--steel-bright);}
+  .ps-slot.taken .badge{background:rgba(255,255,255,0.08);color:var(--cream-dim);}
+  .ps-slot.pick{background:var(--lace);border-color:var(--lace);}
+  .ps-slot.pick .t,.ps-slot.pick .badge{color:#fff;}
+  .ps-slot.pick .badge{background:rgba(0,0,0,0.2);}
+  .ps-cta{margin:4px 16px 18px;text-align:center;background:var(--lace);color:#fff;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;padding:12px;border-radius:9px;font-size:14px;}
+
+  /* ── Lanes / facility ──────────────────────────── */
+  .lanes{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .lane-photo{
+    position:relative;
+    aspect-ratio:4/5;
+    border-radius:12px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    background:linear-gradient(160deg,var(--navy-600),var(--navy-900));
+    display:flex;align-items:flex-end;
+  }
+  .lane-photo .net{
+    position:absolute;inset:0;
+    background-image:linear-gradient(rgba(143,176,214,0.10) 1px,transparent 1px),linear-gradient(90deg,rgba(143,176,214,0.10) 1px,transparent 1px);
+    background-size:18px 18px;
+    -webkit-mask-image:linear-gradient(180deg,#000,transparent 75%);
+    mask-image:linear-gradient(180deg,#000,transparent 75%);
+  }
+  .lane-photo .caption{
+    position:relative;z-index:2;padding:22px;width:100%;
+    background:linear-gradient(0deg,rgba(6,16,31,0.85),transparent);
+  }
+  .lane-photo .caption .ph-tag{position:static;display:inline-block;margin-bottom:10px;}
+  .lane-photo h4{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.04em;font-weight:700;font-size:21px;margin:0;color:var(--white);}
+  .lane-photo p{margin:4px 0 0;font-size:14px;color:var(--cream-dim);}
+
+  /* ── Pricing ───────────────────────────────────── */
+  .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch;}
+  .price-card{
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:34px 30px 34px;
+    background:rgba(13,35,66,0.4);
+    display:flex;flex-direction:column;
+    position:relative;
+    transition:transform .25s, border-color .25s;
+  }
+  .price-card:hover{transform:translateY(-4px);}
+  .price-card.featured{
+    border-color:var(--lace);
+    background:linear-gradient(180deg,rgba(200,72,58,0.12),rgba(13,35,66,0.5));
+    box-shadow:0 20px 50px rgba(200,72,58,0.16);
+  }
+  .price-card .flag{
+    position:absolute;top:-12px;left:30px;
+    font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.12em;
+    font-weight:700;font-size:12px;color:#fff;background:var(--lace);padding:5px 14px;border-radius:100px;
+  }
+  .price-card .plan{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.14em;font-size:15px;color:var(--steel-light);font-weight:600;}
+  .price-card .amt{font-family:'Anton',sans-serif;font-size:50px;color:var(--white);line-height:1;margin:14px 0 4px;}
+  .price-card .amt span{font-family:'Inter',sans-serif;font-size:16px;color:var(--cream-dim);font-weight:500;}
+  .price-card .ph-note{font-size:13px;color:var(--steel-light);font-style:italic;margin-bottom:20px;}
+  .price-card ul{list-style:none;padding:0;margin:0 0 26px;display:grid;gap:12px;}
+  .price-card li{display:flex;gap:11px;font-size:15px;color:var(--cream-dim);}
+  .price-card li svg{width:18px;height:18px;flex:none;stroke:var(--steel-bright);margin-top:3px;}
+  .price-card .btn{margin-top:auto;justify-content:center;}
+
+  /* ── Testimonials ──────────────────────────────── */
+  .quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .quote{
+    border:1px solid var(--line);border-radius:12px;padding:30px 28px;
+    background:rgba(13,35,66,0.35);
+  }
+  .quote .stars{color:var(--lace-bright);letter-spacing:3px;font-size:15px;margin-bottom:14px;}
+  .quote p{margin:0 0 20px;color:var(--cream);font-size:16px;font-style:italic;}
+  .quote .who{display:flex;align-items:center;gap:12px;}
+  .quote .av{width:40px;height:40px;border-radius:50%;background:linear-gradient(160deg,var(--steel),var(--navy-600));flex:none;display:flex;align-items:center;justify-content:center;font-family:'Anton',sans-serif;color:#fff;font-size:16px;}
+  .quote .who .nm{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.06em;font-weight:700;font-size:15px;color:var(--white);}
+  .quote .who .mt{font-size:13px;color:var(--steel-light);}
+
+  /* ── FAQ ───────────────────────────────────────── */
+  .faq{max-width:840px;margin:0 auto;}
+  .faq-item{border-bottom:1px solid var(--line);}
+  .faq-q{
+    width:100%;text-align:left;background:none;border:none;cursor:pointer;
+    padding:24px 0;display:flex;justify-content:space-between;gap:20px;align-items:center;
+    font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.03em;
+    font-weight:700;font-size:21px;color:var(--cream);
+  }
+  .faq-q .pm{flex:none;width:24px;height:24px;position:relative;}
+  .faq-q .pm::before,.faq-q .pm::after{content:'';position:absolute;background:var(--lace-bright);transition:.3s;}
+  .faq-q .pm::before{top:11px;left:2px;right:2px;height:2px;}
+  .faq-q .pm::after{left:11px;top:2px;bottom:2px;width:2px;}
+  .faq-item.open .pm::after{transform:scaleY(0);}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease;}
+  .faq-a p{margin:0 0 24px;color:var(--cream-dim);font-size:16px;}
+
+  /* ── Location / contact ────────────────────────── */
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;}
+  .info-row{display:flex;gap:16px;padding:22px 0;border-bottom:1px solid var(--line);}
+  .info-row .ic{width:44px;height:44px;flex:none;border-radius:10px;border:1px solid var(--line-strong);display:flex;align-items:center;justify-content:center;background:rgba(91,127,176,0.1);}
+  .info-row .ic svg{width:22px;height:22px;stroke:var(--steel-bright);}
+  .info-row .k{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.14em;font-size:12px;color:var(--steel-light);}
+  .info-row .v{font-size:17px;color:var(--white);font-weight:500;margin-top:2px;}
+  .info-row .v small{display:block;color:var(--cream-dim);font-weight:400;font-size:14px;}
+  .map-card{
+    border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    background:rgba(13,35,66,0.4);
+  }
+  .map-ph{
+    aspect-ratio:16/12;position:relative;
+    background:
+      radial-gradient(60% 60% at 50% 45%, rgba(91,127,176,0.25),transparent 70%),
+      linear-gradient(160deg,var(--navy-600),var(--navy-900));
+    display:flex;align-items:center;justify-content:center;
+  }
+  .map-ph .roads{position:absolute;inset:0;background-image:linear-gradient(115deg,transparent 48%,var(--line) 49%,var(--line) 50%,transparent 51%),linear-gradient(35deg,transparent 62%,var(--line) 63%,transparent 64%);opacity:.8;}
+  .map-ph .pin{position:relative;z-index:2;text-align:center;}
+  .map-ph .pin svg{width:44px;height:44px;fill:var(--lace-bright);filter:drop-shadow(0 6px 12px rgba(0,0,0,0.5));}
+  .map-ph .pin .lbl{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.14em;font-size:13px;color:var(--cream);margin-top:8px;}
+  .map-foot{padding:20px 24px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;}
+  .map-foot .addr{font-family:'Barlow Condensed',sans-serif;letter-spacing:0.04em;font-size:16px;color:var(--cream);}
+
+  /* ── Final CTA ─────────────────────────────────── */
+  .final{
+    text-align:center;
+    background:
+      radial-gradient(70% 120% at 50% 0%, rgba(200,72,58,0.18), transparent 60%),
+      linear-gradient(180deg,var(--navy-800),var(--navy-900));
+    padding:120px 0;
+    position:relative;
+    overflow:hidden;
+  }
+  .final h2{
+    font-family:'Anton',sans-serif;text-transform:uppercase;font-weight:400;
+    font-size:clamp(40px,7vw,84px);line-height:0.92;color:var(--white);margin:0 auto 22px;max-width:14ch;
+  }
+  .final p{font-size:19px;color:var(--cream-dim);max-width:560px;margin:0 auto 36px;}
+
+  /* ── Footer ────────────────────────────────────── */
+  footer.site{padding:64px 0 40px;border-top:1px solid var(--line);background:var(--navy-900);}
+  .foot-grid{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;}
+  .foot-brand{max-width:320px;}
+  .foot-brand p{color:var(--cream-dim);font-size:15px;margin:16px 0 20px;}
+  .socials{display:flex;gap:12px;}
+  .socials a{width:42px;height:42px;border-radius:10px;border:1px solid var(--line-strong);display:flex;align-items:center;justify-content:center;transition:.2s;}
+  .socials a:hover{background:rgba(91,127,176,0.12);transform:translateY(-2px);}
+  .socials svg{width:20px;height:20px;fill:var(--cream);}
+  .foot-col h5{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.16em;font-size:13px;color:var(--steel-light);margin:0 0 16px;}
+  .foot-col a{display:block;color:var(--cream-dim);font-size:15px;margin-bottom:10px;transition:color .2s;}
+  .foot-col a:hover{color:var(--white);}
+  .foot-bottom{margin-top:48px;padding-top:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--steel-light);font-family:'Barlow Condensed',sans-serif;letter-spacing:0.06em;text-transform:uppercase;}
+
+  /* ── Reveal animation ──────────────────────────── */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1;transform:none;}
+  .reveal.d1{transition-delay:.08s;}
+  .reveal.d2{transition-delay:.16s;}
+  .reveal.d3{transition-delay:.24s;}
+
+  /* ── Sticky mobile book button ─────────────────── */
+  .sticky-book{
+    position:fixed;bottom:0;left:0;right:0;z-index:90;
+    display:none;
+    padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+    background:rgba(6,16,31,0.95);
+    backdrop-filter:blur(8px);
+    border-top:1px solid var(--line);
+  }
+  .sticky-book .btn{width:100%;justify-content:center;}
+
+  /* ── Responsive ────────────────────────────────── */
+  @media (max-width:980px){
+    .hero-grid{grid-template-columns:1fr;gap:40px;}
+    .emblem{max-width:380px;margin:0 auto;}
+    .booking-grid{grid-template-columns:1fr;gap:44px;}
+    .contact-grid{grid-template-columns:1fr;gap:32px;}
+    .stats{grid-template-columns:repeat(2,1fr);}
+    .stat:nth-child(2){border-right:none;}
+    .stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--line);}
+  }
+  @media (max-width:760px){
+    .nav-links{
+      position:fixed;inset:0 0 0 auto;width:min(80%,320px);
+      background:var(--navy-900);flex-direction:column;align-items:flex-start;
+      justify-content:flex-start;gap:8px;padding:100px 32px 32px;
+      transform:translateX(100%);transition:transform .3s ease;
+      border-left:1px solid var(--line);
     }
-  </style>
+    .nav-links.open{transform:none;}
+    .nav-links a.link{font-size:20px;padding:10px 0;}
+    .nav-links .btn{margin-top:16px;}
+    .nav-toggle{display:flex;z-index:101;}
+    .nav-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+    .nav-toggle.open span:nth-child(2){opacity:0;}
+    .nav-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+    .cards,.coaches,.lanes,.pricing,.quotes{grid-template-columns:1fr;}
+    .stats{grid-template-columns:1fr;}
+    .stat{border-right:none;border-bottom:1px solid var(--line);}
+    .stat:last-child{border-bottom:none;}
+    section.block{padding:76px 0;}
+    .sticky-book{display:block;}
+    body{padding-bottom:74px;}
+    .hero-cta .btn{flex:1;justify-content:center;}
+  }
+  @media (max-width:480px){
+    .container{padding:0 20px;}
+    .quotes .quote:nth-child(n+3){display:none;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;scroll-behavior:auto!important;}
+    .reveal{opacity:1;transform:none;}
+  }
+</style>
 </head>
 <body>
 
-  <main class="wrap">
+<!-- ════════ NAV ════════ -->
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="#top" class="logo" aria-label="Strike Zone Chattanooga home">
+      <svg class="mark" viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="32" cy="32" r="30" fill="#0a1a2f" stroke="#8fb0d6" stroke-width="1.6"/>
+        <path d="M32 6 A26 26 0 0 0 32 58" fill="none" stroke="#5b7fb0" stroke-width="2.4"/>
+        <path d="M32 6 A26 26 0 0 1 32 58" fill="none" stroke="#5b7fb0" stroke-width="2.4"/>
+        <polygon points="32,18 46,32 32,46 18,32" fill="none" stroke="#8fb0d6" stroke-width="2"/>
+        <circle cx="32" cy="32" r="3.4" fill="#c8483a"/>
+      </svg>
+      <span>Strike Zone<small>Chattanooga</small></span>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a class="link" href="#training">Training</a>
+      <a class="link" href="#coaches">Coaches</a>
+      <a class="link" href="#book">How It Works</a>
+      <a class="link" href="#pricing">Pricing</a>
+      <a class="link" href="#visit">Visit</a>
+      <a class="btn btn-primary" href="#book" data-book>Book a Lane</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
 
-    <div class="brand">Joe Leffew Properties</div>
-
-    <h1>What will your taxes <em>actually</em> be in 2029?</h1>
-
-    <p class="lede">
-      Hamilton County reappraises every four years — last in 2025, next in 2029. Buyers
-      paying today's prices are taxed on the old assessment until then. Type any
-      Chattanooga-area address to see what's coming.
-    </p>
-
-    <form class="search" id="search-form" autocomplete="off">
-      <input
-        type="text"
-        id="address-input"
-        placeholder="e.g. 1524 Green Pond Rd"
-        required
-      />
-      <button type="submit" id="submit-btn">Look up</button>
-    </form>
-    <div class="search-hint">Hamilton County addresses only · we look this up live from the county GIS</div>
-
-    <div id="loading" class="state loading" style="display:none;">
-      <div class="spinner"></div>
-      <span>Pulling parcel data from Hamilton County…</span>
+<!-- ════════ HERO ════════ -->
+<section class="hero" id="top">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <span class="hero-badge"><span class="dot"></span>Now Opening in Hixson, TN</span>
+      <h1>
+        Where young<br>
+        hitters &amp; <span class="lace-word">pitchers</span><br>
+        <span class="accent">get serious.</span>
+      </h1>
+      <p class="lede">
+        A premier indoor baseball &amp; softball training facility built for the next
+        generation of Chattanooga players. Pro and collegiate coaching, dedicated
+        lanes, and a booking app that puts the cage in your pocket.
+      </p>
+      <div class="hero-cta">
+        <a href="#book" class="btn btn-primary" data-book>
+          Reserve a Lane
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#training" class="btn btn-ghost">Explore Training</a>
+      </div>
+      <div class="hero-note">Baseball &amp; Softball · Ages 6–18 · Hitting · Pitching · Open Cages</div>
     </div>
 
-    <div id="error" class="state error" style="display:none;"></div>
+    <div class="emblem">
+      <div class="spin-ring"></div>
+      <svg viewBox="0 0 400 400" aria-hidden="true">
+        <defs>
+          <radialGradient id="g1" cx="50%" cy="35%" r="75%">
+            <stop offset="0%" stop-color="#163a64"/>
+            <stop offset="100%" stop-color="#081428"/>
+          </radialGradient>
+        </defs>
+        <circle cx="200" cy="200" r="190" fill="url(#g1)" stroke="#8fb0d6" stroke-width="2" opacity="0.95"/>
+        <!-- field fan -->
+        <path d="M200 300 L70 150 A180 180 0 0 1 330 150 Z" fill="none" stroke="#5b7fb0" stroke-width="3" opacity="0.85"/>
+        <!-- infield diamond -->
+        <polygon points="200,300 270,225 200,150 130,225" fill="#5b7fb0" opacity="0.28" stroke="#8fb0d6" stroke-width="3"/>
+        <!-- pitcher's mound -->
+        <circle cx="200" cy="232" r="11" fill="#a9c8ef"/>
+        <!-- home plate -->
+        <circle cx="200" cy="300" r="6" fill="#efe7d6"/>
+        <!-- baseball laces arc -->
+        <path d="M70 332 Q200 360 330 332" fill="none" stroke="#c8483a" stroke-width="3"/>
+        <g stroke="#c8483a" stroke-width="2.4" stroke-linecap="round">
+          <path d="M120 338 l-8 -12 M120 338 l8 -10"/>
+          <path d="M160 348 l-8 -12 M160 348 l8 -10"/>
+          <path d="M200 351 l-8 -12 M200 351 l8 -12"/>
+          <path d="M240 348 l-8 -10 M240 348 l8 -12"/>
+          <path d="M280 338 l-8 -10 M280 338 l8 -12"/>
+        </g>
+      </svg>
+    </div>
+  </div>
 
-    <div id="candidates" class="candidates" style="display:none;"></div>
+  <div class="scroll-cue"><span>Scroll</span><span class="bar"></span></div>
+</section>
 
-    <!-- ─── Results ─── -->
-    <section id="results" class="results">
+<!-- ════════ MARQUEE ════════ -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Hitting Mechanics</span><span>Pitching Velocity</span><span>Softball Specific</span><span>Pro Instruction</span><span>Book Online</span><span>Open Cage Time</span>
+    <span>Hitting Mechanics</span><span>Pitching Velocity</span><span>Softball Specific</span><span>Pro Instruction</span><span>Book Online</span><span>Open Cage Time</span>
+  </div>
+</div>
 
-      <div class="parcel-header">
-        <div class="addr" id="r-address"></div>
-        <div class="meta">
-          <span id="r-owner"></span>
-          <span id="r-acres"></span>
-          <span id="r-neighborhood"></span>
+<!-- ════════ STATS / VALUE ════════ -->
+<section class="block" id="about">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">The Strike Zone Difference</span>
+      <h2>One facility. Every part of the <span class="lace-text">game.</span></h2>
+      <p>Boys and girls. Baseball and softball. Hitters and pitchers. We built Strike Zone Chattanooga so serious young athletes in Hixson and the greater Chattanooga area finally have a home to train year-round — rain, shine, or off-season.</p>
+    </div>
+    <div class="stats reveal d1">
+      <div class="stat"><div class="n">2</div><div class="l">Sports · Baseball &amp; Softball</div></div>
+      <div class="stat"><div class="n">100<span class="lace-text">%</span></div><div class="l">Pro &amp; Collegiate Coaches</div></div>
+      <div class="stat"><div class="n">7</div><div class="l">Days a Week · Book Anytime</div></div>
+      <div class="stat"><div class="n">∞</div><div class="l">Reps Until It's Automatic</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="stitch"></div>
+
+<!-- ════════ TRAINING ════════ -->
+<section class="block" id="training">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">What We Train</span>
+      <h2>Hitting and pitching, dialed in for <span class="lace-text">every</span> player.</h2>
+      <p>Whether your athlete is chasing their first line drive or their next level of velocity, every program is built around real reps, real feedback, and a plan that meets them where they are.</p>
+    </div>
+    <div class="cards">
+      <div class="card reveal d1">
+        <div class="num-bg">01</div>
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l9-9"/><path d="M13 11l5-5a2.8 2.8 0 1 1 0 4l-5 5"/><circle cx="6" cy="18" r="2.4"/></svg></div>
+        <h3>Hitting Development</h3>
+        <p>Load, stride, contact, and finish — rebuilt rep by rep. Players learn a repeatable swing and the approach to use it when the game speeds up.</p>
+        <div class="tags"><span class="tag">Baseball</span><span class="tag">Softball</span><span class="tag">Tee &amp; Live</span><span class="tag">Approach</span></div>
+      </div>
+      <div class="card reveal d2">
+        <div class="num-bg">02</div>
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M7 7c3 3 7 7 10 10M7 17C10 14 14 10 17 7"/></svg></div>
+        <h3>Pitching &amp; Velocity</h3>
+        <p>Mechanics, command, and arm care for baseball pitchers and softball throwers. We build clean, efficient motion that adds velo and protects the arm.</p>
+        <div class="tags"><span class="tag">Mechanics</span><span class="tag">Command</span><span class="tag">Arm Care</span><span class="tag">Velo</span></div>
+      </div>
+      <div class="card reveal d1">
+        <div class="num-bg">03</div>
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v16"/></svg></div>
+        <h3>Open Lane Time</h3>
+        <p>Reserve a cage and get to work — solo reps, parent-pitch sessions, or team prep. The lane is yours for the slot you book, no membership required.</p>
+        <div class="tags"><span class="tag">Hourly</span><span class="tag">Solo &amp; Family</span><span class="tag">Team Prep</span></div>
+      </div>
+      <div class="card reveal d2">
+        <div class="num-bg">04</div>
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h4v4M20 4l-7 7"/><circle cx="9" cy="15" r="5"/></svg></div>
+        <h3>1-on-1 &amp; Small Group</h3>
+        <p>Private lessons with our pro and collegiate coaches, plus small-group sessions that keep the energy high and the feedback personal.</p>
+        <div class="tags"><span class="tag">Private</span><span class="tag">Small Group</span><span class="tag">All Ages</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ COACHES ════════ -->
+<section class="block" id="coaches">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Meet The Coaches</span>
+      <h2>Learn the game from people who've <span class="lace-text">lived</span> it.</h2>
+      <p>Your athlete won't be handed off to whoever's free. Boys train with a former pro. Girls train with an elite collegiate-level player. Real experience, on your kid's schedule.</p>
+    </div>
+    <div class="coaches">
+      <div class="coach reveal d1">
+        <div class="coach-photo">
+          <span class="ph-tag">Photo Coming Soon</span>
+          <span class="coach-badge">Baseball</span>
+          <svg class="silhouette" viewBox="0 0 200 200" aria-hidden="true">
+            <circle cx="100" cy="66" r="34" fill="#8fb0d6"/>
+            <path d="M40 190c0-38 27-64 60-64s60 26 60 64Z" fill="#8fb0d6"/>
+          </svg>
+        </div>
+        <div class="coach-body">
+          <div class="role">Former Professional Player · Boys Hitting &amp; Pitching</div>
+          <h3>David</h3>
+          <p>A former pro baseball player leading instruction for the boys — hitting and pitching alike. David brings the standards, work ethic, and eye for detail of the pro game down to a level young players can build on. <em>Full bio &amp; photo coming soon.</em></p>
         </div>
       </div>
-
-      <div class="slider-block">
-        <div class="slider-head">
-          <div class="lbl">Your projected purchase price</div>
-          <div class="val" id="r-price-display">$500,000</div>
+      <div class="coach reveal d2">
+        <div class="coach-photo">
+          <span class="ph-tag">Photo Coming Soon</span>
+          <span class="coach-badge">Softball</span>
+          <svg class="silhouette" viewBox="0 0 200 200" aria-hidden="true">
+            <circle cx="100" cy="66" r="34" fill="#8fb0d6"/>
+            <path d="M40 190c0-38 27-64 60-64s60 26 60 64Z" fill="#8fb0d6"/>
+          </svg>
         </div>
-        <input type="range" id="price-slider" min="100000" max="2000000" step="10000" value="500000" />
-        <div class="slider-bounds">
-          <span>$100K</span>
-          <span>$2M</span>
-        </div>
-      </div>
-
-      <div class="moment">
-        <div class="num current">
-          <div class="label">Today's annual tax</div>
-          <div class="big"><sup>$</sup><span id="r-current">—</span></div>
-          <div class="sub">Based on county appraisal of <span id="r-appraised">—</span></div>
-        </div>
-        <div class="num projected">
-          <div class="label">After 2029 reappraisal</div>
-          <div class="big"><sup>$</sup><span id="r-projected">—</span></div>
-          <div class="sub">If you bought at <span id="r-purchase">—</span></div>
-        </div>
-        <div class="delta">
-          <div class="label">Plan ahead for</div>
-          <div class="amount"><strong id="r-delta-monthly">—</strong> more per month <span id="r-delta-annual" style="opacity:0.6; font-size:0.7em; font-weight:400;"></span></div>
+        <div class="coach-body">
+          <div class="role">Elite Collegiate Player · Girls Softball</div>
+          <h3>Coach <span style="opacity:.55">[Name]</span></h3>
+          <p>An elite collegiate-level softball player coaching our youth girls in hitting and pitching. She knows exactly what it takes to play at the next level — and how to teach it with patience and intensity. <em>Full bio &amp; photo coming soon.</em></p>
         </div>
       </div>
+    </div>
+  </div>
+</section>
 
-      <div class="detail">
-        <div class="item">
-          <div class="k">Tax District</div>
-          <div class="v" id="r-district">—</div>
-        </div>
-        <div class="item">
-          <div class="k">Combined Rate</div>
-          <div class="v" id="r-rate">—</div>
-        </div>
-        <div class="item">
-          <div class="k">Last Sale</div>
-          <div class="v" id="r-last-sale">—</div>
-        </div>
-        <div class="item">
-          <div class="k">Parcel ID</div>
-          <div class="v" id="r-parcel-id" style="font-size:14px;">—</div>
-        </div>
+<!-- ════════ BOOKING / APP ════════ -->
+<section class="block booking" id="book">
+  <div class="container booking-grid">
+    <div class="reveal">
+      <span class="eyebrow">Book In Seconds</span>
+      <h2 style="font-family:'Anton',sans-serif;text-transform:uppercase;font-weight:400;font-size:clamp(34px,5vw,58px);line-height:0.98;color:#fff;margin:18px 0 16px;">The cage, in your <span class="lace-text">pocket.</span></h2>
+      <p style="color:var(--cream-dim);font-size:18px;margin:0;max-width:520px;">No phone tag. No guessing what's open. Pick your sport, pick your slot, and the lane is reserved. Our scheduling app shows live availability and lets you book lessons and open cage time anytime, day or night.</p>
+
+      <div class="steps">
+        <div class="step"><div class="s-num">1</div><div><h4>Open the App</h4><p>Download the Strike Zone scheduling app or book right from your phone's browser.</p></div></div>
+        <div class="step"><div class="s-num">2</div><div><h4>Pick Your Lane &amp; Time</h4><p>See real-time availability for hitting and pitching lanes across every open slot.</p></div></div>
+        <div class="step"><div class="s-num">3</div><div><h4>Show Up &amp; Train</h4><p>Your slot is locked in. Walk in, grab your lane, and get to work.</p></div></div>
       </div>
 
-      <div class="disclaimer" id="r-disclaimer"></div>
-
-    </section>
-
-    <section class="why-section">
-      <h2>Why these numbers matter.</h2>
-      <p>
-        In 2025, residential values across Hamilton County rose roughly 59% in the
-        countywide reappraisal. Tennessee's "certified tax rate" mechanism rolls
-        millage <em>down</em> after a reappraisal so total county revenue stays flat — but
-        the next big assessment-jump is locked in for 2029. If you buy today, your
-        tax bill is calculated against the <em>old</em> appraisal until then.
-      </p>
-      <p>
-        Roughly translated: the gap between what you're paying now and what you'll pay
-        in 2029 is real, knowable, and worth folding into your monthly budget — not
-        a surprise to discover three years in.
-      </p>
-      <a class="cta" href="https://joeleffew.com" target="_top">Talk to Joe →</a>
-
-      <div class="signature">
-        Joe Leffew · Keller Williams Realty · Chattanooga, TN ·
-        <a href="tel:4234326869">423.432.6869</a>
+      <div class="hero-cta" style="margin-top:34px;">
+        <a href="#" class="btn btn-primary" data-app>
+          Open the Booking App
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
       </div>
-    </section>
+      <p style="margin-top:14px;font-size:13px;color:var(--steel-light);font-style:italic;">App link coming soon — scheduling goes live with our opening.</p>
+    </div>
 
-  </main>
+    <div class="reveal d1">
+      <div class="phone" aria-hidden="true">
+        <div class="phone-screen">
+          <div class="ps-top">
+            <div class="ps-logo">Strike Zone</div>
+            <div class="ps-sub">Reserve a Lane</div>
+          </div>
+          <div class="ps-body">
+            <div class="ps-day">Today · Hitting Lanes</div>
+            <div class="ps-slot taken"><span class="t">4:00 PM</span><span class="badge">Booked</span></div>
+            <div class="ps-slot open"><span class="t">5:00 PM</span><span class="badge">Open</span></div>
+            <div class="ps-slot pick"><span class="t">6:00 PM</span><span class="badge">Your Pick</span></div>
+            <div class="ps-slot open"><span class="t">7:00 PM</span><span class="badge">Open</span></div>
+            <div class="ps-slot taken"><span class="t">8:00 PM</span><span class="badge">Booked</span></div>
+          </div>
+          <div class="ps-cta">Confirm 6:00 PM →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <script>
-    // -------------------------------------------------------------------------
-    // STATE
-    // -------------------------------------------------------------------------
-    let currentParcel = null;   // last loaded parcel
-    let currentTaxes  = null;   // { combinedRate, current.annualTax, ... }
+<!-- ════════ LANES / FACILITY ════════ -->
+<section class="block" id="facility">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Inside The Facility</span>
+      <h2>Built for reps. Designed to <span class="lace-text">push you.</span></h2>
+      <p>Clean, well-lit lanes and the space to actually work. Photos of the real facility are on the way — here's what's waiting for your athlete.</p>
+    </div>
+    <div class="lanes">
+      <div class="lane-photo reveal d1"><div class="net"></div><div class="caption"><span class="ph-tag">Photo Coming Soon</span><h4>Hitting Lanes</h4><p>Dedicated cages for tee, soft-toss, and live reps.</p></div></div>
+      <div class="lane-photo reveal d2"><div class="net"></div><div class="caption"><span class="ph-tag">Photo Coming Soon</span><h4>Pitching Tunnels</h4><p>Full-distance mounds for baseball &amp; softball.</p></div></div>
+      <div class="lane-photo reveal d3"><div class="net"></div><div class="caption"><span class="ph-tag">Photo Coming Soon</span><h4>Training Floor</h4><p>Open space for movement, warm-up, and drills.</p></div></div>
+    </div>
+  </div>
+</section>
 
-    // -------------------------------------------------------------------------
-    // FORMATTERS
-    // -------------------------------------------------------------------------
-    const fmt = (n) => Number(Math.round(n)).toLocaleString('en-US');
-    const fmtUSD = (n) => '$' + fmt(n);
+<div class="stitch"></div>
 
-    // -------------------------------------------------------------------------
-    // ELEMENTS
-    // -------------------------------------------------------------------------
-    const el = {
-      form:      document.getElementById('search-form'),
-      input:     document.getElementById('address-input'),
-      btn:       document.getElementById('submit-btn'),
-      loading:   document.getElementById('loading'),
-      error:     document.getElementById('error'),
-      candidates:document.getElementById('candidates'),
-      results:   document.getElementById('results'),
-      slider:    document.getElementById('price-slider'),
-      priceDisp: document.getElementById('r-price-display'),
-      addr:      document.getElementById('r-address'),
-      owner:     document.getElementById('r-owner'),
-      acres:     document.getElementById('r-acres'),
-      hood:      document.getElementById('r-neighborhood'),
-      current:   document.getElementById('r-current'),
-      projected: document.getElementById('r-projected'),
-      appraised: document.getElementById('r-appraised'),
-      purchase:  document.getElementById('r-purchase'),
-      deltaMo:   document.getElementById('r-delta-monthly'),
-      deltaYr:   document.getElementById('r-delta-annual'),
-      district:  document.getElementById('r-district'),
-      rate:      document.getElementById('r-rate'),
-      lastSale:  document.getElementById('r-last-sale'),
-      parcelId:  document.getElementById('r-parcel-id'),
-      disclaimer:document.getElementById('r-disclaimer'),
-    };
+<!-- ════════ PRICING ════════ -->
+<section class="block" id="pricing">
+  <div class="container">
+    <div class="section-head center reveal">
+      <span class="eyebrow center">Simple, Player-First Pricing</span>
+      <h2>Train your way.</h2>
+      <p>Final pricing is being set ahead of opening — these are placeholder packages to show how it'll work. Everything books through the app.</p>
+    </div>
+    <div class="pricing">
+      <div class="price-card reveal d1">
+        <div class="plan">Open Cage</div>
+        <div class="amt">$<span>XX</span> <span>/ hour</span></div>
+        <div class="ph-note">Placeholder rate</div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Reserve a hitting or pitching lane</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Perfect for solo &amp; family reps</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Book by the hour, no commitment</li>
+        </ul>
+        <a href="#book" class="btn btn-ghost" data-book>Book a Lane</a>
+      </div>
+      <div class="price-card featured reveal d2">
+        <div class="flag">Most Popular</div>
+        <div class="plan">Private Lesson</div>
+        <div class="amt">$<span>XX</span> <span>/ session</span></div>
+        <div class="ph-note">Placeholder rate</div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>1-on-1 with a pro or collegiate coach</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Hitting or pitching focus</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Personalized development plan</li>
+        </ul>
+        <a href="#book" class="btn btn-primary" data-book>Book a Lesson</a>
+      </div>
+      <div class="price-card reveal d3">
+        <div class="plan">Monthly Membership</div>
+        <div class="amt">$<span>XX</span> <span>/ month</span></div>
+        <div class="ph-note">Placeholder rate</div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Discounted cage &amp; lesson rates</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Priority booking windows</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Best value for everyday players</li>
+        </ul>
+        <a href="#book" class="btn btn-ghost" data-book>Join Now</a>
+      </div>
+    </div>
+  </div>
+</section>
 
-    // -------------------------------------------------------------------------
-    // UI HELPERS
-    // -------------------------------------------------------------------------
-    function showError(msg) {
-      el.error.textContent = msg;
-      el.error.style.display = 'block';
-      el.results.classList.remove('show');
-      el.candidates.style.display = 'none';
-    }
-    function clearMessages() {
-      el.error.style.display = 'none';
-      el.candidates.style.display = 'none';
-    }
-    function setLoading(on) {
-      el.loading.style.display = on ? 'flex' : 'none';
-      el.btn.disabled = on;
-      el.btn.textContent = on ? 'Looking up…' : 'Look up';
-    }
+<!-- ════════ TESTIMONIALS ════════ -->
+<section class="block" id="reviews">
+  <div class="container">
+    <div class="section-head center reveal">
+      <span class="eyebrow center">From The Strike Zone Family</span>
+      <h2>Players grow here.</h2>
+      <p>Placeholder reviews — real testimonials from our families will land here as we open.</p>
+    </div>
+    <div class="quotes">
+      <div class="quote reveal d1">
+        <div class="stars">★★★★★</div>
+        <p>"My son's swing changed in a month. The coaching is the real deal and booking a cage online could not be easier."</p>
+        <div class="who"><div class="av">P</div><div><div class="nm">Parent Placeholder</div><div class="mt">Baseball · Age 12</div></div></div>
+      </div>
+      <div class="quote reveal d2">
+        <div class="stars">★★★★★</div>
+        <p>"Finally a place in Hixson that takes girls' softball seriously. Her pitching velocity and confidence are way up."</p>
+        <div class="who"><div class="av">P</div><div><div class="nm">Parent Placeholder</div><div class="mt">Softball · Age 14</div></div></div>
+      </div>
+      <div class="quote reveal d3">
+        <div class="stars">★★★★★</div>
+        <p>"We book open cage time every weekend through the app. It's become part of our routine — total game changer."</p>
+        <div class="who"><div class="av">P</div><div><div class="nm">Parent Placeholder</div><div class="mt">Open Cage Member</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    // -------------------------------------------------------------------------
-    // SEARCH
-    // -------------------------------------------------------------------------
-    el.form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const address = el.input.value.trim();
-      if (!address) return;
-      await doLookup(address);
+<!-- ════════ FAQ ════════ -->
+<section class="block" id="faq">
+  <div class="container">
+    <div class="section-head center reveal">
+      <span class="eyebrow center">Good To Know</span>
+      <h2>Questions, answered.</h2>
+    </div>
+    <div class="faq reveal d1">
+      <div class="faq-item">
+        <button class="faq-q">Where is Strike Zone Chattanooga located?<span class="pm"></span></button>
+        <div class="faq-a"><p>We're located at <strong>5230 Hixson Pike, Hixson, TN</strong>, serving the greater Chattanooga area. Our grand-opening date is coming soon — follow along on social and check back here.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Do you train both baseball and softball?<span class="pm"></span></button>
+        <div class="faq-a"><p>Yes. Strike Zone is built for both. Boys train hitting and pitching with our former-pro baseball coach, and girls train hitting and pitching with our elite collegiate-level softball coach.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">What ages do you work with?<span class="pm"></span></button>
+        <div class="faq-a"><p>We focus on youth players — roughly ages 6 through 18 — across all skill levels, from first-timers to travel-ball and high-school athletes looking to reach the next level.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">How do I book a lane or a lesson?<span class="pm"></span></button>
+        <div class="faq-a"><p>Everything runs through our scheduling app. You'll see live availability for hitting and pitching lanes, pick your time, and reserve in seconds. The app link goes live with our opening — tap "Book a Lane" to be first in line.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Do I need a membership to use the cages?<span class="pm"></span></button>
+        <div class="faq-a"><p>No. You can book open cage time by the hour with no membership. Memberships simply unlock better rates and priority booking for families who train often.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ VISIT / CONTACT ════════ -->
+<section class="block" id="visit">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Visit Us</span>
+      <h2>Find the Strike Zone in <span class="lace-text">Hixson.</span></h2>
+    </div>
+    <div class="contact-grid">
+      <div class="reveal d1">
+        <div class="info-row">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div><div class="k">Location</div><div class="v">5230 Hixson Pike <small>Hixson, TN · Greater Chattanooga</small></div></div>
+        </div>
+        <div class="info-row">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2 4.2 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7.6 9.8a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z"/></svg></div>
+          <div><div class="k">Phone</div><div class="v"><a href="tel:14238275665" style="color:inherit;">(423) 827-5665</a> <small>Eric Helton, Owner</small></div></div>
+        </div>
+        <div class="info-row">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></div>
+          <div><div class="k">Online</div><div class="v">strikezoneofchattanooga.com <small>Bookmark this page for opening updates</small></div></div>
+        </div>
+        <div class="info-row" style="border-bottom:none;">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+          <div><div class="k">Hours</div><div class="v">7 Days a Week <small>Book any open slot in the app</small></div></div>
+        </div>
+        <a href="#book" class="btn btn-primary" data-book style="margin-top:28px;">Reserve Your First Lane</a>
+      </div>
+
+      <div class="map-card reveal d2">
+        <div class="map-ph">
+          <div class="roads"></div>
+          <div class="pin">
+            <svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5Z"/></svg>
+            <div class="lbl">5230 Hixson Pike</div>
+          </div>
+        </div>
+        <div class="map-foot">
+          <div class="addr">5230 Hixson Pike · Hixson, TN 37343</div>
+          <a href="https://www.google.com/maps/search/?api=1&query=5230+Hixson+Pike+Hixson+TN" target="_blank" rel="noopener" class="btn btn-ghost" style="padding:10px 18px;font-size:15px;">Open Map</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ FINAL CTA ════════ -->
+<section class="final">
+  <div class="container">
+    <span class="eyebrow center reveal" style="justify-content:center;">Your Move</span>
+    <h2 class="reveal d1">Stop waiting on the weather.</h2>
+    <p class="reveal d1">The reps your athlete needs are one tap away. Reserve a lane, book a lesson, and let's build a ballplayer.</p>
+    <div class="hero-cta reveal d2" style="justify-content:center;">
+      <a href="#book" class="btn btn-primary" data-book>Book a Lane Now
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a href="#training" class="btn btn-ghost">See Programs</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ FOOTER ════════ -->
+<footer class="site">
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="#top" class="logo">
+          <svg class="mark" viewBox="0 0 64 64" aria-hidden="true">
+            <circle cx="32" cy="32" r="30" fill="#0a1a2f" stroke="#8fb0d6" stroke-width="1.6"/>
+            <path d="M32 6 A26 26 0 0 0 32 58" fill="none" stroke="#5b7fb0" stroke-width="2.4"/>
+            <path d="M32 6 A26 26 0 0 1 32 58" fill="none" stroke="#5b7fb0" stroke-width="2.4"/>
+            <polygon points="32,18 46,32 32,46 18,32" fill="none" stroke="#8fb0d6" stroke-width="2"/>
+            <circle cx="32" cy="32" r="3.4" fill="#c8483a"/>
+          </svg>
+          <span>Strike Zone<small>Chattanooga</small></span>
+        </a>
+        <p>A premier baseball &amp; softball training facility for the next generation of Chattanooga players. Hixson, Tennessee.</p>
+        <div class="socials">
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.43.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s0 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.43.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.43-.36-1.06-.41-2.23C2.21 15.58 2.2 15.2 2.2 12s0-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.43-.16 1.06-.36 2.23-.41C8.42 2.21 8.8 2.2 12 2.2Zm0 1.8c-3.14 0-3.5 0-4.74.07-.9.04-1.38.19-1.7.32-.43.16-.74.36-1.06.68-.32.32-.52.63-.68 1.06-.13.32-.28.8-.32 1.7C3.43 9.05 3.42 9.4 3.42 12.5s0 3.45.07 4.69c.04.9.19 1.38.32 1.7.16.43.36.74.68 1.06.32.32.63.52 1.06.68.32.13.8.28 1.7.32 1.24.06 1.6.07 4.74.07s3.5 0 4.74-.07c.9-.04 1.38-.19 1.7-.32.43-.16.74-.36 1.06-.68.32-.32.52-.63.68-1.06.13-.32.28-.8.32-1.7.06-1.24.07-1.6.07-4.69s0-3.45-.07-4.69c-.04-.9-.19-1.38-.32-1.7a2.85 2.85 0 0 0-.68-1.06 2.85 2.85 0 0 0-1.06-.68c-.32-.13-.8-.28-1.7-.32C15.5 4 15.14 4 12 4Zm0 3.06A4.94 4.94 0 1 1 12 17a4.94 4.94 0 0 1 0-9.88Zm0 8.15A3.2 3.2 0 1 0 12 8.8a3.2 3.2 0 0 0 0 6.41Zm6.3-8.35a1.15 1.15 0 1 1-2.3 0 1.15 1.15 0 0 1 2.3 0Z"/></svg></a>
+          <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12Z"/></svg></a>
+          <a href="#" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M16.5 3c.4 2.2 1.7 3.7 3.8 3.9v2.6c-1.3.1-2.5-.3-3.8-1v5.9c0 3.4-2.5 5.8-5.7 5.8A5.4 5.4 0 0 1 5.4 14c0-3.2 2.9-5.6 6.2-5v2.8c-.4-.1-.8-.2-1.2-.2-1.4 0-2.5 1.1-2.5 2.5s1.1 2.5 2.5 2.5 2.6-1.1 2.6-2.7V3h3.5Z"/></svg></a>
+        </div>
+      </div>
+      <div class="foot-col">
+        <h5>Train</h5>
+        <a href="#training">Hitting</a>
+        <a href="#training">Pitching</a>
+        <a href="#training">Open Cage Time</a>
+        <a href="#coaches">Coaches</a>
+      </div>
+      <div class="foot-col">
+        <h5>Facility</h5>
+        <a href="#pricing">Pricing</a>
+        <a href="#book">Book a Lane</a>
+        <a href="#faq">FAQ</a>
+        <a href="#visit">Visit Us</a>
+      </div>
+      <div class="foot-col">
+        <h5>Get Started</h5>
+        <a href="#book" data-book>Reserve a Lane</a>
+        <a href="#book" data-app>Booking App</a>
+        <a href="#reviews">Reviews</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> Strike Zone Chattanooga · Hixson, TN</span>
+      <span>Baseball &amp; Softball Training · Now Opening</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Sticky mobile CTA -->
+<div class="sticky-book"><a href="#book" class="btn btn-primary" data-book>Book a Lane</a></div>
+
+<script>
+  // Year
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // Nav scroll state
+  const nav = document.getElementById('nav');
+  const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 30);
+  onScroll();
+  window.addEventListener('scroll', onScroll, {passive:true});
+
+  // Mobile menu
+  const toggle = document.getElementById('navToggle');
+  const links = document.getElementById('navLinks');
+  toggle.addEventListener('click', () => {
+    const open = links.classList.toggle('open');
+    toggle.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open);
+  });
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    links.classList.remove('open');
+    toggle.classList.remove('open');
+    toggle.setAttribute('aria-expanded', false);
+  }));
+
+  // Reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:0.12, rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.parentElement;
+      const open = item.classList.toggle('open');
+      const a = item.querySelector('.faq-a');
+      a.style.maxHeight = open ? a.scrollHeight + 'px' : 0;
     });
+  });
 
-    async function doLookup(address) {
-      clearMessages();
-      el.results.classList.remove('show');
-      setLoading(true);
-      try {
-        const url = `https://deluxe-paprenjak-5b05c8.netlify.app/api/lookup?address=${encodeURIComponent(address)}&price=${el.slider.value}`;
-        const res = await fetch(url);
-        const data = await res.json();
-
-        if (data.multipleMatches) {
-          renderCandidates(data.candidates);
-          return;
-        }
-        if (!res.ok || !data.success) {
-          showError(data.error || 'Lookup failed. Please try again.');
-          return;
-        }
-        renderResults(data);
-      } catch (err) {
-        showError('Network error. Please try again.');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
+  // ── Booking app link ───────────────────────────────────────────────
+  // TODO: replace BOOKING_APP_URL with the real scheduling app link when live.
+  // Every "Book a Lane" / app button routes here. Until then it scrolls to
+  // the booking section so nothing looks broken.
+  const BOOKING_APP_URL = ""; // e.g. "https://app.strikezoneofchattanooga.com"
+  function goBook(e){
+    if (BOOKING_APP_URL){
+      e.preventDefault();
+      window.open(BOOKING_APP_URL, '_blank', 'noopener');
     }
-
-    function renderCandidates(list) {
-      let html = '<div class="head">Multiple parcels match — pick one:</div>';
-      for (const c of list) {
-        html += `
-          <button class="candidate-btn" data-addr="${c.address.replace(/"/g,'&quot;')}">
-            <div class="addr-line">${c.address}</div>
-            <div class="owner-line">${c.owner || ''}${c.city ? ' · ' + c.city : ''}</div>
-          </button>`;
-      }
-      el.candidates.innerHTML = html;
-      el.candidates.style.display = 'block';
-      el.candidates.querySelectorAll('.candidate-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          el.input.value = btn.dataset.addr;
-          doLookup(btn.dataset.addr);
-        });
-      });
-    }
-
-    // -------------------------------------------------------------------------
-    // RENDER RESULTS
-    // -------------------------------------------------------------------------
-    function renderResults(data) {
-      currentParcel = data.parcel;
-      currentTaxes  = data.taxes;
-
-      // Header
-      el.addr.textContent = data.parcel.address || '';
-      el.owner.textContent = data.parcel.owner || '';
-      el.acres.textContent = data.parcel.acres ? `${Number(data.parcel.acres).toFixed(2)} acres` : '';
-      el.hood.textContent = data.parcel.neighborhood || '';
-
-      // Current numbers
-      el.current.textContent = fmt(data.taxes.current.annualTax);
-      el.appraised.textContent = fmtUSD(data.taxes.current.appraisedValue);
-
-      // Tax detail
-      el.district.textContent = data.taxes.district === 'COUNTY'
-        ? 'Hamilton County (unincorporated)'
-        : titleCase(data.taxes.district);
-      el.rate.textContent = data.taxes.combinedRate.toFixed(4) + '%';
-      el.lastSale.textContent = data.parcel.lastSale
-        ? `${fmtUSD(data.parcel.lastSale.price)} (${data.parcel.lastSale.date.slice(0,4)})`
-        : 'No recent sale';
-      el.parcelId.textContent = data.parcel.parcelId || '—';
-
-      // Disclaimer
-      const cardLink = data.parcel.assessorCardUrl
-        ? ` <a href="${data.parcel.assessorCardUrl}" target="_blank" rel="noopener">View official assessor record →</a>`
-        : '';
-      el.disclaimer.innerHTML = data.disclaimer + cardLink;
-
-      // Auto-set slider to a sensible default — current appraisal × 1.6 (rough
-      // 2025-onward market markup) as starting estimate, capped to bounds.
-      const suggested = Math.min(2000000, Math.max(100000,
-        Math.round((data.parcel.appraisedValue || 500000) * 1.6 / 10000) * 10000));
-      el.slider.value = suggested;
-      updateProjection();
-
-      el.results.classList.add('show');
-    }
-
-    function titleCase(s) {
-      return s.toLowerCase().replace(/(^|[\s-])\w/g, c => c.toUpperCase());
-    }
-
-    // -------------------------------------------------------------------------
-    // SLIDER — re-runs projection client-side, no API hit
-    // -------------------------------------------------------------------------
-    el.slider.addEventListener('input', updateProjection);
-
-    function updateProjection() {
-      const price = parseInt(el.slider.value, 10);
-      el.priceDisp.textContent = fmtUSD(price);
-
-      if (!currentTaxes) return;
-
-      const rate = currentTaxes.combinedRate;
-      const projectedAnnual = (price * 0.25 * rate) / 100;
-      const currentAnnual   = currentTaxes.current.annualTax;
-      const annualDiff      = projectedAnnual - currentAnnual;
-      const monthlyDiff     = annualDiff / 12;
-
-      el.projected.textContent = fmt(projectedAnnual);
-      el.purchase.textContent  = fmtUSD(price);
-
-      const sign = monthlyDiff >= 0 ? '+' : '−';
-      el.deltaMo.textContent = `${sign}$${fmt(Math.abs(monthlyDiff))}`;
-      el.deltaYr.textContent = `(${sign}$${fmt(Math.abs(annualDiff))} per year)`;
-    }
-  </script>
+    // else: default anchor (#book) just scrolls — fine for placeholder.
+  }
+  document.querySelectorAll('[data-book],[data-app]').forEach(el => el.addEventListener('click', goBook));
+</script>
 </body>
 </html>

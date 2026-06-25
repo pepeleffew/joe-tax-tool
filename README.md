@@ -1,46 +1,49 @@
-# Joe Leffew Properties — Chattanooga Tax Lookup Tool
+# Strike Zone Chattanooga — Website
 
-This is the backend API for the address-to-tax-projection tool on joeleffew.com.
+Marketing site for **Strike Zone Chattanooga**, a baseball & softball training
+facility in Hixson, TN. The site drives traffic to the scheduling app where
+families reserve hitting and pitching lanes.
 
-## What it does
+> Built on the `claude/strike-force-website-0801yt` branch. The original
+> Hamilton County tax-lookup tool still lives on `main`.
 
-Given a Hamilton County, TN address, it:
+## What it is
 
-1. Searches the public Hamilton County Assessor's database
-2. Pulls the matching parcel record
-3. Determines the tax district (city limits or county-only)
-4. Calculates the **current** annual property tax
-5. If a purchase price is provided, calculates the **projected** annual tax
-   that the buyer can expect after the next county reappraisal in 2029
-6. Returns clean JSON for the frontend to display
+A single, self-contained landing page (`public/index.html`) — no build step,
+no framework. Netlify publishes the `public/` directory as-is.
 
-## Endpoints
+Sections: hero, training programs, coaches (David – baseball; collegiate
+softball coach), booking-app walkthrough, facility, pricing, testimonials,
+FAQ, and location/contact.
+
+## Real details wired in
+
+- **Address:** 5230 Hixson Pike, Hixson, TN 37343
+- **Owner:** Eric Helton — (423) 827-5665
+- **Domain:** strikezoneofchattanooga.com
+
+## Placeholders to replace before/at launch
+
+Everything below is intentionally a placeholder, clearly labeled in the UI:
+
+| Item | Where | What to do |
+|------|-------|------------|
+| **Booking app link** | `<script>` → `BOOKING_APP_URL` | Set the real scheduling-app URL. Every "Book a Lane" button routes through it. |
+| **Coach names/bios/photos** | `#coaches` | Replace "[Name]" for the softball coach, add headshots (swap the placeholder panels). |
+| **Facility photos** | `#facility` | Replace the three "Photo Coming Soon" lane panels with real images. |
+| **Pricing** | `#pricing` | Replace `$XX` placeholder rates. |
+| **Testimonials** | `#reviews` | Swap in real parent reviews. |
+| **Social links** | footer | Point Instagram / Facebook / TikTok at real profiles. |
+
+## Local preview
+
+It's a static file — open `public/index.html` in a browser, or:
 
 ```
-GET  /api/lookup?address=ADDRESS&price=PRICE
-POST /api/lookup    body: { "address": "...", "price": 750000 }
+npx serve public
 ```
 
-## Files
+## Deploy
 
-- `netlify/functions/lookup.js` — main serverless function
-- `netlify.toml` — Netlify deployment config
-- `package.json` — Node dependencies (cheerio for HTML parsing)
-- `public/index.html` — placeholder landing page
-
-## Local testing
-
-After Netlify deploys, hit the endpoint in a browser:
-
-```
-https://YOUR-SITE.netlify.app/api/lookup?address=1524+Green+Pond+Rd
-```
-
-You should get JSON back with parcel data and tax calculations.
-
-## Notes
-
-- Millage rates are 2025 certified rates from the Hamilton County Assessor.
-  Update annually after the city/county certified rate announcements (typically June).
-- The next reappraisal cycle is 2029.
-- Tennessee residential assessment ratio is 25% of appraised value.
+Netlify auto-deploys `public/` (see `netlify.toml`). No build needed for the
+site itself.
