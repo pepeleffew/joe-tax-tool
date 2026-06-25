@@ -13,8 +13,8 @@
 <meta property="og:description" content="Pro-level baseball &amp; softball training in Hixson, TN. Reserve a hitting or pitching lane online." />
 <meta property="og:site_name" content="Strike Zone Chattanooga" />
 
-<!-- Favicon (inline SVG baseball) -->
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%230a1a2f' stroke='%23e9e0cf' stroke-width='1.5'/%3E%3Cpath d='M16 2a14 14 0 0 0-7 26' fill='none' stroke='%23c8483a' stroke-width='1.4' stroke-dasharray='2 2'/%3E%3Cpath d='M16 2a14 14 0 0 1 7 26' fill='none' stroke='%23c8483a' stroke-width='1.4' stroke-dasharray='2 2'/%3E%3C/svg%3E" />
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="/assets/strike-zone-mark.png" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -169,7 +169,7 @@
     color:var(--cream);
     line-height:1;
   }
-  .logo .mark{width:38px;height:38px;flex:none;}
+  .logo .mark{height:40px;width:auto;flex:none;display:block;}
   .logo small{
     display:block;
     font-family:'Barlow Condensed',sans-serif;
@@ -301,13 +301,29 @@
     aspect-ratio:1;
     display:flex;align-items:center;justify-content:center;
   }
-  .emblem svg{width:100%;height:auto;filter:drop-shadow(0 24px 60px rgba(0,0,0,0.5));}
+  .emblem-logo{
+    position:relative;z-index:2;
+    width:84%;height:auto;margin:0 auto;
+    filter:drop-shadow(0 24px 60px rgba(0,0,0,0.55));
+    animation:floaty 6s ease-in-out infinite;
+  }
+  @keyframes floaty{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+  .emblem-glow{
+    position:absolute;inset:8%;border-radius:50%;
+    background:radial-gradient(circle at 50% 40%, rgba(91,127,176,0.35), transparent 65%);
+    filter:blur(20px);
+  }
   .emblem .spin-ring{
     position:absolute;
     inset:-2%;
     border-radius:50%;
     border:1px dashed var(--line-strong);
     animation:rotate 40s linear infinite;
+  }
+  .emblem .spin-ring::after{
+    content:'';position:absolute;top:-4px;left:50%;width:8px;height:8px;
+    border-radius:50%;background:var(--lace-bright);transform:translateX(-50%);
+    box-shadow:0 0 12px var(--lace-bright);
   }
   @keyframes rotate{to{transform:rotate(360deg);}}
 
@@ -462,6 +478,100 @@
     line-height:1;
     pointer-events:none;
   }
+
+  /* ── Technology ────────────────────────────────── */
+  .tech{
+    position:relative;
+    background:
+      radial-gradient(70% 90% at 85% 0%, rgba(91,127,176,0.18), transparent 55%),
+      linear-gradient(180deg,var(--navy-900),var(--navy-800));
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+  }
+  .tech::before{
+    content:'';position:absolute;inset:0;pointer-events:none;
+    background-image:linear-gradient(90deg,var(--line) 1px,transparent 1px),linear-gradient(var(--line) 1px,transparent 1px);
+    background-size:48px 48px;
+    -webkit-mask-image:radial-gradient(100% 80% at 20% 50%,#000,transparent 75%);
+    mask-image:radial-gradient(100% 80% at 20% 50%,#000,transparent 75%);
+    opacity:.4;
+  }
+  .tech .container{position:relative;z-index:2;}
+  .featuring{
+    display:inline-flex;align-items:center;gap:18px;flex-wrap:wrap;
+    background:linear-gradient(180deg,#0c1626,#06101f);
+    border:1px solid var(--line-strong);
+    border-radius:12px;
+    padding:16px 24px;
+    margin-bottom:34px;
+    box-shadow:0 12px 30px rgba(0,0,0,0.35);
+  }
+  .featuring .lbl{
+    font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;
+    letter-spacing:0.2em;font-size:13px;color:var(--steel-light);font-weight:600;
+  }
+  .featuring img{height:30px;width:auto;display:block;}
+  .featuring .live{display:inline-flex;align-items:center;gap:8px;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.14em;font-size:12px;color:var(--lace-bright);font-weight:600;}
+  .featuring .live .dot{width:8px;height:8px;border-radius:50%;background:var(--lace-bright);animation:pulse 2s infinite;}
+
+  .tech-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;margin-top:8px;}
+
+  .tech-cards{display:grid;gap:16px;margin-top:30px;}
+  .tech-card{
+    display:flex;gap:18px;align-items:flex-start;
+    padding:22px 22px;border:1px solid var(--line);border-radius:12px;
+    background:rgba(13,35,66,0.4);transition:border-color .2s,transform .2s;
+  }
+  .tech-card:hover{border-color:var(--line-strong);transform:translateY(-3px);}
+  .tech-card .ti{
+    width:48px;height:48px;flex:none;border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(91,127,176,0.14);border:1px solid var(--line-strong);
+  }
+  .tech-card .ti svg{width:26px;height:26px;stroke:var(--steel-bright);}
+  .tech-card h4{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.04em;font-weight:700;font-size:20px;margin:0 0 5px;color:var(--white);}
+  .tech-card p{margin:0;font-size:15px;color:var(--cream-dim);}
+  .tech-card h4 .pill{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:0.1em;background:var(--lace);color:#fff;padding:2px 9px;border-radius:100px;margin-left:8px;vertical-align:middle;}
+
+  /* Data dashboard mock */
+  .dash{
+    border:1px solid var(--line-strong);
+    border-radius:18px;
+    background:linear-gradient(180deg,#0c1d35,#081325);
+    box-shadow:0 30px 70px rgba(0,0,0,0.5);
+    overflow:hidden;
+  }
+  .dash-top{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--line);background:rgba(6,16,31,0.5);}
+  .dash-top .t{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.16em;font-size:13px;color:var(--steel-light);font-weight:600;display:flex;align-items:center;gap:10px;}
+  .dash-top .t .dot{width:8px;height:8px;border-radius:50%;background:#3ad07a;box-shadow:0 0 10px #3ad07a;animation:pulse 2s infinite;}
+  .dash-top .pid{font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:0.1em;color:var(--cream-dim);text-transform:uppercase;}
+  .dash-hero{padding:26px 24px 10px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;}
+  .dash-hero .big-metric .v{font-family:'Anton',sans-serif;font-size:64px;line-height:0.9;color:#fff;}
+  .dash-hero .big-metric .v span{font-size:22px;color:var(--steel-light);margin-left:4px;}
+  .dash-hero .big-metric .k{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.16em;font-size:13px;color:var(--lace-bright);font-weight:600;margin-top:4px;}
+  .dash-hero .badge-pr{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.1em;font-size:12px;color:#3ad07a;border:1px solid rgba(58,208,122,0.4);border-radius:100px;padding:5px 12px;}
+  .dash-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:14px;}
+  .dash-tiles .tile{background:#0a1830;padding:16px 18px;}
+  .dash-tiles .tile .v{font-family:'Anton',sans-serif;font-size:26px;color:#fff;line-height:1;}
+  .dash-tiles .tile .v span{font-size:13px;color:var(--steel-light);}
+  .dash-tiles .tile .k{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.12em;font-size:11px;color:var(--steel-light);margin-top:6px;}
+  .dash-foot{display:flex;align-items:center;gap:16px;padding:18px 20px;}
+  .spray{width:96px;height:96px;flex:none;}
+  .dash-foot .sf-txt .k{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.14em;font-size:11px;color:var(--steel-light);}
+  .dash-foot .sf-txt .v{font-size:14px;color:var(--cream);margin-top:2px;}
+  .dash-foot .sf-txt .v strong{color:#fff;}
+
+  /* metrics ticker */
+  .metric-strip{display:flex;flex-wrap:wrap;gap:10px;margin-top:36px;justify-content:center;}
+  .metric-chip{
+    font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.1em;
+    font-size:14px;font-weight:600;color:var(--cream-dim);
+    border:1px solid var(--line);border-radius:100px;padding:8px 16px;background:rgba(13,35,66,0.4);
+  }
+  .metric-chip b{color:var(--steel-bright);}
+
+  @media (max-width:980px){.tech-grid{grid-template-columns:1fr;gap:34px;}}
 
   /* ── Coaches ───────────────────────────────────── */
   .coaches{display:grid;grid-template-columns:repeat(2,1fr);gap:30px;}
@@ -805,17 +915,12 @@
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="#top" class="logo" aria-label="Strike Zone Chattanooga home">
-      <svg class="mark" viewBox="0 0 64 64" aria-hidden="true">
-        <circle cx="32" cy="32" r="30" fill="#0a1a2f" stroke="#8fb0d6" stroke-width="1.6"/>
-        <path d="M32 6 A26 26 0 0 0 32 58" fill="none" stroke="#5b7fb0" stroke-width="2.4"/>
-        <path d="M32 6 A26 26 0 0 1 32 58" fill="none" stroke="#5b7fb0" stroke-width="2.4"/>
-        <polygon points="32,18 46,32 32,46 18,32" fill="none" stroke="#8fb0d6" stroke-width="2"/>
-        <circle cx="32" cy="32" r="3.4" fill="#c8483a"/>
-      </svg>
+      <img class="mark" src="/assets/strike-zone-mark.png" alt="" />
       <span>Strike Zone<small>Chattanooga</small></span>
     </a>
     <nav class="nav-links" id="navLinks">
       <a class="link" href="#training">Training</a>
+      <a class="link" href="#technology">Tech</a>
       <a class="link" href="#coaches">Coaches</a>
       <a class="link" href="#book">How It Works</a>
       <a class="link" href="#pricing">Pricing</a>
@@ -840,8 +945,9 @@
       </h1>
       <p class="lede">
         A premier indoor baseball &amp; softball training facility built for the next
-        generation of Chattanooga players. Pro and collegiate coaching, dedicated
-        lanes, and a booking app that puts the cage in your pocket.
+        generation of Chattanooga players. Pro and collegiate coaching,
+        <strong style="color:var(--cream);font-weight:600">HitTrax-powered</strong> training,
+        and a booking app that puts the cage in your pocket.
       </p>
       <div class="hero-cta">
         <a href="#book" class="btn btn-primary" data-book>
@@ -850,37 +956,13 @@
         </a>
         <a href="#training" class="btn btn-ghost">Explore Training</a>
       </div>
-      <div class="hero-note">Baseball &amp; Softball · Ages 6–18 · Hitting · Pitching · Open Cages</div>
+      <div class="hero-note">Baseball &amp; Softball · Hitting · Pitching · Now Featuring HitTrax</div>
     </div>
 
     <div class="emblem">
       <div class="spin-ring"></div>
-      <svg viewBox="0 0 400 400" aria-hidden="true">
-        <defs>
-          <radialGradient id="g1" cx="50%" cy="35%" r="75%">
-            <stop offset="0%" stop-color="#163a64"/>
-            <stop offset="100%" stop-color="#081428"/>
-          </radialGradient>
-        </defs>
-        <circle cx="200" cy="200" r="190" fill="url(#g1)" stroke="#8fb0d6" stroke-width="2" opacity="0.95"/>
-        <!-- field fan -->
-        <path d="M200 300 L70 150 A180 180 0 0 1 330 150 Z" fill="none" stroke="#5b7fb0" stroke-width="3" opacity="0.85"/>
-        <!-- infield diamond -->
-        <polygon points="200,300 270,225 200,150 130,225" fill="#5b7fb0" opacity="0.28" stroke="#8fb0d6" stroke-width="3"/>
-        <!-- pitcher's mound -->
-        <circle cx="200" cy="232" r="11" fill="#a9c8ef"/>
-        <!-- home plate -->
-        <circle cx="200" cy="300" r="6" fill="#efe7d6"/>
-        <!-- baseball laces arc -->
-        <path d="M70 332 Q200 360 330 332" fill="none" stroke="#c8483a" stroke-width="3"/>
-        <g stroke="#c8483a" stroke-width="2.4" stroke-linecap="round">
-          <path d="M120 338 l-8 -12 M120 338 l8 -10"/>
-          <path d="M160 348 l-8 -12 M160 348 l8 -10"/>
-          <path d="M200 351 l-8 -12 M200 351 l8 -12"/>
-          <path d="M240 348 l-8 -10 M240 348 l8 -12"/>
-          <path d="M280 338 l-8 -10 M280 338 l8 -12"/>
-        </g>
-      </svg>
+      <div class="emblem-glow"></div>
+      <img src="/assets/strike-zone-logo.png" alt="Strike Zone Chattanooga logo" class="emblem-logo" />
     </div>
   </div>
 
@@ -890,8 +972,8 @@
 <!-- ════════ MARQUEE ════════ -->
 <div class="marquee" aria-hidden="true">
   <div class="marquee-track">
-    <span>Hitting Mechanics</span><span>Pitching Velocity</span><span>Softball Specific</span><span>Pro Instruction</span><span>Book Online</span><span>Open Cage Time</span>
-    <span>Hitting Mechanics</span><span>Pitching Velocity</span><span>Softball Specific</span><span>Pro Instruction</span><span>Book Online</span><span>Open Cage Time</span>
+    <span>HitTrax Data</span><span>Exit Velocity</span><span>Launch Angle</span><span>Pitching Velocity</span><span>Softball Specific</span><span>Pro Instruction</span><span>Virtual Stadiums</span><span>Book Online</span>
+    <span>HitTrax Data</span><span>Exit Velocity</span><span>Launch Angle</span><span>Pitching Velocity</span><span>Softball Specific</span><span>Pro Instruction</span><span>Virtual Stadiums</span><span>Book Online</span>
   </div>
 </div>
 
@@ -955,6 +1037,90 @@
   </div>
 </section>
 
+<!-- ════════ TECHNOLOGY ════════ -->
+<section class="block tech" id="technology">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Powered By Pro-Level Tech</span>
+      <h2>Big-league data. Right here in <span class="lace-text">Hixson.</span></h2>
+      <p>Most kids never see the numbers behind their swing. Ours do — every session. Strike Zone Chattanooga is proud to be one of the only facilities in the area training on <strong style="color:var(--cream)">HitTrax</strong>, alongside Rapsodo/TrackMan tracking and high-speed video. Real metrics, instant feedback, measurable progress.</p>
+    </div>
+
+    <div class="featuring reveal d1">
+      <span class="lbl">Featuring</span>
+      <img src="/assets/hittrax-logo.png" alt="HitTrax" />
+      <span class="live"><span class="dot"></span>Live in the Cage</span>
+    </div>
+
+    <div class="tech-grid">
+      <div class="reveal d1">
+        <div class="tech-cards">
+          <div class="tech-card">
+            <div class="ti"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg></div>
+            <div><h4>HitTrax Simulator<span class="pill">Flagship</span></h4><p>Camera-based hit tracking that measures exit velocity, launch angle, distance and point of impact in real time — then launches the ball through virtual MLB stadiums for games, home-run derbies and a national leaderboard.</p></div>
+          </div>
+          <div class="tech-card">
+            <div class="ti"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M7 7c3 3 7 7 10 10"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg></div>
+            <div><h4>Rapsodo / TrackMan</h4><p>Pitch- and swing-tracking radar for the numbers that win at the next level: pitch velocity, spin rate, movement, and swing data for both hitters and pitchers.</p></div>
+          </div>
+          <div class="tech-card">
+            <div class="ti"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="15" height="14" rx="2"/><path d="M17 9l5-3v12l-5-3"/></svg></div>
+            <div><h4>High-Speed Video Analysis</h4><p>Frame-by-frame slow-motion breakdown of every swing and delivery, so coaches can show — not just tell — exactly what to fix and reinforce what's working.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal d2">
+        <div class="dash" aria-hidden="true">
+          <div class="dash-top">
+            <div class="t"><span class="dot"></span>HitTrax · Live Session</div>
+            <div class="pid">Player&nbsp;#27</div>
+          </div>
+          <div class="dash-hero">
+            <div class="big-metric">
+              <div class="v" data-count="94" data-suffix="">0<span>MPH</span></div>
+              <div class="k">Exit Velocity</div>
+            </div>
+            <div class="badge-pr">▲ New PR</div>
+          </div>
+          <div class="dash-tiles">
+            <div class="tile"><div class="v" data-count="24" data-suffix="°">0</div><div class="k">Launch Angle</div></div>
+            <div class="tile"><div class="v" data-count="341" data-suffix="">0<span> FT</span></div><div class="k">Distance</div></div>
+            <div class="tile"><div class="v" data-count="78" data-suffix="">0<span> MPH</span></div><div class="k">Pitch Speed</div></div>
+          </div>
+          <div class="dash-foot">
+            <svg class="spray" viewBox="0 0 100 100">
+              <path d="M50 92 L12 40 A52 52 0 0 1 88 40 Z" fill="rgba(91,127,176,0.12)" stroke="rgba(143,176,214,0.4)" stroke-width="1.4"/>
+              <polygon points="50,92 68,66 50,46 32,66" fill="rgba(91,127,176,0.25)" stroke="rgba(143,176,214,0.5)" stroke-width="1"/>
+              <circle cx="50" cy="92" r="2" fill="#efe7d6"/>
+              <circle cx="44" cy="58" r="2.4" fill="#8fb0d6"/>
+              <circle cx="62" cy="50" r="2.4" fill="#8fb0d6"/>
+              <circle cx="56" cy="40" r="2.4" fill="#e85d4a"/>
+              <circle cx="38" cy="48" r="2.4" fill="#8fb0d6"/>
+              <circle cx="70" cy="62" r="2.4" fill="#8fb0d6"/>
+            </svg>
+            <div class="sf-txt">
+              <div class="k">Spray Chart · Session Hot Zones</div>
+              <div class="v"><strong>7 of 12</strong> hard-hit · <strong>.580</strong> projected slugging</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="metric-strip reveal d2">
+      <span class="metric-chip"><b>Exit</b> Velocity</span>
+      <span class="metric-chip"><b>Launch</b> Angle</span>
+      <span class="metric-chip"><b>Batted-Ball</b> Distance</span>
+      <span class="metric-chip"><b>Pitch</b> Velocity</span>
+      <span class="metric-chip"><b>Spin</b> Rate</span>
+      <span class="metric-chip"><b>Spray</b> Charts</span>
+      <span class="metric-chip"><b>Virtual</b> Stadiums</span>
+      <span class="metric-chip"><b>National</b> Leaderboards</span>
+    </div>
+  </div>
+</section>
+
 <!-- ════════ COACHES ════════ -->
 <section class="block" id="coaches">
   <div class="container">
@@ -974,9 +1140,9 @@
           </svg>
         </div>
         <div class="coach-body">
-          <div class="role">Former Professional Player · Boys Hitting &amp; Pitching</div>
-          <h3>David</h3>
-          <p>A former pro baseball player leading instruction for the boys — hitting and pitching alike. David brings the standards, work ethic, and eye for detail of the pro game down to a level young players can build on. <em>Full bio &amp; photo coming soon.</em></p>
+          <div class="role">Former Minor League Pitcher · Boys Hitting &amp; Pitching</div>
+          <h3>David Mead</h3>
+          <p>A Soddy-Daisy product drafted <strong style="color:var(--cream)">47th overall</strong> by the Texas Rangers in the 1999 supplemental first round, David pitched professionally from 1999–2004. Now he brings that pro pedigree home — coaching the boys in both hitting and pitching with big-league standards and an eye for detail. <em>Photo coming soon.</em></p>
         </div>
       </div>
       <div class="coach reveal d2">
@@ -1153,6 +1319,10 @@
         <div class="faq-a"><p>Yes. Strike Zone is built for both. Boys train hitting and pitching with our former-pro baseball coach, and girls train hitting and pitching with our elite collegiate-level softball coach.</p></div>
       </div>
       <div class="faq-item">
+        <button class="faq-q">What technology do you train with?<span class="pm"></span></button>
+        <div class="faq-a"><p>We're proud to be one of the only facilities in the area featuring <strong>HitTrax</strong> — the camera-based simulator that tracks exit velocity, launch angle, and distance, and lets players hit through virtual MLB stadiums. We pair it with Rapsodo/TrackMan tracking and high-speed video analysis so every athlete trains with real data and instant feedback.</p></div>
+      </div>
+      <div class="faq-item">
         <button class="faq-q">What ages do you work with?<span class="pm"></span></button>
         <div class="faq-a"><p>We focus on youth players — roughly ages 6 through 18 — across all skill levels, from first-timers to travel-ball and high-school athletes looking to reach the next level.</p></div>
       </div>
@@ -1234,13 +1404,7 @@
     <div class="foot-grid">
       <div class="foot-brand">
         <a href="#top" class="logo">
-          <svg class="mark" viewBox="0 0 64 64" aria-hidden="true">
-            <circle cx="32" cy="32" r="30" fill="#0a1a2f" stroke="#8fb0d6" stroke-width="1.6"/>
-            <path d="M32 6 A26 26 0 0 0 32 58" fill="none" stroke="#5b7fb0" stroke-width="2.4"/>
-            <path d="M32 6 A26 26 0 0 1 32 58" fill="none" stroke="#5b7fb0" stroke-width="2.4"/>
-            <polygon points="32,18 46,32 32,46 18,32" fill="none" stroke="#8fb0d6" stroke-width="2"/>
-            <circle cx="32" cy="32" r="3.4" fill="#c8483a"/>
-          </svg>
+          <img class="mark" src="/assets/strike-zone-mark.png" alt="" />
           <span>Strike Zone<small>Chattanooga</small></span>
         </a>
         <p>A premier baseball &amp; softball training facility for the next generation of Chattanooga players. Hixson, Tennessee.</p>
@@ -1255,6 +1419,7 @@
         <a href="#training">Hitting</a>
         <a href="#training">Pitching</a>
         <a href="#training">Open Cage Time</a>
+        <a href="#technology">HitTrax &amp; Tech</a>
         <a href="#coaches">Coaches</a>
       </div>
       <div class="foot-col">
@@ -1310,6 +1475,32 @@
     entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
   }, {threshold:0.12, rootMargin:'0px 0px -40px 0px'});
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Count-up for the HitTrax data dashboard
+  const countEls = document.querySelectorAll('[data-count]');
+  const countIO = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const target = parseFloat(el.dataset.count);
+      const suffix = el.dataset.suffix || '';
+      const inner = el.querySelector('span');
+      const innerHTML = inner ? inner.outerHTML : '';
+      const dur = 1100, t0 = performance.now();
+      const tick = (now) => {
+        const p = Math.min(1, (now - t0) / dur);
+        const eased = 1 - Math.pow(1 - p, 3);
+        const val = Math.round(target * eased);
+        el.firstChild.nodeValue = val + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      // ensure suffix-less numbers still get the inner unit span back
+      if (inner) el.innerHTML = '0' + suffix + innerHTML; else el.textContent = '0' + suffix;
+      requestAnimationFrame(tick);
+      countIO.unobserve(el);
+    });
+  }, {threshold:0.4});
+  countEls.forEach(el => countIO.observe(el));
 
   // FAQ accordion
   document.querySelectorAll('.faq-q').forEach(q => {
