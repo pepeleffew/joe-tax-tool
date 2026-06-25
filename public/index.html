@@ -4339,6 +4339,13 @@ document.querySelectorAll('[href="#"]').forEach(a => {
   border-color:var(--red-bright);box-shadow:0 0 0 3px var(--red-glow);
 }
 [data-app-link][hidden]{display:none !important;}
+/* Fix facility gallery: fix the row height so main + 3-photo stack fill it evenly (no dead space) */
+@media (min-width:769px){
+  .facility-photo-grid{ grid-template-rows:clamp(400px,42vw,560px); align-items:stretch; }
+  .fpg-main{ aspect-ratio:auto !important; height:auto; min-height:0; }
+  .fpg-stack{ min-height:0; }
+  .fpg-thumb{ min-height:0; }
+}
 </style>
 <script>
 (function(){
