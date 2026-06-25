@@ -1,18 +1,24 @@
 # =============================================================================
-# Netlify configuration for joe-tax-tool
+# Netlify configuration — Strike Zone Chattanooga (static site)
 # =============================================================================
 
 [build]
-  command = "npm install"
-  functions = "netlify/functions"
+  # Pure static site: just publish the public/ folder. No build step needed.
   publish = "public"
 
-[functions]
-  node_bundler = "esbuild"
-  external_node_modules = ["cheerio"]
+# Always re-fetch the HTML so updated asset references are picked up immediately.
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
 
-# Friendly URL: /api/lookup → /.netlify/functions/lookup
-[[redirects]]
-  from = "/api/lookup"
-  to = "/.netlify/functions/lookup"
-  status = 200
+[[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Versioned logo/image assets can be cached hard (filenames change when updated).
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
