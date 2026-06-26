@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Athletic Shop — Team Uniforms Built to Win | Chattanooga, Since 1973</title>
+<meta name="description" content="Chattanooga's team sports authority since 1973. Custom uniforms, screen printing, embroidery, sublimation & equipment for schools, leagues, colleges and corporate accounts — 200+ brands including adidas & Under Armour." />
+<meta name="theme-color" content="#0b0b0e" />
+
+<!-- Open Graph -->
+<meta property="og:title" content="The Athletic Shop — Built to Win Since 1973" />
+<meta property="og:description" content="Chattanooga's full-service team sports supplier. Uniforms, decoration & equipment built for programs of every size." />
+<meta property="og:type" content="website" />
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230b0b0e'/%3E%3Ctext x='16' y='23' font-family='Arial Black,Arial' font-size='18' font-weight='900' text-anchor='middle' fill='%23e8341c'%3EA%3C/text%3E%3C/svg%3E" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:ital,wght@0,400;0,600;0,700;0,800;0,900;1,500&family=Fraunces:ital,opsz,wght@1,9..144,400;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+/* ============================================================================
+   THE ATHLETIC SHOP — design system
+   ========================================================================== */
+:root{
+  --ink:        #0b0b0e;
+  --ink-2:      #131419;
+  --ink-3:      #1c1d24;
+  --bone:       #f4f1e9;
+  --bone-2:     #e9e4d8;
+  --paper:      #fbfaf6;
+  --red:        #e8341c;
+  --red-deep:   #c01f0c;
+  --gold:       #cda751;
+  --gold-soft:  #e2c986;
+  --steel:      #8a93a3;
+  --line-dark:  rgba(244,241,233,0.12);
+  --line-light: rgba(11,11,14,0.12);
+  --shadow:     0 30px 60px -20px rgba(0,0,0,.55);
+
+  --display: 'Anton', 'Arial Narrow', sans-serif;
+  --sans:    'Archivo', 'Inter', system-ui, sans-serif;
+  --serif:   'Fraunces', Georgia, serif;
+  --maxw: 1240px;
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+body{
+  margin:0;
+  background:var(--ink);
+  color:var(--bone);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{ max-width:100%; display:block; }
+a{ color:inherit; text-decoration:none; }
+button{ font-family:inherit; cursor:pointer; }
+
+::selection{ background:var(--red); color:#fff; }
+
+.wrap{ width:100%; max-width:var(--maxw); margin:0 auto; padding:0 28px; }
+
+/* ── shared type ─────────────────────────────────────────────────────── */
+.eyebrow{
+  font-family:var(--sans);
+  font-weight:700;
+  font-size:12px;
+  letter-spacing:.32em;
+  text-transform:uppercase;
+  color:var(--red);
+  display:inline-flex;
+  align-items:center;
+  gap:12px;
+}
+.eyebrow.gold{ color:var(--gold); }
+.eyebrow::before{
+  content:'';
+  width:32px; height:2px;
+  background:currentColor;
+  display:inline-block;
+}
+.eyebrow.center{ justify-content:center; }
+
+.display{
+  font-family:var(--display);
+  font-weight:400;
+  line-height:.92;
+  letter-spacing:.005em;
+  text-transform:uppercase;
+}
+h2.section-title{
+  font-family:var(--display);
+  font-weight:400;
+  font-size:clamp(38px, 6.2vw, 86px);
+  line-height:.94;
+  letter-spacing:.005em;
+  text-transform:uppercase;
+  margin:18px 0 0;
+}
+.accent{ color:var(--red); }
+.heritage{
+  font-family:var(--serif);
+  font-style:italic;
+  font-weight:500;
+  text-transform:none;
+  letter-spacing:-.01em;
+  color:var(--gold-soft);
+}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:17px 30px;
+  font-family:var(--sans);
+  font-weight:800;
+  font-size:13.5px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  border-radius:2px;
+  border:2px solid transparent;
+  transition:transform .2s cubic-bezier(.2,.8,.2,1), background .2s, color .2s, border-color .2s;
+  white-space:nowrap;
+}
+.btn .arr{ transition:transform .25s; }
+.btn:hover .arr{ transform:translateX(5px); }
+.btn-red{ background:var(--red); color:#fff; }
+.btn-red:hover{ background:var(--red-deep); transform:translateY(-2px); }
+.btn-ghost{ border-color:var(--line-dark); color:var(--bone); }
+.btn-ghost:hover{ border-color:var(--bone); transform:translateY(-2px); }
+.btn-dark{ background:var(--ink); color:var(--bone); }
+.btn-dark:hover{ background:var(--ink-3); transform:translateY(-2px); }
+.btn-gold{ background:var(--gold); color:var(--ink); }
+.btn-gold:hover{ background:var(--gold-soft); transform:translateY(-2px); }
+
+/* ── reveal animation ────────────────────────────────────────────────── */
+.reveal{ opacity:0; transform:translateY(28px); transition:opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+.reveal.in{ opacity:1; transform:none; }
+.reveal[data-d="1"]{ transition-delay:.08s; }
+.reveal[data-d="2"]{ transition-delay:.16s; }
+.reveal[data-d="3"]{ transition-delay:.24s; }
+.reveal[data-d="4"]{ transition-delay:.32s; }
+.reveal[data-d="5"]{ transition-delay:.4s; }
+
+/* ============================================================================
+   HEADER
+   ========================================================================== */
+header{
+  position:fixed; inset:0 0 auto 0;
+  z-index:100;
+  transition:background .35s, backdrop-filter .35s, border-color .35s, padding .35s;
+  border-bottom:1px solid transparent;
+}
+header .bar{
+  display:flex; align-items:center; justify-content:space-between;
+  height:78px;
+  transition:height .35s;
+}
+header.scrolled{
+  background:rgba(11,11,14,.86);
+  backdrop-filter:saturate(140%) blur(14px);
+  border-bottom-color:var(--line-dark);
+}
+header.scrolled .bar{ height:64px; }
+
+.logo{ display:flex; align-items:center; gap:13px; flex:none; }
+.logo .mark{
+  width:40px; height:40px; border-radius:6px;
+  background:var(--red);
+  display:grid; place-items:center;
+  font-family:var(--display); font-size:24px; color:#fff;
+  box-shadow:0 6px 16px -4px rgba(232,52,28,.6);
+  flex:none;
+}
+.logo .name{ line-height:1; }
+.logo .name b{
+  font-family:var(--display); font-weight:400; font-size:21px;
+  letter-spacing:.02em; text-transform:uppercase; display:block; color:var(--bone);
+  white-space:nowrap;
+}
+.logo .name span{
+  font-size:9.5px; font-weight:700; letter-spacing:.34em; text-transform:uppercase;
+  color:var(--steel);
+}
+nav.primary{ display:flex; align-items:center; gap:30px; }
+nav.primary a.link{
+  font-size:13px; font-weight:700; letter-spacing:.05em; text-transform:uppercase;
+  color:var(--bone); opacity:.82; position:relative; padding:4px 0; transition:opacity .2s;
+  white-space:nowrap;
+}
+nav.primary a.link::after{
+  content:''; position:absolute; left:0; bottom:-2px; height:2px; width:0; background:var(--red); transition:width .25s;
+}
+nav.primary a.link:hover{ opacity:1; }
+nav.primary a.link:hover::after{ width:100%; }
+.header-cta{ display:flex; align-items:center; gap:16px; flex:none; }
+.header-phone{
+  font-family:var(--display); font-size:18px; letter-spacing:.02em; color:var(--bone);
+  display:flex; align-items:center; gap:8px; white-space:nowrap;
+}
+.header-phone svg{ width:15px; height:15px; fill:var(--red); }
+
+.menu-toggle{ display:none; background:none; border:none; padding:8px; }
+.menu-toggle span{ display:block; width:26px; height:2px; background:var(--bone); margin:5px 0; transition:.3s; }
+
+/* mobile drawer */
+.drawer{
+  position:fixed; inset:0; z-index:99; background:var(--ink);
+  display:flex; flex-direction:column; justify-content:center; gap:6px; padding:40px;
+  transform:translateX(100%); transition:transform .4s cubic-bezier(.7,0,.2,1); visibility:hidden;
+}
+.drawer.open{ transform:none; visibility:visible; }
+.drawer a{
+  font-family:var(--display); font-size:34px; text-transform:uppercase; letter-spacing:.01em;
+  padding:8px 0; border-bottom:1px solid var(--line-dark);
+}
+.drawer a:last-of-type{ border:none; }
+.drawer .dphone{ margin-top:24px; color:var(--red); }
+
+/* ============================================================================
+   HERO
+   ========================================================================== */
+.hero{
+  position:relative; overflow:hidden;
+  min-height:100vh; min-height:100svh;
+  display:flex; align-items:center;
+  padding:120px 0 70px;
+  background:
+    radial-gradient(120% 90% at 78% 8%, rgba(232,52,28,.22), transparent 55%),
+    radial-gradient(80% 70% at 8% 100%, rgba(205,167,81,.12), transparent 60%),
+    var(--ink);
+}
+/* diagonal varsity stripes */
+.hero .stripes{
+  position:absolute; inset:-20% -10%; z-index:0; opacity:.5;
+  background:repeating-linear-gradient(115deg, transparent 0 78px, rgba(244,241,233,.025) 78px 80px);
+  pointer-events:none;
+}
+/* halftone */
+.hero .halftone{
+  position:absolute; right:-6%; top:-8%; width:62vw; height:62vw; max-width:760px; max-height:760px;
+  z-index:0; opacity:.5; pointer-events:none;
+  background-image:radial-gradient(rgba(232,52,28,.55) 1.6px, transparent 1.7px);
+  background-size:15px 15px;
+  -webkit-mask-image:radial-gradient(closest-side, #000 30%, transparent 78%);
+          mask-image:radial-gradient(closest-side, #000 30%, transparent 78%);
+}
+/* giant watermark number */
+.hero .ghost73{
+  position:absolute; right:-2%; bottom:-14%; z-index:0; pointer-events:none;
+  font-family:var(--display); font-size:46vw; line-height:.7; color:#fff; opacity:.028;
+  letter-spacing:-.04em;
+}
+.hero-inner{ position:relative; z-index:2; max-width:920px; }
+.hero .tag{
+  display:inline-flex; align-items:center; gap:12px; margin-bottom:26px;
+  font-weight:700; font-size:12px; letter-spacing:.3em; text-transform:uppercase; color:var(--bone);
+}
+.hero .tag .dot{ width:7px; height:7px; border-radius:50%; background:var(--red); box-shadow:0 0 0 4px rgba(232,52,28,.25); }
+.hero h1{
+  font-family:var(--display); font-weight:400;
+  font-size:clamp(56px, 11.5vw, 168px);
+  line-height:.86; letter-spacing:.004em; text-transform:uppercase;
+  margin:0; color:var(--bone);
+}
+.hero h1 .line{ display:block; overflow:hidden; }
+.hero h1 .line > span{ display:block; transform:translateY(105%); animation:riseUp .9s cubic-bezier(.22,.9,.25,1) forwards; }
+.hero h1 .line:nth-child(2) > span{ animation-delay:.12s; }
+.hero h1 .line:nth-child(3) > span{ animation-delay:.24s; }
+@keyframes riseUp{ to{ transform:none; } }
+.hero h1 .stroke{
+  color:transparent; -webkit-text-stroke:2px var(--bone); text-stroke:2px var(--bone);
+}
+.hero h1 .red{ color:var(--red); }
+.hero .sub{
+  max-width:560px; margin:30px 0 0; font-size:19px; line-height:1.55; color:#cfccc2;
+  opacity:0; animation:fadeIn .8s ease .55s forwards;
+}
+.hero .sub b{ color:var(--bone); font-weight:700; }
+.hero-actions{ display:flex; flex-wrap:wrap; gap:14px; margin-top:38px; opacity:0; animation:fadeIn .8s ease .7s forwards; }
+@keyframes fadeIn{ to{ opacity:1; } }
+
+.hero-foot{
+  position:absolute; left:0; right:0; bottom:26px; z-index:2;
+  display:flex; align-items:center; justify-content:space-between; gap:20px;
+  opacity:0; animation:fadeIn .8s ease .9s forwards;
+}
+.hero-foot .since{
+  font-family:var(--serif); font-style:italic; color:var(--gold-soft); font-size:16px;
+}
+.hero-foot .scroll{
+  font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--steel);
+  display:flex; align-items:center; gap:10px;
+}
+.hero-foot .scroll .ln{ width:46px; height:1px; background:var(--steel); position:relative; overflow:hidden; }
+.hero-foot .scroll .ln::after{ content:''; position:absolute; inset:0; width:40%; background:var(--red); animation:slideX 1.8s ease-in-out infinite; }
+@keyframes slideX{ 0%{ transform:translateX(-110%);} 100%{ transform:translateX(260%);} }
+
+/* ============================================================================
+   BRAND MARQUEE
+   ========================================================================== */
+.marquee-band{
+  background:var(--bone); color:var(--ink);
+  border-top:1px solid var(--line-light); border-bottom:1px solid var(--line-light);
+  padding:22px 0; overflow:hidden;
+}
+.marquee-label{
+  text-align:center; font-size:11px; font-weight:700; letter-spacing:.3em; text-transform:uppercase;
+  color:#7a756a; margin-bottom:16px;
+}
+.marquee{ display:flex; overflow:hidden; -webkit-mask-image:linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image:linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.marquee .track{ display:flex; flex:none; align-items:center; gap:54px; padding-right:54px; animation:scrollX 38s linear infinite; }
+.marquee:hover .track{ animation-play-state:paused; }
+.marquee .brand{
+  font-family:var(--display); font-size:27px; letter-spacing:.02em; text-transform:uppercase;
+  color:#2b2b30; white-space:nowrap; opacity:.62; transition:opacity .2s, color .2s;
+}
+.marquee .brand:hover{ opacity:1; color:var(--red); }
+@keyframes scrollX{ to{ transform:translateX(-50%); } }
+
+/* ============================================================================
+   STATS
+   ========================================================================== */
+.stats{ background:var(--ink-2); padding:84px 0; border-bottom:1px solid var(--line-dark); }
+.stats-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:0; }
+.stat{ padding:8px 30px; border-left:1px solid var(--line-dark); }
+.stat:first-child{ border-left:none; padding-left:0; }
+.stat .num{
+  font-family:var(--display); font-size:clamp(46px,6vw,76px); line-height:.9; color:var(--bone); letter-spacing:.01em;
+  display:flex; align-items:baseline; gap:2px;
+}
+.stat .num .suf{ color:var(--red); }
+.stat .lab{ margin-top:12px; font-size:13px; font-weight:600; letter-spacing:.04em; color:var(--steel); line-height:1.4; }
+.stat .lab b{ color:var(--bone); font-weight:700; }
+
+/* ============================================================================
+   SECTION SCAFFOLD
+   ========================================================================== */
+section[id], span#top{ scroll-margin-top:88px; }
+section.block{ padding:clamp(72px,9vw,128px) 0; position:relative; }
+.section-head{ max-width:780px; }
+.section-head.center{ margin:0 auto; text-align:center; }
+.section-head p.lede{ margin:22px 0 0; font-size:18.5px; color:#c9c6bc; line-height:1.6; }
+.on-bone .section-head p.lede{ color:#56524a; }
+
+/* ── WHAT WE DO ──────────────────────────────────────────────────────── */
+.svc-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line-dark); margin-top:64px; border:1px solid var(--line-dark); }
+.svc{
+  background:var(--ink); padding:42px 36px 46px; position:relative; overflow:hidden;
+  transition:background .3s; min-height:280px; display:flex; flex-direction:column;
+}
+.svc::before{
+  content:''; position:absolute; left:0; top:0; width:100%; height:3px; background:var(--red); transform:scaleX(0); transform-origin:left; transition:transform .35s cubic-bezier(.2,.8,.2,1);
+}
+.svc:hover{ background:var(--ink-2); }
+.svc:hover::before{ transform:scaleX(1); }
+.svc .ico{ width:46px; height:46px; margin-bottom:24px; color:var(--red); }
+.svc .ico svg{ width:100%; height:100%; }
+.svc h3{ font-family:var(--display); font-weight:400; font-size:26px; letter-spacing:.01em; text-transform:uppercase; margin:0 0 12px; color:var(--bone); }
+.svc p{ font-size:15px; color:#aeaaa0; margin:0; line-height:1.6; }
+.svc .num-tag{ position:absolute; right:26px; top:26px; font-family:var(--display); font-size:15px; color:var(--line-dark); }
+.svc:hover .num-tag{ color:rgba(232,52,28,.5); }
+
+/* ── BIG ACCOUNTS (dark feature) ─────────────────────────────────────── */
+.accounts{ background:linear-gradient(180deg, var(--ink) 0%, #08090c 100%); position:relative; overflow:hidden; }
+.accounts .ghostword{
+  position:absolute; left:-3%; top:50%; transform:translateY(-50%); z-index:0;
+  font-family:var(--display); font-size:30vw; color:#fff; opacity:.02; pointer-events:none; white-space:nowrap;
+}
+.accounts-grid{ display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; position:relative; z-index:2; }
+.cap-list{ list-style:none; margin:40px 0 0; padding:0; }
+.cap-list li{ display:flex; gap:18px; padding:22px 0; border-bottom:1px solid var(--line-dark); }
+.cap-list li:last-child{ border-bottom:none; }
+.cap-list .cnum{ font-family:var(--display); font-size:18px; color:var(--red); flex:none; width:38px; padding-top:2px; }
+.cap-list h4{ font-size:17px; font-weight:800; letter-spacing:.02em; text-transform:uppercase; margin:0 0 5px; color:var(--bone); }
+.cap-list p{ margin:0; font-size:15px; color:#a7a39a; }
+.accounts .panel{
+  background:var(--ink-2); border:1px solid var(--line-dark); border-radius:8px; padding:44px; position:relative; overflow:hidden;
+}
+.accounts .panel .pstripe{ position:absolute; inset:0; background:repeating-linear-gradient(120deg, transparent 0 26px, rgba(232,52,28,.05) 26px 27px); pointer-events:none; }
+.accounts .panel .quote{ font-family:var(--serif); font-style:italic; font-size:25px; line-height:1.4; color:var(--bone); position:relative; }
+.accounts .panel .quote .q{ color:var(--red); font-size:54px; line-height:0; vertical-align:-12px; margin-right:4px; }
+.accounts .panel .tags{ display:flex; flex-wrap:wrap; gap:9px; margin-top:30px; position:relative; }
+.accounts .panel .tags span{ font-size:11.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding:8px 14px; border:1px solid var(--line-dark); border-radius:2px; color:#c9c6bc; }
+
+/* ── DECORATION METHODS (bone) ───────────────────────────────────────── */
+.on-bone{ background:var(--bone); color:var(--ink); }
+.on-bone .eyebrow{ color:var(--red-deep); }
+.on-bone h2.section-title{ color:var(--ink); }
+.methods{ display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--line-light); margin-top:62px; border:1px solid var(--line-light); }
+.method{ background:var(--paper); padding:40px; display:flex; gap:26px; transition:background .25s; }
+.method:hover{ background:#fff; }
+.method .mnum{ font-family:var(--display); font-size:42px; color:var(--bone-2); line-height:.8; flex:none; }
+.method:hover .mnum{ color:var(--red); }
+.method h3{ font-family:var(--display); font-weight:400; font-size:25px; text-transform:uppercase; margin:2px 0 10px; letter-spacing:.01em; }
+.method p{ margin:0; font-size:15px; color:#5a564d; }
+.method .best{ margin-top:14px; font-size:11.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--red-deep); }
+
+/* ── WHO WE OUTFIT ───────────────────────────────────────────────────── */
+.audience{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-top:60px; }
+.aud-card{
+  position:relative; border:1px solid var(--line-dark); border-radius:8px; padding:34px 28px 30px; overflow:hidden;
+  background:linear-gradient(180deg, var(--ink-2), var(--ink)); transition:transform .3s, border-color .3s;
+}
+.aud-card:hover{ transform:translateY(-6px); border-color:rgba(232,52,28,.5); }
+.aud-card .big{ font-family:var(--display); font-size:54px; line-height:.85; color:var(--red); }
+.aud-card h4{ font-family:var(--display); font-weight:400; font-size:22px; text-transform:uppercase; margin:18px 0 8px; letter-spacing:.01em; color:var(--bone); }
+.aud-card p{ margin:0; font-size:14px; color:#a7a39a; }
+
+/* ── PROCESS ─────────────────────────────────────────────────────────── */
+.process{ background:var(--ink-2); }
+.steps{ display:grid; grid-template-columns:repeat(4,1fr); gap:26px; margin-top:64px; }
+.step{ position:relative; padding-top:40px; }
+.step::before{ content:''; position:absolute; top:0; left:0; right:0; height:2px; background:var(--line-dark); }
+.step::after{ content:''; position:absolute; top:-4px; left:0; width:34%; height:10px; background:var(--red); border-radius:2px; }
+.step .sn{ font-family:var(--display); font-size:15px; color:var(--red); letter-spacing:.1em; }
+.step h4{ font-family:var(--display); font-weight:400; font-size:25px; text-transform:uppercase; margin:14px 0 10px; letter-spacing:.01em; color:var(--bone); }
+.step p{ margin:0; font-size:15px; color:#a7a39a; }
+
+/* ── TEAM STORES (split feature) ─────────────────────────────────────── */
+.stores-grid{ display:grid; grid-template-columns:1.05fr .95fr; gap:62px; align-items:center; }
+.stores-visual{
+  position:relative; aspect-ratio:4/3.2; border-radius:10px; overflow:hidden;
+  background:
+    radial-gradient(110% 90% at 80% 10%, rgba(232,52,28,.3), transparent 60%),
+    linear-gradient(160deg, var(--ink-3), var(--ink));
+  border:1px solid var(--line-dark); display:grid; place-items:center;
+}
+.stores-visual .grid-dots{ position:absolute; inset:0; background-image:radial-gradient(rgba(244,241,233,.10) 1px, transparent 1.4px); background-size:26px 26px; }
+.mock-card{
+  position:relative; width:74%; background:var(--bone); color:var(--ink); border-radius:10px; overflow:hidden; box-shadow:var(--shadow);
+  transform:rotate(-3deg); transition:transform .4s;
+}
+.stores-visual:hover .mock-card{ transform:rotate(-1deg) translateY(-6px); }
+.mock-card .mc-top{ background:var(--ink); color:#fff; padding:14px 18px; display:flex; align-items:center; justify-content:space-between; }
+.mock-card .mc-top b{ font-family:var(--display); font-size:15px; letter-spacing:.04em; }
+.mock-card .mc-top .pill{ font-size:9px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--gold-soft); border:1px solid rgba(244,241,233,.3); padding:3px 8px; border-radius:20px; }
+.mock-card .mc-body{ padding:18px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.mock-card .item{ background:#fff; border:1px solid var(--line-light); border-radius:7px; padding:12px; }
+.mock-card .item .ph{ height:54px; border-radius:5px; background:linear-gradient(135deg,#e9e4d8,#d9d3c4); margin-bottom:10px; position:relative; overflow:hidden; }
+.mock-card .item .ph::after{ content:''; position:absolute; inset:0; background:repeating-linear-gradient(120deg,transparent 0 9px, rgba(232,52,28,.12) 9px 10px); }
+.mock-card .item .t{ height:7px; width:80%; background:#cfc8b8; border-radius:3px; }
+.mock-card .item .t2{ height:7px; width:46%; background:var(--red); border-radius:3px; margin-top:6px; }
+.store-feats{ list-style:none; margin:34px 0 36px; padding:0; }
+.store-feats li{ display:flex; gap:13px; align-items:flex-start; padding:11px 0; font-size:16px; color:#cfccc2; }
+.store-feats li svg{ width:21px; height:21px; flex:none; margin-top:1px; color:var(--red); }
+
+/* ── CTA BAND ────────────────────────────────────────────────────────── */
+.cta-band{ position:relative; overflow:hidden; background:var(--red); color:#fff; padding:clamp(64px,8vw,108px) 0; }
+.cta-band .cta-stripes{ position:absolute; inset:0; background:repeating-linear-gradient(115deg, transparent 0 60px, rgba(255,255,255,.06) 60px 62px); }
+.cta-band .ghost{ position:absolute; right:-2%; top:50%; transform:translateY(-50%); font-family:var(--display); font-size:34vw; color:#fff; opacity:.08; pointer-events:none; }
+.cta-inner{ position:relative; z-index:2; display:flex; align-items:center; justify-content:space-between; gap:50px; flex-wrap:wrap; }
+.cta-inner h2{ font-family:var(--display); font-weight:400; font-size:clamp(40px,6.5vw,82px); line-height:.92; text-transform:uppercase; margin:0; max-width:14ch; }
+.cta-inner .right{ display:flex; flex-direction:column; gap:16px; min-width:280px; }
+.cta-inner .right p{ margin:0 0 6px; font-size:17px; opacity:.92; }
+
+/* ============================================================================
+   CONTACT / FOOTER
+   ========================================================================== */
+.contact{ background:#08090c; padding:clamp(72px,9vw,120px) 0 0; }
+.contact-grid{ display:grid; grid-template-columns:1.1fr 1fr; gap:64px; align-items:start; }
+.contact .info-row{ display:flex; gap:18px; padding:24px 0; border-bottom:1px solid var(--line-dark); align-items:flex-start; }
+.contact .info-row:first-of-type{ border-top:1px solid var(--line-dark); }
+.contact .info-row .ic{ width:24px; height:24px; flex:none; color:var(--red); margin-top:3px; }
+.contact .info-row .k{ font-size:11px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--steel); margin-bottom:6px; }
+.contact .info-row .v{ font-size:19px; color:var(--bone); font-weight:600; line-height:1.4; }
+.contact .info-row .v a:hover{ color:var(--red); }
+.contact .info-row .v small{ display:block; font-size:14px; font-weight:400; color:#9a968d; margin-top:3px; }
+
+.contact-card{ background:var(--ink-2); border:1px solid var(--line-dark); border-radius:10px; padding:40px; }
+.contact-card h3{ font-family:var(--display); font-weight:400; font-size:30px; text-transform:uppercase; margin:0 0 8px; letter-spacing:.01em; }
+.contact-card p.sm{ font-size:15px; color:#a7a39a; margin:0 0 26px; }
+.field{ margin-bottom:16px; }
+.field label{ display:block; font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--steel); margin-bottom:7px; }
+.field input, .field select, .field textarea{
+  width:100%; background:var(--ink); border:1px solid var(--line-dark); border-radius:4px; padding:13px 15px;
+  color:var(--bone); font-family:inherit; font-size:15px; transition:border-color .2s, box-shadow .2s;
+}
+.field input:focus, .field select:focus, .field textarea:focus{ outline:none; border-color:var(--red); box-shadow:0 0 0 3px rgba(232,52,28,.18); }
+.field textarea{ resize:vertical; min-height:96px; }
+.field-row{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.form-note{ font-size:12.5px; color:#7d796f; margin-top:14px; }
+
+footer{ margin-top:clamp(70px,8vw,110px); border-top:1px solid var(--line-dark); padding:40px 0 46px; }
+.foot-top{ display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap; padding-bottom:30px; border-bottom:1px solid var(--line-dark); }
+.foot-links{ display:flex; gap:26px; flex-wrap:wrap; }
+.foot-links a{ font-size:13px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; color:#9a968d; transition:color .2s; }
+.foot-links a:hover{ color:var(--red); }
+.foot-bottom{ display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap; margin-top:26px; }
+.foot-bottom p{ margin:0; font-size:13px; color:#6f6b62; }
+.foot-bottom .socials{ display:flex; gap:12px; }
+.foot-bottom .socials a{ width:38px; height:38px; border:1px solid var(--line-dark); border-radius:6px; display:grid; place-items:center; color:#9a968d; transition:.2s; }
+.foot-bottom .socials a:hover{ border-color:var(--red); color:var(--red); transform:translateY(-2px); }
+.foot-bottom .socials svg{ width:17px; height:17px; }
+
+/* ============================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (max-width:1080px){
+  .accounts-grid{ grid-template-columns:1fr; gap:46px; }
+  .stores-grid{ grid-template-columns:1fr; gap:44px; }
+  .contact-grid{ grid-template-columns:1fr; gap:46px; }
+  .stat .num{ font-size:clamp(40px,9vw,64px); }
+}
+@media (max-width:1160px){
+  .header-phone{ display:none; }
+  nav.primary{ gap:24px; }
+}
+@media (max-width:900px){
+  nav.primary, .header-cta .header-phone, .header-cta .btn{ display:none; }
+  .menu-toggle{ display:block; }
+  .svc-grid{ grid-template-columns:1fr 1fr; }
+  .methods{ grid-template-columns:1fr; }
+  .audience{ grid-template-columns:1fr 1fr; }
+  .steps{ grid-template-columns:1fr 1fr; gap:36px 26px; }
+  .stats-grid{ grid-template-columns:1fr 1fr; gap:40px 0; }
+  .stat{ padding:0 22px; }
+  .stat:nth-child(odd){ border-left:none; padding-left:0; }
+}
+@media (max-width:600px){
+  .wrap{ padding:0 20px; }
+  body{ font-size:16px; }
+  .svc-grid{ grid-template-columns:1fr; }
+  .audience{ grid-template-columns:1fr; }
+  .steps{ grid-template-columns:1fr; }
+  .field-row{ grid-template-columns:1fr; }
+  .hero{ padding:118px 0 96px; }
+  .hero .sub{ font-size:17px; }
+  .hero-foot .since{ display:none; }
+  .cta-inner{ flex-direction:column; align-items:flex-start; }
+  .foot-top{ flex-direction:column; align-items:flex-start; }
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important; }
+  .hero h1 .line > span{ transform:none; }
+  .reveal{ opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════ HEADER ════════════════════════════ -->
+<header id="header">
+  <div class="wrap bar">
+    <a class="logo" href="#top" aria-label="The Athletic Shop home">
+      <span class="mark">A</span>
+      <span class="name">
+        <b>The Athletic Shop</b>
+        <span>Chattanooga · Since 1973</span>
+      </span>
+    </a>
+    <nav class="primary" aria-label="Primary">
+      <a class="link" href="#services">What We Do</a>
+      <a class="link" href="#accounts">Big Accounts</a>
+      <a class="link" href="#methods">Decoration</a>
+      <a class="link" href="#stores">Team Stores</a>
+      <a class="link" href="#contact">Contact</a>
+    </nav>
+    <div class="header-cta">
+      <a class="header-phone" href="tel:+14238754905">
+        <svg viewBox="0 0 24 24"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .58 3.6 1 1 0 0 1-.24 1z"/></svg>
+        (423) 875-4905
+      </a>
+      <a class="btn btn-red" href="#contact">Outfit Your Team <span class="arr">→</span></a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="drawer" id="drawer">
+  <a href="#services">What We Do</a>
+  <a href="#accounts">Big Accounts</a>
+  <a href="#methods">Decoration</a>
+  <a href="#audience">Who We Outfit</a>
+  <a href="#stores">Team Stores</a>
+  <a href="#contact">Contact</a>
+  <a class="dphone" href="tel:+14238754905">(423) 875-4905</a>
+</div>
+
+<span id="top"></span>
+
+<!-- ════════════════════════════ HERO ════════════════════════════ -->
+<section class="hero">
+  <div class="stripes"></div>
+  <div class="halftone"></div>
+  <div class="ghost73">73</div>
+  <div class="wrap hero-inner">
+    <div class="tag"><span class="dot"></span> Chattanooga's Team Sports Authority</div>
+    <h1>
+      <span class="line"><span>Built</span></span>
+      <span class="line"><span>To <span class="red">Win.</span></span></span>
+      <span class="line"><span class="stroke">Since 1973.</span></span>
+    </h1>
+    <p class="sub">
+      For over <b>fifty years</b>, programs across the Southeast have trusted us to outfit their teams —
+      from youth leagues to college athletics. <b>Custom uniforms, in-house decoration, and 200+ brands</b>,
+      delivered at the scale your biggest accounts demand.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-red" href="#contact">Start Your Order <span class="arr">→</span></a>
+      <a class="btn btn-ghost" href="#services">See What We Do</a>
+    </div>
+  </div>
+  <div class="wrap hero-foot">
+    <div class="since">Outfitting champions for half a century.</div>
+    <div class="scroll">Scroll <span class="ln"></span></div>
+  </div>
+</section>
+
+<!-- ════════════════════════════ BRAND MARQUEE ════════════════════════════ -->
+<div class="marquee-band">
+  <div class="wrap">
+    <div class="marquee-label">Authorized dealer · 200+ premium brands</div>
+  </div>
+  <div class="marquee" aria-hidden="true">
+    <div class="track" id="brandTrack">
+      <span class="brand">adidas</span><span class="brand">Under Armour</span><span class="brand">Nike</span>
+      <span class="brand">Holloway</span><span class="brand">Augusta</span><span class="brand">Badger</span>
+      <span class="brand">Champion</span><span class="brand">Russell</span><span class="brand">Rawlings</span>
+      <span class="brand">Mizuno</span><span class="brand">New Balance</span><span class="brand">Wilson</span>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════ STATS ════════════════════════════ -->
+<section class="stats" id="stats">
+  <div class="wrap stats-grid">
+    <div class="stat reveal">
+      <div class="num"><span class="count" data-to="50">0</span><span class="suf">+</span></div>
+      <div class="lab"><b>Years in business</b><br>Serving teams since 1973</div>
+    </div>
+    <div class="stat reveal" data-d="1">
+      <div class="num"><span class="count" data-to="200">0</span><span class="suf">+</span></div>
+      <div class="lab"><b>Apparel brands</b><br>adidas, Under Armour &amp; more</div>
+    </div>
+    <div class="stat reveal" data-d="2">
+      <div class="num"><span class="count" data-to="5">0</span><span class="suf">×</span></div>
+      <div class="lab"><b>In-house methods</b><br>Print · Embroidery · Sublimation</div>
+    </div>
+    <div class="stat reveal" data-d="3">
+      <div class="num">All</div>
+      <div class="lab"><b>Sports &amp; team sizes</b><br>Youth leagues to colleges</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════ WHAT WE DO ════════════════════════════ -->
+<section class="block" id="services">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">What We Do</span>
+      <h2 class="section-title">One shop.<br><span class="accent">Every</span> piece of the kit.</h2>
+      <p class="lede">From the first design mockup to the final box on your loading dock, everything happens under one roof — so your order stays fast, consistent, and on-deadline.</p>
+    </div>
+
+    <div class="svc-grid">
+      <div class="svc reveal">
+        <span class="num-tag">01</span>
+        <div class="ico"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="M18 6l6 4 6-4 8 6-5 7-3-2v17H18V17l-3 2-5-7z"/></svg></div>
+        <h3>Custom Uniforms</h3>
+        <p>Traditional and fully sublimated uniforms for every sport — built to your colors, numbers, and roster, with consistent fit across the whole program.</p>
+      </div>
+      <div class="svc reveal" data-d="1">
+        <span class="num-tag">02</span>
+        <div class="ico"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="11" width="34" height="26" rx="2"/><path d="M7 19h34M14 27h8M14 31h14"/></svg></div>
+        <h3>Screen Printing</h3>
+        <p>Our bread and butter. High-volume, color-true screen printing that holds up wash after wash — the backbone of thousands of orders a year.</p>
+      </div>
+      <div class="svc reveal" data-d="2">
+        <span class="num-tag">03</span>
+        <div class="ico"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="15"/><path d="M24 9v30M9 24h30M14 14l20 20M34 14L14 34"/></svg></div>
+        <h3>Embroidery &amp; Tackle Twill</h3>
+        <p>Premium stitched logos, lettering, and tackle-twill numbering for jackets, polos, caps, and sideline gear that need to look the part.</p>
+      </div>
+      <div class="svc reveal">
+        <span class="num-tag">04</span>
+        <div class="ico"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 30l9-18 5 10 4-6 10 14z"/><path d="M7 38h34"/></svg></div>
+        <h3>DTF Transfers</h3>
+        <p>Direct-to-film transfers for full-color detail, small runs, and quick-turn add-ons — names, numbers, and intricate art with no minimums.</p>
+      </div>
+      <div class="svc reveal" data-d="1">
+        <span class="num-tag">05</span>
+        <div class="ico"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 6l4 6h8l-6 6 2 8-8-4-8 4 2-8-6-6h8z"/><path d="M14 40h20"/></svg></div>
+        <h3>Equipment &amp; Sideline</h3>
+        <p>Balls, bags, training gear, coaches' apparel and sideline kit — the full equipment list, sourced and decorated alongside your uniforms.</p>
+      </div>
+      <div class="svc reveal" data-d="2">
+        <span class="num-tag">06</span>
+        <div class="ico"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 12V9a8 8 0 0 1 16 0v3"/><rect x="9" y="12" width="30" height="28" rx="3"/><path d="M24 23v6"/></svg></div>
+        <h3>Corporate &amp; Spirit Wear</h3>
+        <p>Branded workwear, company-team apparel, fan and spirit wear, and custom online stores — the same craftsmanship, off the field.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════ BIG ACCOUNTS ════════════════════════════ -->
+<section class="block accounts" id="accounts">
+  <div class="ghostword">SCALE</div>
+  <div class="wrap accounts-grid">
+    <div>
+      <div class="section-head reveal">
+        <span class="eyebrow gold">Built For Big Accounts</span>
+        <h2 class="section-title">When the order is <span class="accent">enormous,</span> we don't blink.</h2>
+        <p class="lede">Outfitting a whole school district, a multi-site league, or a corporate rollout is a different game than a single team. Fifty years in, it's the game we play best.</p>
+      </div>
+      <ul class="cap-list">
+        <li class="reveal"><span class="cnum">01</span><div><h4>Dedicated Account Reps</h4><p>One point of contact who knows your programs, your colors, and your calendar — not a ticket queue.</p></div></li>
+        <li class="reveal" data-d="1"><span class="cnum">02</span><div><h4>In-House Art Department</h4><p>Logos digitized once, archived forever, and reproduced identically across every order and every season.</p></div></li>
+        <li class="reveal" data-d="2"><span class="cnum">03</span><div><h4>Volume Capacity</h4><p>Print, embroidery, and sublimation under one roof means thousands of pieces moved without bottlenecks.</p></div></li>
+        <li class="reveal" data-d="3"><span class="cnum">04</span><div><h4>Deadlines That Hold</h4><p>Season openers don't move. Neither do we. Production is scheduled backward from your hard date.</p></div></li>
+      </ul>
+    </div>
+    <div class="panel reveal" data-d="1">
+      <div class="pstripe"></div>
+      <p class="quote"><span class="q">“</span>Big enough to handle the volume, close enough to still pick up the phone. That's the whole job.</p>
+      <div class="tags">
+        <span>School Districts</span><span>Athletic Departments</span><span>Youth Leagues</span>
+        <span>Colleges</span><span>Corporate Rollouts</span><span>Tournament Series</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════ DECORATION METHODS ════════════════════════════ -->
+<section class="block on-bone" id="methods">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Decoration, Mastered</span>
+      <h2 class="section-title">The right method<br>for the right job.</h2>
+      <p class="lede">Most shops do one thing. We run every major decoration method in-house — which means we recommend what's actually best for your garment, art, and quantity, not just what we happen to own.</p>
+    </div>
+    <div class="methods">
+      <div class="method reveal"><span class="mnum">01</span><div><h3>Screen Printing</h3><p>The gold standard for volume. Bold, opaque, durable color on tees, jerseys, and spirit wear — unbeatable cost per piece at scale.</p><div class="best">Best for · high-quantity tees &amp; jerseys</div></div></div>
+      <div class="method reveal" data-d="1"><span class="mnum">02</span><div><h3>Embroidery</h3><p>Stitched dimension and a premium feel. Ideal for polos, caps, jackets, and bags where logos need to look sharp and last for years.</p><div class="best">Best for · polos, caps, outerwear</div></div></div>
+      <div class="method reveal"><span class="mnum">03</span><div><h3>Sublimation</h3><p>Dye fused into the fabric for full-coverage, all-over designs that never crack or peel. The look modern teams ask for by name.</p><div class="best">Best for · custom game uniforms</div></div></div>
+      <div class="method reveal" data-d="1"><span class="mnum">04</span><div><h3>Tackle Twill &amp; DTF</h3><p>Sewn-on twill numbers for a classic varsity look, plus direct-to-film transfers for full-color detail and fast, no-minimum add-ons.</p><div class="best">Best for · numbering &amp; quick-turn art</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════ WHO WE OUTFIT ════════════════════════════ -->
+<section class="block" id="audience">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Who We Outfit</span>
+      <h2 class="section-title">Every level.<br>Every <span class="accent">season.</span></h2>
+      <p class="lede">From a first-year rec league to a college program with a legacy to protect — the standard doesn't change.</p>
+    </div>
+    <div class="audience">
+      <div class="aud-card reveal"><div class="big">01</div><h4>Youth Leagues</h4><p>Rec and travel teams kitted out fast, affordably, and looking like the big leagues.</p></div>
+      <div class="aud-card reveal" data-d="1"><div class="big">02</div><h4>Schools</h4><p>Middle and high school programs, every sport, athletics to band to spirit wear.</p></div>
+      <div class="aud-card reveal" data-d="2"><div class="big">03</div><h4>Colleges</h4><p>Higher-volume programs that need consistency, brand control, and reliability.</p></div>
+      <div class="aud-card reveal" data-d="3"><div class="big">04</div><h4>Corporate</h4><p>Company teams, branded workwear, events, and online stores for staff and fans.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════ PROCESS ════════════════════════════ -->
+<section class="block process" id="process">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow gold">How It Works</span>
+      <h2 class="section-title">Simple to order.<br>Serious about delivery.</h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="sn">STEP 01</div><h4>Consult</h4><p>Tell us your sport, sizes, colors, and deadline. We help you spec the right garments and brands.</p></div>
+      <div class="step reveal" data-d="1"><div class="sn">STEP 02</div><h4>Design</h4><p>Our art team mocks up your uniforms and decoration — you approve every detail before we print a thread.</p></div>
+      <div class="step reveal" data-d="2"><div class="sn">STEP 03</div><h4>Produce</h4><p>Printing, embroidery, and sublimation run in-house, scheduled backward from your hard date.</p></div>
+      <div class="step reveal" data-d="3"><div class="sn">STEP 04</div><h4>Deliver</h4><p>Packed, checked, and delivered on time — sorted by team or player when you need it that way.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════ TEAM STORES ════════════════════════════ -->
+<section class="block" id="stores">
+  <div class="wrap stores-grid">
+    <div class="stores-visual reveal">
+      <div class="grid-dots"></div>
+      <div class="mock-card">
+        <div class="mc-top"><b>EAGLES TEAM STORE</b><span class="pill">Live</span></div>
+        <div class="mc-body">
+          <div class="item"><div class="ph"></div><div class="t"></div><div class="t2"></div></div>
+          <div class="item"><div class="ph"></div><div class="t"></div><div class="t2"></div></div>
+          <div class="item"><div class="ph"></div><div class="t"></div><div class="t2"></div></div>
+          <div class="item"><div class="ph"></div><div class="t"></div><div class="t2"></div></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="section-head reveal" data-d="1">
+        <span class="eyebrow">Online Team Stores</span>
+        <h2 class="section-title">Your own store,<br>up in days.</h2>
+        <p class="lede">Skip the order forms and the cash collection. We build your program a branded online shop — players, parents, and fans order direct, and we handle the rest.</p>
+      </div>
+      <ul class="store-feats reveal" data-d="2">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Custom-branded storefront in your team's colors</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Players &amp; parents order and pay online — no spreadsheets</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Bulk-sorted delivery or individual fulfillment</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Optional fundraising margin built into every item</li>
+      </ul>
+      <a class="btn btn-red reveal" data-d="3" href="#contact">Launch a Team Store <span class="arr">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════ CTA BAND ════════════════════════════ -->
+<section class="cta-band">
+  <div class="cta-stripes"></div>
+  <div class="ghost">73</div>
+  <div class="wrap cta-inner">
+    <h2 class="reveal">Let's outfit<br>your team.</h2>
+    <div class="right reveal" data-d="1">
+      <p>Tell us your sport, your sizes, and your deadline. We'll take it from there — the way we have since 1973.</p>
+      <a class="btn btn-dark" href="#contact">Start Your Order <span class="arr">→</span></a>
+      <a class="btn btn-ghost" style="border-color:rgba(255,255,255,.5); color:#fff;" href="tel:+14238754905">Call (423) 875-4905</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════ CONTACT ════════════════════════════ -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div>
+        <div class="section-head reveal">
+          <span class="eyebrow">Get In Touch</span>
+          <h2 class="section-title">Come by the shop<br>or send your roster.</h2>
+        </div>
+        <div class="reveal" data-d="1">
+          <div class="info-row">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <div><div class="k">Visit Us</div><div class="v">1211 Latta St<small>Chattanooga, TN 37406</small></div></div>
+          </div>
+          <div class="info-row">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .58 3.6 1 1 0 0 1-.24 1z"/></svg>
+            <div><div class="k">Call</div><div class="v"><a href="tel:+14238754905">(423) 875-4905</a></div></div>
+          </div>
+          <div class="info-row">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            <div><div class="k">Email</div><div class="v"><a href="mailto:Sales@TheAthleticShop.com">Sales@TheAthleticShop.com</a></div></div>
+          </div>
+          <div class="info-row">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+            <div><div class="k">Hours</div><div class="v">Mon – Fri · 9:30 AM – 5:30 PM<small>Saturday &amp; Sunday — Closed</small></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-card reveal" data-d="2">
+        <h3>Request a Quote</h3>
+        <p class="sm">Tell us about your team and we'll get right back to you. The more detail, the faster we can spec it.</p>
+        <form id="quoteForm" onsubmit="return false;">
+          <div class="field-row">
+            <div class="field"><label for="qname">Name</label><input id="qname" type="text" placeholder="Your name" required></div>
+            <div class="field"><label for="qorg">Team / Organization</label><input id="qorg" type="text" placeholder="Eagles Baseball"></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label for="qemail">Email</label><input id="qemail" type="email" placeholder="you@email.com" required></div>
+            <div class="field"><label for="qphone">Phone</label><input id="qphone" type="tel" placeholder="(423) 000-0000"></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label for="qsport">Sport</label><input id="qsport" type="text" placeholder="Baseball, soccer…"></div>
+            <div class="field"><label for="qservice">I need</label>
+              <select id="qservice">
+                <option>Custom uniforms</option>
+                <option>Screen printing</option>
+                <option>Embroidery</option>
+                <option>Sublimation</option>
+                <option>Equipment &amp; sideline</option>
+                <option>An online team store</option>
+                <option>Corporate / spirit wear</option>
+                <option>Not sure yet — help me</option>
+              </select>
+            </div>
+          </div>
+          <div class="field"><label for="qmsg">Details</label><textarea id="qmsg" placeholder="Roughly how many pieces, sizes, colors, and your deadline…"></textarea></div>
+          <button class="btn btn-red" type="submit" style="width:100%; justify-content:center;" id="quoteBtn">Send Request <span class="arr">→</span></button>
+          <p class="form-note" id="formNote">Prefer to talk it through? Call <a href="tel:+14238754905" style="color:var(--gold-soft);">(423) 875-4905</a> — Mon–Fri, 9:30–5:30.</p>
+        </form>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="foot-top">
+        <a class="logo" href="#top">
+          <span class="mark">A</span>
+          <span class="name"><b>The Athletic Shop</b><span>Chattanooga · Since 1973</span></span>
+        </a>
+        <nav class="foot-links" aria-label="Footer">
+          <a href="#services">What We Do</a>
+          <a href="#accounts">Big Accounts</a>
+          <a href="#methods">Decoration</a>
+          <a href="#stores">Team Stores</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </div>
+      <div class="foot-bottom">
+        <p>© <span id="year">2026</span> The Athletic Shop · 1211 Latta St, Chattanooga, TN 37406 · Outfitting champions since 1973.</p>
+        <div class="socials">
+          <a href="https://www.facebook.com/rbathleticshop/" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0 0 22 12z"/></svg>
+          </a>
+          <a href="mailto:Sales@TheAthleticShop.com" aria-label="Email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+          </a>
+          <a href="tel:+14238754905" aria-label="Phone">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .58 3.6 1 1 0 0 1-.24 1z"/></svg>
+          </a>
+        </div>
+      </div>
+    </footer>
+  </div>
+</section>
+
+<script>
+/* ── header scroll state ──────────────────────────────────────────────── */
+const header = document.getElementById('header');
+const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 24);
+onScroll();
+window.addEventListener('scroll', onScroll, { passive:true });
+
+/* ── mobile drawer ────────────────────────────────────────────────────── */
+const toggle = document.getElementById('menuToggle');
+const drawer = document.getElementById('drawer');
+const setMenu = (open) => {
+  drawer.classList.toggle('open', open);
+  toggle.setAttribute('aria-expanded', String(open));
+  document.body.style.overflow = open ? 'hidden' : '';
+};
+toggle.addEventListener('click', () => setMenu(!drawer.classList.contains('open')));
+drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+
+/* ── reveal on scroll ─────────────────────────────────────────────────── */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold:0.12, rootMargin:'0px 0px -8% 0px' });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ── animated counters ────────────────────────────────────────────────── */
+const counted = new WeakSet();
+const countIO = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting || counted.has(e.target)) return;
+    counted.add(e.target);
+    const node = e.target, to = +node.dataset.to, dur = 1300, t0 = performance.now();
+    const tick = (now) => {
+      const p = Math.min(1, (now - t0) / dur);
+      const eased = 1 - Math.pow(1 - p, 3);
+      node.textContent = Math.round(to * eased);
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  });
+}, { threshold:0.6 });
+document.querySelectorAll('.count').forEach(el => countIO.observe(el));
+
+/* ── duplicate marquee for seamless loop ──────────────────────────────── */
+const track = document.getElementById('brandTrack');
+if (track) track.innerHTML += track.innerHTML;
+
+/* ── quote form (demo handler) ────────────────────────────────────────── */
+const form = document.getElementById('quoteForm');
+if (form) form.addEventListener('submit', () => {
+  const note = document.getElementById('formNote');
+  const btn = document.getElementById('quoteBtn');
+  btn.innerHTML = 'Request sent ✓';
+  btn.style.background = 'var(--gold)';
+  btn.style.color = 'var(--ink)';
+  note.innerHTML = "Thanks — we'll be in touch shortly. For anything urgent, call <a href='tel:+14238754905' style='color:var(--gold-soft)'>(423) 875-4905</a>.";
+  form.reset();
+});
+
+/* ── year ─────────────────────────────────────────────────────────────── */
+document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
