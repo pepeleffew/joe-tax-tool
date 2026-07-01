@@ -3198,12 +3198,11 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
       </div>
 
       <div class="coach-card reveal d2">
-        <div class="coach-photo-area">
-          <svg class="coach-silhouette" viewBox="0 0 200 200" aria-hidden="true">
-            <circle cx="100" cy="66" r="34" fill="#4a6fa5"/>
-            <path d="M40 190c0-38 27-64 60-64s60 26 60 64Z" fill="#4a6fa5"/>
-          </svg>
-          <div class="coach-photo-badge">Photo Coming Soon</div>
+        <div class="coach-photo-area coach-photos">
+          <img class="coach-shot" src="assets/coach-lacourse-bat.jpg" alt="Michelle LaCourse batting for UTC Chattanooga softball" loading="lazy" decoding="async" />
+          <img class="coach-shot" src="assets/coach-lacourse-field.jpg" alt="Michelle LaCourse fielding for UTC Chattanooga softball" loading="lazy" decoding="async" />
+          <img class="coach-shot" src="assets/coach-lacourse-pitch.jpg" alt="Michelle LaCourse pitching for UTC Chattanooga softball" loading="lazy" decoding="async" />
+          <div class="coach-photo-caption">UTC Chattanooga · 2× SoCon Player of the Year</div>
           <div class="coach-sport-badge">Softball</div>
         </div>
         <div class="coach-body">
@@ -4571,6 +4570,20 @@ textarea:focus-visible,[tabindex]:focus-visible,.faq-question:focus-visible,.tca
 /* ── Contrast: lift secondary text to WCAG AA on dark backgrounds ── */
 :root{ --cream-dim:#d6cebf; --steel-lt:#aecbe9; }
 .author-meta,.step-desc,.fpg-desc{color:#c9d2de;}
+
+/* ── Coach action-photo montage (hitter · fielder · pitcher) ── */
+.coach-photos{display:flex;align-items:stretch;justify-content:stretch;gap:2px;}
+.coach-photos .coach-shot{
+  flex:1;min-width:0;height:100%;object-fit:cover;object-position:center 32%;display:block;
+  cursor:zoom-in;filter:saturate(1.05);transition:transform .55s cubic-bezier(.16,.84,.34,1),filter .4s ease;
+}
+.coach-photos .coach-shot:nth-child(2){object-position:center 42%;}
+.coach-photos .coach-shot:hover{transform:scale(1.05);filter:saturate(1.12) brightness(1.04);}
+.coach-photo-caption{
+  position:absolute;bottom:0;left:0;right:0;z-index:2;padding:26px 14px 11px;pointer-events:none;
+  background:linear-gradient(0deg,rgba(5,13,26,.94),rgba(5,13,26,.4) 55%,transparent);
+  font-family:var(--font-cond);text-transform:uppercase;letter-spacing:.13em;font-weight:700;font-size:12px;color:var(--steel-lt);
+}
 @media (min-width:861px){ .mobile-cta-bar,.sticky-cta,.sticky-book-wrap{display:none !important;} }
 </style>
 <script>
@@ -4614,7 +4627,7 @@ textarea:focus-visible,[tabindex]:focus-visible,.faq-question:focus-visible,.tca
   }
 
   // ── Facility lightbox ─────────────────────────────────────────
-  var imgs=[].slice.call(document.querySelectorAll('.fpg-main img,.fpg-thumb img,.fext-photo img'));
+  var imgs=[].slice.call(document.querySelectorAll('.fpg-main img,.fpg-thumb img,.fext-photo img,.coach-shot'));
   if(imgs.length){
     var lb=document.createElement('div');lb.className='sz-lightbox';
     lb.innerHTML='<button class="sz-lightbox-close" aria-label="Close">&times;</button>'+
