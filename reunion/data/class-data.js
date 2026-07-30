@@ -1234,7 +1234,10 @@ window.CLASS_DATA = {
    "status": "memory",
    "photoThen": "assets/img/then/6146146.jpg",
    "photoMem": "assets/img/mem/6146146.jpg",
-   "passedYear": "1993"
+   "passedYear": "1993",
+   "memGallery": [
+    "assets/img/mem/6146146-life-1.jpg"
+   ]
   },
   {
    "id": "6146147",
@@ -1940,7 +1943,12 @@ window.CLASS_DATA = {
    "id": "6146463",
    "name": "Thomas Morgan",
    "status": "memory",
-   "passedYear": "2012"
+   "passedYear": "2012",
+   "photoMem": "assets/img/mem/6146463.jpg",
+   "memGallery": [
+    "assets/img/mem/6146463-life-1.jpg",
+    "assets/img/mem/6146463-life-2.jpg"
+   ]
   },
   {
    "id": "6146234",
@@ -2517,7 +2525,10 @@ window.CLASS_DATA = {
    "college": "No",
    "photoThen": "assets/img/then/6146300.jpg",
    "photoMem": "assets/img/mem/6146300.jpg",
-   "passedYear": "2014"
+   "passedYear": "2014",
+   "memGallery": [
+    "assets/img/mem/6146300-life-1.jpg"
+   ]
   },
   {
    "id": "6146461",
@@ -2607,7 +2618,15 @@ window.CLASS_DATA = {
    "id": "6146457",
    "name": "Jimmy Stamey",
    "status": "memory",
-   "passedYear": "1989"
+   "passedYear": "1989",
+   "photoMem": "assets/img/mem/6146457.jpg",
+   "memGallery": [
+    "assets/img/mem/6146457-life-1.jpg",
+    "assets/img/mem/6146457-life-2.jpg",
+    "assets/img/mem/6146457-life-3.jpg",
+    "assets/img/mem/6146457-life-4.jpg",
+    "assets/img/mem/6146457-life-5.jpg"
+   ]
   },
   {
    "id": "6146315",

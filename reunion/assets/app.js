@@ -98,11 +98,24 @@
     if (m.comments) html += '<div class="fld"><span>Life Since</span><p>' + esc(m.comments) + '</p></div>';
     if (m.homepage) html += '<div class="fld"><span>Website</span><div><a href="' + esc(m.homepage) + '" target="_blank" rel="noopener">' + esc(m.homepage) + '</a></div></div>';
     if (m.obituaryUrl) html += '<div class="fld"><span>Obituary</span><div><a href="' + esc(m.obituaryUrl) + '" target="_blank" rel="noopener">Read remembrance</a></div></div>';
+    if (m.memGallery && m.memGallery.length) {
+      var fn = String(m.name || "").split(" ")[0];
+      html += '<div class="fld"><span>Remembering ' + esc(fn) + '</span><div class="thumbs">' +
+        m.memGallery.map(function (g) { return '<img src="' + esc(g) + '" loading="lazy" alt="">'; }).join("") + '</div></div>';
+    }
     if (m.gallery && m.gallery.length > 1) {
       html += '<div class="fld"><span>Photos</span><div class="thumbs">' +
         m.gallery.map(function (g) { return '<img src="' + esc(g) + '" loading="lazy" alt="">'; }).join("") + '</div></div>';
     }
     modalBody.innerHTML = html;
+    // Make any thumbnail open the lightbox.
+    var thumbs = $$(".thumbs img", modalBody);
+    thumbs.forEach(function (img, i) {
+      img.style.cursor = "zoom-in";
+      img.addEventListener("click", function () {
+        openLightbox(thumbs.map(function (t) { return { src: t.src, who: m.name }; }), i);
+      });
+    });
     modal.classList.add("open");
     document.body.style.overflow = "hidden";
   }

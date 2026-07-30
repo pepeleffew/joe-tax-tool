@@ -13,6 +13,19 @@ appropriate profile fields are kept.
 import csv, os, re, json, shutil, unicodedata, collections, html
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Portraits & life photos recovered from the In Memory PDF, keyed by
+# normalized "lastname|firstname". Files live in build/mem_photos/.
+MEM_EXTRAS = {
+    "morgan|thomas": {"portrait": "thomas-morgan.jpg",
+                      "gallery": ["thomas-morgan.jpg", "thomas-morgan-2.jpg"]},
+    "stamey|jimmy": {"portrait": "jimmy-stamey.jpg",
+                     "gallery": ["jimmy-stamey.jpg", "jimmy-stamey-2.jpg",
+                                 "jimmy-stamey-candid-1.jpg", "jimmy-stamey-candid-2.jpg",
+                                 "jimmy-stamey-candid-3.jpg"]},
+    "grey|anita": {"gallery": ["anita-grey.jpg"]},
+    "smithperry|crystal": {"gallery": ["crystal-smith-perry.jpg"]},
+}
 SRC_CSV = os.environ.get("CSV_PATH")
 PH = os.path.join(ROOT, "assets", "photos")          # extracted source photos
 IMG = os.path.join(ROOT, "assets", "img")            # clean output photos
@@ -209,6 +222,17 @@ def build():
             ou = clean(r.get("Obituary URL"))
             if ou:
                 p["obituaryUrl"] = ou
+            # Curated portraits & life photos recovered from the In Memory PDF.
+            extra = next((MEM_EXTRAS[k] for k in keys if k in MEM_EXTRAS), None)
+            if extra:
+                mp = os.path.join(ROOT, "build", "mem_photos")
+                if extra.get("portrait") and "photoMem" not in p:
+                    p["photoMem"] = copy_img(os.path.join(mp, extra["portrait"]), f"assets/img/mem/{mid}.jpg")
+                    stats["mem_pdf"] = stats.get("mem_pdf", 0) + 1
+                gal = [copy_img(os.path.join(mp, fn), f"assets/img/mem/{mid}-life-{i}.jpg")
+                       for i, fn in enumerate(extra.get("gallery", []), 1)]
+                if gal:
+                    p["memGallery"] = gal
 
         if status == "memory":
             stats["memory"] += 1
