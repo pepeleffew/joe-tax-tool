@@ -1,0 +1,20 @@
+# Netlify config for the Soddy-Daisy Class of 1993 site.
+# In the Netlify UI, set this site's "Base directory" to: reunion
+# (so Netlify reads THIS file, not the tax-tool config at the repo root).
+
+[build]
+  publish = "."
+  command = ""
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Long-cache the immutable photo assets.
+[[headers]]
+  for = "/assets/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

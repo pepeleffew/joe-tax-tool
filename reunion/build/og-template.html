@@ -1,0 +1,31 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+  *{margin:0;box-sizing:border-box}
+  html,body{width:1200px;height:630px;overflow:hidden}
+  .stage{width:1200px;height:630px;position:relative;
+    background:radial-gradient(900px 500px at 50% -140px,#16386a,#0b2340 60%);
+    font-family:Georgia,'Times New Roman',serif;color:#fff;
+    display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .logo{width:118px;height:118px;border-radius:26px;background:#0b2340;border:5px solid #c9a24a;
+    display:flex;align-items:center;justify-content:center;color:#c9a24a;font-weight:700;font-size:58px;letter-spacing:-3px;
+    box-shadow:0 10px 40px rgba(0,0,0,.4)}
+  .school{margin-top:26px;color:#c9a24a;font-family:Arial,Helvetica,sans-serif;font-weight:800;
+    letter-spacing:7px;font-size:24px;text-transform:uppercase}
+  .year{font-size:92px;font-weight:700;margin-top:6px;letter-spacing:-1px;text-shadow:0 4px 24px rgba(0,0,0,.35)}
+  .sub{margin-top:14px;color:#cdd7e6;font-family:Arial,Helvetica,sans-serif;font-size:23px;letter-spacing:2px}
+  .strip{position:absolute;bottom:0;left:0;right:0;height:120px;display:flex;gap:0;opacity:.5}
+  .strip img{height:120px;flex:1;object-fit:cover;filter:grayscale(.2)}
+  .strip::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,#0b2340 0%,rgba(11,35,64,.15) 55%,rgba(11,35,64,.6) 100%)}
+  .rule{width:150px;height:4px;background:#c9a24a;border-radius:3px;margin-top:22px}
+</style></head><body>
+  <div class="stage">
+    <div class="strip">
+      __IMGS__
+    </div>
+    <div class="logo">SD</div>
+    <div class="school">Soddy-Daisy High School</div>
+    <div class="year">Class of 1993</div>
+    <div class="rule"></div>
+    <div class="sub">Directory · Then &amp; Now · Reunions · In Memory</div>
+  </div>
+</body></html>
