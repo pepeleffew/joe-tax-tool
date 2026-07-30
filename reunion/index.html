@@ -12,7 +12,7 @@
   <header class="site">
     <div class="wrap nav">
       <div class="brand">
-        <div class="badge">'<span id="brand-year">93</span></div>
+        <img class="badge-img" src="assets/logo.svg" alt="Soddy-Daisy SD logo" width="40" height="40">
         <div><span id="brand-name">Class Reunion</span><small id="brand-sub"></small></div>
       </div>
       <nav class="tabs">
@@ -60,10 +60,10 @@
         <div><h2>Classmates</h2><p><span id="dir-count">0</span> shown</p></div>
       </div>
       <div class="toolbar">
-        <input id="dir-search" type="search" placeholder="Search by name, maiden name, or city…" aria-label="Search classmates">
-        <button class="chip dir-filter active" data-filter="active">Reconnected</button>
+        <input id="dir-search" type="search" placeholder="Search by name, maiden name, city, or job…" aria-label="Search classmates">
+        <button class="chip dir-filter active" data-filter="all">Everyone</button>
+        <button class="chip dir-filter" data-filter="active">Reconnected</button>
         <button class="chip dir-filter" data-filter="missing">Help Us Find</button>
-        <button class="chip dir-filter" data-filter="all">Everyone</button>
       </div>
       <div id="directory-grid" class="grid"></div>
     </div>
@@ -103,6 +103,13 @@
       <p>Made with care for our class. Data lives in <code>data/class-data.js</code>.</p>
     </div>
   </footer>
+
+  <div id="modal" class="modal" aria-hidden="true">
+    <div class="modal-card">
+      <button class="close" data-close aria-label="Close">×</button>
+      <div id="modal-body"></div>
+    </div>
+  </div>
 
   <script src="data/class-data.js"></script>
   <script src="assets/app.js"></script>

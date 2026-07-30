@@ -1,7 +1,7 @@
 /* Soddy-Daisy Class of 1993 — styles */
 :root {
-  --primary: #1f3a5f;
-  --accent: #c8a24a;
+  --primary: #0b2340;
+  --accent: #c9a24a;
   --bg: #f6f7f9;
   --surface: #ffffff;
   --surface-2: #eef1f5;
@@ -39,6 +39,7 @@ header.site {
 }
 .nav { display: flex; align-items: center; gap: 18px; height: 62px; }
 .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: .2px; }
+.brand .badge-img { border-radius: 9px; flex: none; display: block; }
 .brand .badge {
   width: 34px; height: 34px; border-radius: 9px; flex: none;
   background: linear-gradient(135deg, var(--primary), color-mix(in srgb, var(--primary) 55%, black));
@@ -143,7 +144,37 @@ section.view.active { display: block; animation: fade .35s ease; }
 .notice { background: color-mix(in srgb, var(--accent) 14%, var(--surface)); border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--border)); border-radius: 12px; padding: 14px 16px; margin-bottom: 22px; font-size: 14px; }
 footer.site { border-top: 1px solid var(--border); padding: 28px 0; color: var(--text-dim); font-size: 14px; text-align: center; }
 
+/* ---- Card pills ---- */
+.card { position: relative; cursor: pointer; }
+.pill { position: absolute; top: 10px; right: 10px; font-size: 10px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; padding: 3px 8px; border-radius: 20px; background: color-mix(in srgb, var(--accent) 22%, var(--surface)); color: var(--text); border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--border)); }
+.pill.find { background: color-mix(in srgb, #d97706 20%, var(--surface)); border-color: color-mix(in srgb, #d97706 45%, var(--border)); }
+.card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.tn { cursor: pointer; }
+
+/* ---- Modal ---- */
+.modal { position: fixed; inset: 0; z-index: 100; display: none; align-items: flex-start; justify-content: center; padding: 40px 16px; background: rgba(8,12,18,.6); backdrop-filter: blur(4px); overflow-y: auto; }
+.modal.open { display: flex; animation: fade .2s ease; }
+.modal-card { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; max-width: 620px; width: 100%; box-shadow: 0 24px 70px rgba(0,0,0,.4); position: relative; }
+.modal-card .close { position: absolute; top: 12px; right: 12px; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--border); background: var(--surface-2); color: var(--text); font-size: 18px; cursor: pointer; line-height: 1; z-index: 2; }
+#modal-body { padding: 26px; }
+.modal-head { display: flex; gap: 18px; align-items: center; margin-bottom: 8px; }
+.modal-photo { width: 96px; height: 96px; border-radius: 16px; object-fit: cover; border: 1px solid var(--border); flex: none; }
+.modal-head h3 { margin: 0 0 4px; font-size: 22px; }
+.mem-tag { display: inline-block; margin-top: 6px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--text-dim); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; }
+.mem-tag.find { color: #b45309; border-color: color-mix(in srgb,#d97706 40%,var(--border)); }
+.modal-tn { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 18px 0; }
+.modal-tn figure { margin: 0; position: relative; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+.modal-tn img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+.modal-tn figcaption { position: absolute; left: 8px; bottom: 8px; background: rgba(0,0,0,.6); color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 6px; text-transform: uppercase; letter-spacing: .5px; }
+.fld { margin-top: 16px; }
+.fld > span { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); font-weight: 700; margin-bottom: 4px; }
+.fld p { margin: 0; white-space: pre-wrap; }
+.thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px,1fr)); gap: 8px; }
+.thumbs img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 9px; border: 1px solid var(--border); }
+
 @media (max-width: 560px) {
   .nav { height: auto; padding: 10px 0; flex-wrap: wrap; }
   .nav .tabs { width: 100%; margin-left: 0; }
+  .modal { padding: 12px; }
+  .modal-head { flex-direction: column; text-align: center; }
 }
