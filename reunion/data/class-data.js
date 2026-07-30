@@ -616,7 +616,7 @@ window.CLASS_DATA = {
    "state": "TN",
    "occupation": "Team Leader at Blood Assurance, Hixson office",
    "spouse": "Ivan Shaw",
-   "children": "I have 3 step Children! Allisha, Ivan, &amp; Haley",
+   "children": "I have 3 step Children! Allisha, Ivan, & Haley",
    "homepage": "www.myinitials-inc.com/melissashaw",
    "photoThen": "assets/img/then/6146072.jpg"
   },
@@ -631,7 +631,7 @@ window.CLASS_DATA = {
    "spouse": "N/A",
    "children": "Sydney Brewer Born 2003",
    "college": "No",
-   "comments": "Oh life has been a crazy, scary, learning experience and has made me who I am. My past has been tearful yet full of laughter but I do not live there I live in the now. My daughter and I just enjoy day to day and try to get the best life has to offer. My thought is wake up every day knowing&quot; I am awesome and I own MY day&quot;",
+   "comments": "Oh life has been a crazy, scary, learning experience and has made me who I am. My past has been tearful yet full of laughter but I do not live there I live in the now. My daughter and I just enjoy day to day and try to get the best life has to offer. My thought is wake up every day knowing\" I am awesome and I own MY day\"",
    "photoThen": "assets/img/then/6146073.jpg"
   },
   {
@@ -1048,7 +1048,7 @@ window.CLASS_DATA = {
    "city": "Hixson",
    "state": "TN",
    "occupation": "Inside Sales",
-   "children": "Emily Snyder born 9/27/1999 &amp; Gillian Snyder born 2/24/2003",
+   "children": "Emily Snyder born 9/27/1999 & Gillian Snyder born 2/24/2003",
    "college": "Associate's",
    "photoThen": "assets/img/then/6146125.jpg"
   },
@@ -1112,7 +1112,7 @@ window.CLASS_DATA = {
    "spouse": "Rich Zellner",
    "children": "Rayne, born 2009",
    "college": "Bachelor's",
-   "comments": "After high school, I entered college and obtained my degree in Business Administration. I married my husband in 1995 and left the area at that time. Rich is an active duty member of the United States Navy, so we have lived in several places - Guam being the furthest from &quot;home&quot;! We have one daughter, Rayne. I have found that parenthood is the most challenging thing I have ever done, but it is also the most rewarding.",
+   "comments": "After high school, I entered college and obtained my degree in Business Administration. I married my husband in 1995 and left the area at that time. Rich is an active duty member of the United States Navy, so we have lived in several places - Guam being the furthest from \"home\"! We have one daughter, Rayne. I have found that parenthood is the most challenging thing I have ever done, but it is also the most rewarding.",
    "photoThen": "assets/img/then/6146132.jpg",
    "photoNow": "assets/img/gallery/6146132/001.jpg"
   },
@@ -1514,7 +1514,7 @@ window.CLASS_DATA = {
    "spouse": "Becki Hodge",
    "children": "Brianna, 1996 Christopher, 2003 Step Kids Tracy,1987 Devin,1993 Nick, 1994",
    "college": "No",
-   "comments": "Married over 17 years. Been in some low budget movies, acting, director, casting director,etc. I will list movies and such later when I have time to complete it. Here are a few. Jonezin 1999. short film Main actor. a guy who wake up and did not have any cigarettes Faith &amp; Asphalt 1999/2001 Played Street Preacher/homeless man. This is the only thing I can find on this film I was in Faith and Asphalt. Religious satire meets The Blair Witch Project. Released by a small production company, New Planet Pictures (world premier screened in Chattanooga, TN on Sunday May 27, 2001), the film is described as a pseudo-documentary of street preachers in Chattanooga. A series of vignettes depicting various combinations of simple-minded faith, psycho-pathology, and duplicity, each with its own humorous coda. The pseudo-documentary style, replete with intentional (?) movement of the microphone into the camera frame, interferes, I think, with some rather more serious points that might have been made. After all, the genius of the Witch Project is that it presents itself not as a clever contrivance, but as an actual documentary. The same thing might have been done here, since many of the actors were very convincing. Has some very fine moments, particularly a new version of the 10 commandments, embroidered on two pillows. See it if you want to feel the currents of new directions in film. 20Q http://www.imdb.com/title/tt1034375/ http://www.20qfilm.com/ Behold The Raven http://www.imdb.com/title/tt0409729/ http://www.amazon.com/Behold-The-Raven/dp/B004XM0Q3C Owned a few home based businesses at one time. Quixtar, Watkins, New planet Pictures, SpaceDriveFilms.",
+   "comments": "Married over 17 years. Been in some low budget movies, acting, director, casting director,etc. I will list movies and such later when I have time to complete it. Here are a few. Jonezin 1999. short film Main actor. a guy who wake up and did not have any cigarettes Faith & Asphalt 1999/2001 Played Street Preacher/homeless man. This is the only thing I can find on this film I was in Faith and Asphalt. Religious satire meets The Blair Witch Project. Released by a small production company, New Planet Pictures (world premier screened in Chattanooga, TN on Sunday May 27, 2001), the film is described as a pseudo-documentary of street preachers in Chattanooga. A series of vignettes depicting various combinations of simple-minded faith, psycho-pathology, and duplicity, each with its own humorous coda. The pseudo-documentary style, replete with intentional (?) movement of the microphone into the camera frame, interferes, I think, with some rather more serious points that might have been made. After all, the genius of the Witch Project is that it presents itself not as a clever contrivance, but as an actual documentary. The same thing might have been done here, since many of the actors were very convincing. Has some very fine moments, particularly a new version of the 10 commandments, embroidered on two pillows. See it if you want to feel the currents of new directions in film. 20Q http://www.imdb.com/title/tt1034375/ http://www.20qfilm.com/ Behold The Raven http://www.imdb.com/title/tt0409729/ http://www.amazon.com/Behold-The-Raven/dp/B004XM0Q3C Owned a few home based businesses at one time. Quixtar, Watkins, New planet Pictures, SpaceDriveFilms.",
    "photoThen": "assets/img/then/6146182.jpg",
    "photoNow": "assets/img/gallery/6146182/001.jpg",
    "gallery": [
@@ -1772,8 +1772,8 @@ window.CLASS_DATA = {
    "spouse": "Ashley Stull",
    "children": "Hailey Leffew, 11/16/2002 Dylan Leffew, 11/29/2007",
    "college": "Master's",
-   "story": "I can't narrow down one or even two great stories from school but what I do know is I am very proud to have made and remained great friends with a group of the best guys on the planet. Travis Beene, Ryan Blanks, Jon Elliott, and Clint Stanfield THANK YOU for being stand-up guys and impeccable friends. I can't narrow down to one story but the lyrics to one song certainly come to mind. &quot;Never stop to think 'What's in it for me?' or 'It's way too far'. They just show on up with their big old heart&quot;",
-   "comments": "Over the last 20 years I have completed my MBA, had two amazing children, and found the love of my life. It has certainly been a struggle and taken me the better part of the last 20 years to get my feet on the ground but I'm almost there. I find myself wondering frequently if this is really what it is suppose to feel like to be an &quot;adult&quot;. Yikes! Ashley and I have recently moved back to SD from ER and I hope to see a lot of you around the schools and ball fields with your little ones.",
+   "story": "I can't narrow down one or even two great stories from school but what I do know is I am very proud to have made and remained great friends with a group of the best guys on the planet. Travis Beene, Ryan Blanks, Jon Elliott, and Clint Stanfield THANK YOU for being stand-up guys and impeccable friends. I can't narrow down to one story but the lyrics to one song certainly come to mind. \"Never stop to think 'What's in it for me?' or 'It's way too far'. They just show on up with their big old heart\"",
+   "comments": "Over the last 20 years I have completed my MBA, had two amazing children, and found the love of my life. It has certainly been a struggle and taken me the better part of the last 20 years to get my feet on the ground but I'm almost there. I find myself wondering frequently if this is really what it is suppose to feel like to be an \"adult\". Yikes! Ashley and I have recently moved back to SD from ER and I hope to see a lot of you around the schools and ball fields with your little ones.",
    "photoThen": "assets/img/then/6145952.jpg",
    "photoNow": "assets/img/gallery/6145952/001.jpg"
   },

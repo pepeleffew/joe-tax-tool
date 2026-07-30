@@ -10,7 +10,7 @@ PRIVACY: street address, phone numbers, email, and full birth dates are
 intentionally NOT written to the public data file. City/State and reunion-
 appropriate profile fields are kept.
 """
-import csv, os, re, json, shutil, unicodedata, collections
+import csv, os, re, json, shutil, unicodedata, collections, html
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC_CSV = os.environ.get("CSV_PATH")
@@ -32,7 +32,11 @@ def first_tok(s):
     return p[0] if p and p[0] else ""
 
 def clean(s):
-    return re.sub(r"\s+", " ", (s or "").strip())
+    s = html.unescape(s or "")            # decode &quot; &amp; &#39; etc.
+    s = s.replace("\r\n", "\n").replace("\r", "\n")
+    s = re.sub(r"[ \t]+", " ", s)
+    s = re.sub(r"\n{3,}", "\n\n", s)
+    return s.strip()
 
 def person_keys(r):
     """Candidate match keys for a CSV person."""
