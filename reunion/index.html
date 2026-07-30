@@ -24,6 +24,9 @@
   <meta name="twitter:description" content="Reconnect with the Class of 1993 — directory, Then &amp; Now, reunion news, and In Memory.">
   <meta name="twitter:image" content="https://soddydaisyclassof1993.com/assets/og.png">
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap">
   <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
@@ -36,6 +39,7 @@
       <nav class="tabs">
         <button data-view="home" class="active">Home</button>
         <button data-view="classmates">Classmates</button>
+        <button data-view="yearbook">Yearbook</button>
         <button data-view="thennow">Then &amp; Now</button>
         <button data-view="memory">In Memory</button>
         <button data-view="reunion">Reunion</button>
@@ -46,28 +50,53 @@
   <!-- HOME -->
   <section id="view-home" class="view active">
     <div class="hero">
-      <div class="wrap">
-        <div class="kicker" id="hero-kicker"></div>
-        <h1 id="hero-title">Class Reunion</h1>
+      <div class="hero-mosaic" id="hero-mosaic" aria-hidden="true"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <img class="hero-logo" src="assets/logo.svg" alt="Soddy-Daisy SD logo">
+        <div class="kicker" id="hero-kicker">Soddy-Daisy High School · Trojans</div>
+        <h1>Class of <span class="gold">1993</span></h1>
         <p class="lead" id="hero-lead"></p>
         <div class="stats">
-          <div class="stat"><b id="stat-total">0</b><span>Classmates</span></div>
-          <div class="stat"><b id="stat-active">0</b><span>Reconnected</span></div>
-          <div class="stat"><b id="stat-memory">0</b><span>Remembered</span></div>
+          <div class="stat"><b id="stat-total" data-count="0">0</b><span>Classmates</span></div>
+          <div class="stat"><b id="stat-active" data-count="0">0</b><span>Reconnected</span></div>
+          <div class="stat"><b id="stat-memory" data-count="0">0</b><span>In Memory</span></div>
         </div>
-        <div style="margin-top:30px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap">
+        <div class="cta">
           <button class="btn" data-goto="classmates">Browse Classmates</button>
-          <button class="chip" data-goto="reunion">Reunion News</button>
+          <button class="btn ghost" data-goto="yearbook">Open the Yearbook</button>
+        </div>
+      </div>
+      <div class="scroll-cue" aria-hidden="true">▾</div>
+    </div>
+
+    <div class="band">
+      <div class="wrap">
+        <h2 class="reveal">Explore the Class</h2>
+        <p class="sub reveal">Thirty-plus years later — reconnect, remember, and relive senior year.</p>
+        <div class="features">
+          <article class="feature reveal" data-goto="classmates"><div class="ic">👥</div><h3>Directory</h3><p>Searchable roster with photos, hometowns, and life updates.</p></article>
+          <article class="feature reveal" data-goto="yearbook"><div class="ic">📖</div><h3>Yearbook</h3><p>Every senior portrait, one nostalgic wall of faces.</p></article>
+          <article class="feature reveal" data-goto="thennow"><div class="ic">📸</div><h3>Then &amp; Now</h3><p>Senior photos side-by-side with today.</p></article>
+          <article class="feature reveal" data-goto="memory"><div class="ic">🕊️</div><h3>In Memory</h3><p>Honoring the classmates we’ve lost.</p></article>
         </div>
       </div>
     </div>
-    <div class="wrap" style="padding-top:36px">
-      <div class="grid">
-        <article class="card"><div class="avatar" style="background:linear-gradient(135deg,var(--primary),var(--accent))">👥</div><div class="name">Classmate Directory</div><div class="bio">Searchable, mobile-friendly roster with photos and profiles.</div></article>
-        <article class="card"><div class="avatar" style="background:linear-gradient(135deg,var(--primary),var(--accent))">📸</div><div class="name">Then &amp; Now</div><div class="bio">Yearbook photos side-by-side with today.</div></article>
-        <article class="card"><div class="avatar" style="background:linear-gradient(135deg,var(--primary),var(--accent))">🕊️</div><div class="name">In Memory</div><div class="bio">A respectful place to remember classmates we’ve lost.</div></article>
-        <article class="card"><div class="avatar" style="background:linear-gradient(135deg,var(--primary),var(--accent))">🎉</div><div class="name">Reunion Hub</div><div class="bio">Event news, countdown, and past-reunion history.</div></article>
+
+    <div class="band alt">
+      <div class="wrap" style="text-align:center">
+        <h2 class="reveal">Next Reunion</h2>
+        <p class="sub reveal" id="home-reunion-blurb"></p>
+        <div class="reveal"><button class="btn" data-goto="reunion">See Reunion News</button></div>
       </div>
+    </div>
+  </section>
+
+  <!-- YEARBOOK -->
+  <section id="view-yearbook" class="view">
+    <div class="wrap">
+      <div class="section-head"><div><h2>The Yearbook</h2><p><span id="yb-count">0</span> senior portraits · hover a face, click to open their profile</p></div></div>
+      <div id="yearbook-wall" class="yearwall"></div>
     </div>
   </section>
 
@@ -118,7 +147,8 @@
 
   <footer class="site">
     <div class="wrap">
-      <p>Made with care for our class. Data lives in <code>data/class-data.js</code>.</p>
+      <img class="foot-logo" src="assets/logo.svg" alt="Soddy-Daisy SD logo">
+      <p><strong>Soddy-Daisy High School — Class of 1993</strong><br>Made with love for our class. Go Trojans. 💙💛</p>
     </div>
   </footer>
 

@@ -1,6 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" role="img" aria-label="Soddy-Daisy SD">
-  <rect x="4" y="4" width="92" height="92" rx="20" fill="#0b2340" stroke="#c9a24a" stroke-width="4"/>
-  <text x="50" y="50" text-anchor="middle" dominant-baseline="central"
-        font-family="Georgia, 'Times New Roman', serif" font-weight="700" font-size="46"
-        fill="#c9a24a" letter-spacing="-2">SD</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 132" width="120" height="132" role="img" aria-label="Soddy-Daisy SD">
+  <defs>
+    <style>
+      .fill{fill:#0b2340}
+      .edge{fill:none;stroke:#c9a24a;stroke-width:6;stroke-linejoin:round}
+    </style>
+  </defs>
+  <!-- D (behind, right) -->
+  <path class="fill" d="M54 14 h20 a38 52 0 0 1 0 104 h-20 v-22 h18 a17 30 0 0 0 0-60 h-18 z"/>
+  <!-- S (front, left) -->
+  <path class="fill" d="M78 40 a30 22 0 0 0-30-18 h-6 a26 22 0 0 0-2 44 h12 a8 7 0 0 1 0 14 h-8 a24 20 0 0 1-22-14 l20-9 a7 6 0 0 0 6 4 h4 a2 2 0 0 0 0-4 h-10 a30 26 0 0 1 2-58 h10 a34 26 0 0 1 30 20 z"/>
+  <path class="edge" d="M54 14 h20 a38 52 0 0 1 0 104 h-20 v-22 h18 a17 30 0 0 0 0-60 h-18 z"/>
+  <path class="edge" d="M78 40 a30 22 0 0 0-30-18 h-6 a26 22 0 0 0-2 44 h12 a8 7 0 0 1 0 14 h-8 a24 20 0 0 1-22-14 l20-9 a7 6 0 0 0 6 4 h4 a2 2 0 0 0 0-4 h-10 a30 26 0 0 1 2-58 h10 a34 26 0 0 1 30 20 z"/>
 </svg>

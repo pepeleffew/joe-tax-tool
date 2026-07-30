@@ -40,15 +40,40 @@
   var setText = function (sel, txt) { var e = $(sel); if (e) e.textContent = txt; };
   setText("#brand-name", site.school || "Class Reunion");
   setText("#brand-sub", site.town || "");
-  $("#hero-kicker").textContent = (site.town || "") + (site.mascot ? " · " + site.mascot : "");
-  $("#hero-title").textContent = fullTitle;
-  $("#hero-lead").textContent = site.tagline || "";
+  setText("#hero-kicker", (site.town || "") + (site.mascot ? " · " + site.mascot : ""));
+  setText("#hero-lead", site.tagline || "");
 
   var active = byStatus("active"), memory = byStatus("memory");
   var living = mates.filter(function (m) { return m.status !== "memory"; });
-  $("#stat-total").textContent = living.length;
-  $("#stat-active").textContent = active.length;
-  $("#stat-memory").textContent = memory.length;
+  var counts = { "#stat-total": living.length, "#stat-active": active.length, "#stat-memory": memory.length };
+  Object.keys(counts).forEach(function (sel) { var e = $(sel); if (e) e.setAttribute("data-count", counts[sel]); });
+
+  // Hero mosaic built from real yearbook faces.
+  (function buildMosaic() {
+    var wall = $("#hero-mosaic"); if (!wall) return;
+    var faces = mates.filter(function (m) { return m.photoThen; }).map(function (m) { return m.photoThen; });
+    for (var i = faces.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = faces[i]; faces[i] = faces[j]; faces[j] = t; }
+    var n = Math.min(faces.length, 80), html = "";
+    for (var k = 0; k < n; k++) html += '<img loading="lazy" alt="" src="' + esc(faces[k]) + '">';
+    wall.innerHTML = html;
+  })();
+
+  // Animated count-up.
+  function animateCounts() {
+    $$("[data-count]").forEach(function (el) {
+      var target = +el.getAttribute("data-count") || 0, start = null, dur = 1400;
+      function step(ts) { if (!start) start = ts; var p = Math.min((ts - start) / dur, 1);
+        el.textContent = Math.round((1 - Math.pow(1 - p, 3)) * target); if (p < 1) requestAnimationFrame(step); }
+      requestAnimationFrame(step);
+    });
+  }
+
+  // Reveal-on-scroll.
+  var io = ("IntersectionObserver" in window) ? new IntersectionObserver(function (ents) {
+    ents.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+  }, { threshold: 0.15 }) : null;
+  function bindReveals() { if (!io) { $$(".reveal").forEach(function (e) { e.classList.add("in"); }); return; }
+    $$(".reveal:not(.in)").forEach(function (e) { io.observe(e); }); }
 
   /* ---- Detail modal ---- */
   var modal = $("#modal"), modalBody = $("#modal-body");
@@ -156,8 +181,27 @@
     });
   } else { mem.innerHTML = '<div class="empty">No memorial entries.</div>'; }
 
+  /* ---- Yearbook wall ---- */
+  var ybPeople = mates.filter(function (m) { return m.photoThen; })
+    .sort(function (a, b) { return String(a.name.split(" ").slice(-1)).localeCompare(String(b.name.split(" ").slice(-1))); });
+  var wall = $("#yearbook-wall");
+  if (wall) {
+    setText("#yb-count", ybPeople.length);
+    wall.innerHTML = ybPeople.map(function (m, i) {
+      return '<figure class="yb" data-i="' + i + '" tabindex="0" role="button" aria-label="' + esc(m.name) + '">' +
+        '<img loading="lazy" alt="' + esc(m.name) + '" src="' + esc(m.photoThen) + '">' +
+        '<figcaption class="cap">' + esc(m.name) + '</figcaption></figure>';
+    }).join("");
+    $$("#yearbook-wall .yb").forEach(function (c) {
+      var open = function () { openModal(ybPeople[+c.dataset.i]); };
+      c.addEventListener("click", open);
+      c.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } });
+    });
+  }
+
   /* ---- Reunion ---- */
   var R = D.reunion || {};
+  setText("#home-reunion-blurb", R.blurb || "");
   $("#reunion-title").textContent = R.title || "Class Reunion";
   $("#reunion-location").textContent = R.location || "";
   $("#reunion-blurb").textContent = R.blurb || "";
@@ -186,12 +230,19 @@
   function show(view) {
     $$("section.view").forEach(function (s) { s.classList.toggle("active", s.id === "view-" + view); });
     $$(".tabs button").forEach(function (b) { b.classList.toggle("active", b.dataset.view === view); });
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    document.body.classList.toggle("home", view === "home");
+    window.scrollTo({ top: 0, behavior: "auto" });
     if (history.replaceState) history.replaceState(null, "", "#" + view);
+    if (view === "home") { animateCounts(); }
+    bindReveals();
   }
   $$(".tabs button, [data-goto]").forEach(function (b) {
     b.addEventListener("click", function () { show(b.dataset.view || b.dataset.goto); });
   });
+
+  // Solidify the header once the user scrolls off the hero.
+  var onScroll = function () { document.body.classList.toggle("scrolled", window.scrollY > 30); };
+  window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
 
   renderDirectory();
   show((location.hash || "#home").slice(1) || "home");
