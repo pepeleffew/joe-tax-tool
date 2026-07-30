@@ -40,7 +40,10 @@
         <button data-view="home" class="active">Home</button>
         <button data-view="classmates">Classmates</button>
         <button data-view="yearbook">Yearbook</button>
+        <button data-view="photos">Photos</button>
         <button data-view="thennow">Then &amp; Now</button>
+        <button data-view="stats">Class Stats</button>
+        <button data-view="nineties">1993</button>
         <button data-view="memory">In Memory</button>
         <button data-view="reunion">Reunion</button>
       </nav>
@@ -77,7 +80,10 @@
         <div class="features">
           <article class="feature reveal" data-goto="classmates"><div class="ic">👥</div><h3>Directory</h3><p>Searchable roster with photos, hometowns, and life updates.</p></article>
           <article class="feature reveal" data-goto="yearbook"><div class="ic">📖</div><h3>Yearbook</h3><p>Every senior portrait, one nostalgic wall of faces.</p></article>
+          <article class="feature reveal" data-goto="photos"><div class="ic">📷</div><h3>Photo Albums</h3><p>Candids through the years and reunion galleries.</p></article>
           <article class="feature reveal" data-goto="thennow"><div class="ic">📸</div><h3>Then &amp; Now</h3><p>Senior photos side-by-side with today.</p></article>
+          <article class="feature reveal" data-goto="stats"><div class="ic">📊</div><h3>Class Stats</h3><p>Where we are, what we do, how we’ve grown up.</p></article>
+          <article class="feature reveal" data-goto="nineties"><div class="ic">📻</div><h3>1993 Time Capsule</h3><p>The music, movies &amp; moments of senior year.</p></article>
           <article class="feature reveal" data-goto="memory"><div class="ic">🕊️</div><h3>In Memory</h3><p>Honoring the classmates we’ve lost.</p></article>
         </div>
       </div>
@@ -124,6 +130,50 @@
     </div>
   </section>
 
+  <!-- PHOTOS -->
+  <section id="view-photos" class="view">
+    <div class="wrap">
+      <div class="section-head"><div><h2>Photo Albums</h2><p>Candids through the years &amp; reunion galleries · click any photo to enlarge</p></div></div>
+      <div id="album-chips" class="toolbar"></div>
+      <div id="photo-grid" class="masonry"></div>
+    </div>
+  </section>
+
+  <!-- CLASS STATS -->
+  <section id="view-stats" class="view">
+    <div class="wrap">
+      <div class="section-head"><div><h2>Class by the Numbers</h2><p>Where we are, what we do, and how we’ve grown up.</p></div></div>
+      <div id="stat-tiles" class="stat-tiles"></div>
+      <div class="chart-grid">
+        <div class="chart-card"><h3>Where We Live Now — Top States</h3><div id="chart-states" class="barchart"></div></div>
+        <div class="chart-card"><h3>Top Hometowns &amp; Cities</h3><div id="chart-cities" class="barchart"></div></div>
+        <div class="chart-card"><h3>How Far We Went in School</h3><div id="chart-college" class="barchart"></div></div>
+        <div class="chart-card"><h3>What We Do</h3><div id="chart-jobs" class="barchart"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1993 TIME CAPSULE -->
+  <section id="view-nineties" class="view">
+    <div class="wrap">
+      <div class="section-head"><div><h2>1993 Time Capsule</h2><p>The world the day we tossed our caps.</p></div></div>
+      <div class="capsule">
+        <article class="cap-card reveal"><div class="cap-ic">🎓</div><h3>Our Senior Year</h3>
+          <ul><li>Bill Clinton inaugurated as the 42nd President (Jan 20)</li><li>Grunge ruled — flannel, Doc Martens &amp; mixtapes</li><li>The <em>Mosaic</em> web browser launched — the internet went mainstream</li><li>Intel shipped the first <em>Pentium</em> chip</li></ul></article>
+        <article class="cap-card reveal"><div class="cap-ic">🎵</div><h3>On the Radio</h3>
+          <ul><li>“I Will Always Love You” — Whitney Houston</li><li>“Whoomp! (There It Is)” — Tag Team</li><li>“That’s the Way Love Goes” — Janet Jackson</li><li>“Dreamlover” — Mariah Carey</li><li>“A Whole New World” — from <em>Aladdin</em></li></ul></article>
+        <article class="cap-card reveal"><div class="cap-ic">🎬</div><h3>At the Movies</h3>
+          <ul><li><em>Jurassic Park</em> — #1 at the box office</li><li><em>Mrs. Doubtfire</em></li><li><em>The Fugitive</em></li><li><em>Sleepless in Seattle</em></li><li><em>Groundhog Day</em> &amp; <em>Schindler’s List</em></li></ul></article>
+        <article class="cap-card reveal"><div class="cap-ic">📺</div><h3>On TV</h3>
+          <ul><li><em>Cheers</em> aired its finale (42M viewers)</li><li><em>The X-Files</em> premiered</li><li><em>Mighty Morphin Power Rangers</em> debuted</li><li><em>Seinfeld</em>, <em>Home Improvement</em> &amp; <em>90210</em></li></ul></article>
+        <article class="cap-card reveal"><div class="cap-ic">🏆</div><h3>In Sports</h3>
+          <ul><li>Cowboys won Super Bowl XXVII</li><li>Michael Jordan &amp; the Bulls “three-peated”</li><li>Joe Carter’s walk-off HR won the Blue Jays the World Series</li></ul></article>
+        <article class="cap-card reveal"><div class="cap-ic">💵</div><h3>What Things Cost</h3>
+          <ul><li>Gallon of gas: <strong>~$1.16</strong></li><li>Postage stamp: <strong>29¢</strong></li><li>New car (avg): <strong>~$12,750</strong></li><li>Movie ticket: <strong>~$4.14</strong></li><li>Minimum wage: <strong>$4.25/hr</strong></li></ul></article>
+      </div>
+    </div>
+  </section>
+
   <!-- IN MEMORY -->
   <section id="view-memory" class="view memorial">
     <div class="wrap">
@@ -157,6 +207,13 @@
       <button class="close" data-close aria-label="Close">×</button>
       <div id="modal-body"></div>
     </div>
+  </div>
+
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <button class="lb-close" data-lb-close aria-label="Close">×</button>
+    <button class="lb-nav lb-prev" data-lb-prev aria-label="Previous">‹</button>
+    <figure class="lb-stage"><img id="lb-img" alt=""><figcaption id="lb-cap"></figcaption></figure>
+    <button class="lb-nav lb-next" data-lb-next aria-label="Next">›</button>
   </div>
 
   <script src="data/class-data.js"></script>

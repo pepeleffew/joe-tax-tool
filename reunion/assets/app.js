@@ -226,6 +226,118 @@
     tick(); setInterval(tick, 1000);
   } else { cd.innerHTML = '<div class="cd" style="min-width:auto;padding:14px 20px"><span>Date to be announced</span></div>'; }
 
+  /* ---- Photo albums + lightbox ---- */
+  var titleCase = function (s) { return String(s || "").toLowerCase().replace(/\b\w/g, function (c) { return c.toUpperCase(); }); };
+  var candids = [];
+  mates.forEach(function (m) {
+    if (m.gallery && m.gallery.length) m.gallery.forEach(function (src) { candids.push({ src: src, who: m.name }); });
+    else if (m.photoNow) candids.push({ src: m.photoNow, who: m.name });
+  });
+  var albums = [
+    { key: "candids", label: "Through the Years (" + candids.length + ")", photos: candids },
+    { key: "r10", label: "10-Year Reunion · 2003", photos: [] },
+    { key: "r20", label: "20-Year Reunion · 2013", photos: [] },
+    { key: "r25", label: "25-Year Reunion · 2018", photos: [] },
+    { key: "next", label: "Next Reunion", photos: [] }
+  ];
+  var curAlbum = albums[0];
+  function renderAlbumChips() {
+    var el = $("#album-chips"); if (!el) return;
+    el.innerHTML = albums.map(function (a) {
+      return '<button class="chip album-chip' + (a === curAlbum ? " active" : "") + '" data-album="' + a.key + '">' + esc(a.label) + '</button>';
+    }).join("");
+    $$("#album-chips .album-chip").forEach(function (b) {
+      b.addEventListener("click", function () {
+        curAlbum = albums.filter(function (a) { return a.key === b.dataset.album; })[0];
+        renderAlbumChips(); renderPhotos();
+      });
+    });
+  }
+  function renderPhotos() {
+    var el = $("#photo-grid"); if (!el) return;
+    if (!curAlbum.photos.length) {
+      el.className = "";
+      el.innerHTML = '<div class="album-empty"><div style="font-size:38px">📸</div><p style="margin:.6em 0 0"><strong>No photos in this album yet.</strong><br>' +
+        'Reunion &amp; event photos will live here. Got some? We’ll add a one-tap upload soon.</p></div>';
+      return;
+    }
+    el.className = "masonry";
+    el.innerHTML = curAlbum.photos.map(function (p, i) {
+      return '<div class="ph" data-i="' + i + '"><img loading="lazy" alt="' + esc(p.who || "") + '" src="' + esc(p.src) + '">' +
+        (p.who ? '<div class="who">' + esc(p.who) + '</div>' : "") + '</div>';
+    }).join("");
+    $$("#photo-grid .ph").forEach(function (c) { c.addEventListener("click", function () { openLightbox(curAlbum.photos, +c.dataset.i); }); });
+  }
+
+  var lb = $("#lightbox"), lbImg = $("#lb-img"), lbCap = $("#lb-cap"), lbList = [], lbIdx = 0;
+  function showLb() { var p = lbList[lbIdx] || {}; lbImg.src = p.src || ""; lbCap.textContent = p.who || ""; }
+  function openLightbox(list, i) { lbList = list; lbIdx = i; showLb(); lb.classList.add("open"); document.body.style.overflow = "hidden"; }
+  function closeLb() { lb.classList.remove("open"); document.body.style.overflow = ""; lbImg.src = ""; }
+  function stepLb(d) { if (!lbList.length) return; lbIdx = (lbIdx + d + lbList.length) % lbList.length; showLb(); }
+  if (lb) {
+    lb.addEventListener("click", function (e) { if (e.target === lb || e.target.closest("[data-lb-close]")) closeLb(); });
+    $("[data-lb-prev]").addEventListener("click", function (e) { e.stopPropagation(); stepLb(-1); });
+    $("[data-lb-next]").addEventListener("click", function (e) { e.stopPropagation(); stepLb(1); });
+    document.addEventListener("keydown", function (e) {
+      if (!lb.classList.contains("open")) return;
+      if (e.key === "Escape") closeLb(); else if (e.key === "ArrowLeft") stepLb(-1); else if (e.key === "ArrowRight") stepLb(1);
+    });
+  }
+
+  /* ---- Class stats ---- */
+  function topCounts(vals, n, fmt) {
+    var m = {};
+    vals.forEach(function (v) { v = (v || "").trim(); if (!v) return; var k = fmt ? fmt(v) : v; m[k] = (m[k] || 0) + 1; });
+    return Object.keys(m).map(function (k) { return { label: k, value: m[k] }; })
+      .sort(function (a, b) { return b.value - a.value || a.label.localeCompare(b.label); }).slice(0, n);
+  }
+  var JOB_CATS = [
+    ["Education", /teach|educat|school|professor|principal|tutor/i],
+    ["Healthcare", /nurse|health|medical|doctor|dental|therap|\brn\b|pharm|care|hospital/i],
+    ["Sales & Business", /sales|manager|business|account|market|realtor|real estate|insurance|bank|finance|owner|director/i],
+    ["Trades & Mfg.", /mechanic|maintenance|electric|construct|weld|plumb|machin|factory|manufactur|technician|hvac|operator|driver|labor/i],
+    ["Engineering & IT", /engineer|software|develop|program|\bit\b|computer|network|analyst|data/i],
+    ["Military & Public", /military|army|navy|air force|marine|police|firefight|govern|federal|\btva\b|postal/i],
+    ["Ministry & Nonprofit", /pastor|minist|church|missionar|nonprofit/i],
+    ["Homemaker", /homemaker|stay.?at.?home|housewife|\bmom\b/i]
+  ];
+  function jobCategory(o) { for (var i = 0; i < JOB_CATS.length; i++) if (JOB_CATS[i][1].test(o)) return JOB_CATS[i][0]; return "Other"; }
+
+  function barChart(sel, data, gold) {
+    var el = $(sel); if (!el) return;
+    if (!data.length) { el.innerHTML = '<div class="muted">No data yet.</div>'; return; }
+    var max = Math.max.apply(null, data.map(function (d) { return d.value; }));
+    el.innerHTML = data.map(function (d) {
+      var pct = Math.round(d.value / max * 100);
+      return '<div class="bar-row"><span class="bar-label" title="' + esc(d.label) + '">' + esc(d.label) + '</span>' +
+        '<span class="bar-track"><span class="bar-fill' + (gold ? " gold" : "") + '" data-w="' + pct + '" style="width:' + pct + '%"></span></span>' +
+        '<span class="bar-val">' + d.value + '</span></div>';
+    }).join("");
+  }
+  function animateBars() { $$(".bar-fill").forEach(function (f) { f.style.width = f.getAttribute("data-w") + "%"; }); }
+
+  (function renderStats() {
+    var cities = living.map(function (m) { return m.city; }).filter(Boolean);
+    var states = living.map(function (m) { return (m.state || "").toUpperCase().trim(); }).filter(Boolean);
+    var st = $("#stat-tiles");
+    if (st) {
+      var distinctCities = topCounts(cities, 9999, titleCase).length;
+      var distinctStates = states.filter(function (v, i, a) { return a.indexOf(v) === i; }).length;
+      var data = [
+        [living.length, "Classmates"], [active.length, "Reconnected"],
+        [mates.filter(function (m) { return m.photoThen; }).length, "Senior Portraits"],
+        [distinctCities, "Cities"], [distinctStates, "States"], [memory.length, "In Memory"]
+      ];
+      st.innerHTML = data.map(function (d) { return '<div class="stat-tile"><b>' + d[0] + '</b><span>' + d[1] + '</span></div>'; }).join("");
+    }
+    barChart("#chart-states", topCounts(states, 8), false);
+    barChart("#chart-cities", topCounts(cities, 8, titleCase), true);
+    barChart("#chart-college", topCounts(living.map(function (m) { return m.college; }), 6), false);
+    barChart("#chart-jobs", topCounts(living.map(function (m) { return m.occupation ? jobCategory(m.occupation) : ""; }), 8), true);
+  })();
+
+  renderAlbumChips(); renderPhotos();
+
   /* ---- Tabs ---- */
   function show(view) {
     $$("section.view").forEach(function (s) { s.classList.toggle("active", s.id === "view-" + view); });
@@ -234,6 +346,7 @@
     window.scrollTo({ top: 0, behavior: "auto" });
     if (history.replaceState) history.replaceState(null, "", "#" + view);
     if (view === "home") { animateCounts(); }
+    if (view === "stats") { setTimeout(animateBars, 60); }
     bindReveals();
   }
   $$(".tabs button, [data-goto]").forEach(function (b) {
