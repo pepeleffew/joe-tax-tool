@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Class Reunion</title>
+  <meta name="description" content="A modern reunion site for our graduating class — classmate directory, then & now photos, memorial, and reunion news.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header class="site">
+    <div class="wrap nav">
+      <div class="brand">
+        <div class="badge">'<span id="brand-year">93</span></div>
+        <div><span id="brand-name">Class Reunion</span><small id="brand-sub"></small></div>
+      </div>
+      <nav class="tabs">
+        <button data-view="home" class="active">Home</button>
+        <button data-view="classmates">Classmates</button>
+        <button data-view="thennow">Then &amp; Now</button>
+        <button data-view="memory">In Memory</button>
+        <button data-view="reunion">Reunion</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HOME -->
+  <section id="view-home" class="view active">
+    <div class="hero">
+      <div class="wrap">
+        <div class="kicker" id="hero-kicker"></div>
+        <h1 id="hero-title">Class Reunion</h1>
+        <p class="lead" id="hero-lead"></p>
+        <div class="stats">
+          <div class="stat"><b id="stat-total">0</b><span>Classmates</span></div>
+          <div class="stat"><b id="stat-active">0</b><span>Reconnected</span></div>
+          <div class="stat"><b id="stat-memory">0</b><span>Remembered</span></div>
+        </div>
+        <div style="margin-top:30px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap">
+          <button class="btn" data-goto="classmates">Browse Classmates</button>
+          <button class="chip" data-goto="reunion">Reunion News</button>
+        </div>
+      </div>
+    </div>
+    <div class="wrap" style="padding-top:36px">
+      <div class="grid">
+        <article class="card"><div class="avatar" style="background:linear-gradient(135deg,var(--primary),var(--accent))">👥</div><div class="name">Classmate Directory</div><div class="bio">Searchable, mobile-friendly roster with photos and profiles.</div></article>
+        <article class="card"><div class="avatar" style="background:linear-gradient(135deg,var(--primary),var(--accent))">📸</div><div class="name">Then &amp; Now</div><div class="bio">Yearbook photos side-by-side with today.</div></article>
+        <article class="card"><div class="avatar" style="background:linear-gradient(135deg,var(--primary),var(--accent))">🕊️</div><div class="name">In Memory</div><div class="bio">A respectful place to remember classmates we’ve lost.</div></article>
+        <article class="card"><div class="avatar" style="background:linear-gradient(135deg,var(--primary),var(--accent))">🎉</div><div class="name">Reunion Hub</div><div class="bio">Event news, countdown, and past-reunion history.</div></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLASSMATES -->
+  <section id="view-classmates" class="view">
+    <div class="wrap">
+      <div class="section-head">
+        <div><h2>Classmates</h2><p><span id="dir-count">0</span> shown</p></div>
+      </div>
+      <div class="toolbar">
+        <input id="dir-search" type="search" placeholder="Search by name, maiden name, or city…" aria-label="Search classmates">
+        <button class="chip dir-filter active" data-filter="active">Reconnected</button>
+        <button class="chip dir-filter" data-filter="missing">Help Us Find</button>
+        <button class="chip dir-filter" data-filter="all">Everyone</button>
+      </div>
+      <div id="directory-grid" class="grid"></div>
+    </div>
+  </section>
+
+  <!-- THEN & NOW -->
+  <section id="view-thennow" class="view">
+    <div class="wrap">
+      <div class="section-head"><div><h2>Then &amp; Now</h2><p>How we’ve changed (a little).</p></div></div>
+      <div id="thennow-grid" class="tn-grid"></div>
+    </div>
+  </section>
+
+  <!-- IN MEMORY -->
+  <section id="view-memory" class="view memorial">
+    <div class="wrap">
+      <div class="section-head"><div><h2>In Memory</h2><p>Gone but never forgotten.</p></div></div>
+      <div id="memory-grid" class="grid"></div>
+    </div>
+  </section>
+
+  <!-- REUNION -->
+  <section id="view-reunion" class="view">
+    <div class="wrap">
+      <div class="section-head"><div><h2 id="reunion-title">Reunion</h2><p id="reunion-location"></p></div></div>
+      <div class="reunion-card">
+        <div id="countdown" class="countdown"></div>
+        <p id="reunion-blurb" style="text-align:center; max-width:640px; margin:0 auto"></p>
+        <div style="text-align:center; margin-top:20px"><a id="reunion-rsvp" class="btn" href="#" target="_blank" rel="noopener">RSVP</a></div>
+        <ul id="reunion-timeline" class="timeline"></ul>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site">
+    <div class="wrap">
+      <p>Made with care for our class. Data lives in <code>data/class-data.js</code>.</p>
+    </div>
+  </footer>
+
+  <script src="data/class-data.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
