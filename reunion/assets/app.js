@@ -395,13 +395,15 @@
   };
 
   /* ---- Tabs ---- */
-  function show(view) {
+  function show(view, keepUrl) {
     if (!view || !document.getElementById("view-" + view)) view = "home";  // ignore auth-redirect hashes etc.
     $$("section.view").forEach(function (s) { s.classList.toggle("active", s.id === "view-" + view); });
     $$(".tabs button").forEach(function (b) { b.classList.toggle("active", b.dataset.view === view); });
     document.body.classList.toggle("home", view === "home");
     window.scrollTo({ top: 0, behavior: "auto" });
-    if (history.replaceState) history.replaceState(null, "", "#" + view);
+    // keepUrl leaves the hash untouched — used on load when it still holds a
+    // Supabase sign-in token that live.js needs to read before we rewrite it.
+    if (!keepUrl && history.replaceState) history.replaceState(null, "", "#" + view);
     if (view === "home") { animateCounts(); }
     if (view === "stats") { setTimeout(animateBars, 60); }
     bindReveals();
@@ -418,6 +420,8 @@
 
   renderDirectory();
   var initialView = (location.hash || "").slice(1);
-  if (/[=&]/.test(initialView)) initialView = "home";   // strip Supabase auth-redirect tokens
-  show(initialView);
+  // On a Supabase auth redirect the hash carries the sign-in token — render home
+  // but KEEP the hash so live.js can read it; Supabase clears it once consumed.
+  var isAuthRedirect = /access_token|refresh_token|[=&]/.test(initialView);
+  show(isAuthRedirect ? "home" : initialView, isAuthRedirect);
 })();
