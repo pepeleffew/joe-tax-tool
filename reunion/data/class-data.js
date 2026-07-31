@@ -346,6 +346,7 @@ window.CLASS_DATA = {
    "name": "Kimberly Brummett",
    "status": "active",
    "maidenName": "Newt",
+   "photoThen": "assets/img/then/6146052.jpg",
    "city": "Soddy Daisy",
    "state": "TN",
    "spouse": "Charlie Newt",
