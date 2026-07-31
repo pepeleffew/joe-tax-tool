@@ -268,6 +268,7 @@
     { key: "r10", label: "10-Year Reunion · 2003", photos: [] },
     { key: "r20", label: "20-Year Reunion · 2013", photos: [] },
     { key: "r25", label: "25-Year Reunion · 2018", photos: [] },
+    { key: "r30", label: "30-Year Reunion · 2023", photos: [] },
     { key: "next", label: "Next Reunion", photos: [] }
   ];
   var curAlbum = albums[0];
@@ -288,7 +289,7 @@
     if (!curAlbum.photos.length) {
       el.className = "";
       el.innerHTML = '<div class="album-empty"><div style="font-size:38px">📸</div><p style="margin:.6em 0 0"><strong>No photos in this album yet.</strong><br>' +
-        'Reunion &amp; event photos will live here. Got some? We’ll add a one-tap upload soon.</p></div>';
+        'Got some from this event? Tap <strong>“Add photos”</strong> above to share them — they’ll appear here once approved.</p></div>';
       return;
     }
     el.className = "masonry";
