@@ -362,6 +362,7 @@
 
   /* ---- Tabs ---- */
   function show(view) {
+    if (!view || !document.getElementById("view-" + view)) view = "home";  // ignore auth-redirect hashes etc.
     $$("section.view").forEach(function (s) { s.classList.toggle("active", s.id === "view-" + view); });
     $$(".tabs button").forEach(function (b) { b.classList.toggle("active", b.dataset.view === view); });
     document.body.classList.toggle("home", view === "home");
@@ -382,5 +383,7 @@
   window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
 
   renderDirectory();
-  show((location.hash || "#home").slice(1) || "home");
+  var initialView = (location.hash || "").slice(1);
+  if (/[=&]/.test(initialView)) initialView = "home";   // strip Supabase auth-redirect tokens
+  show(initialView);
 })();
