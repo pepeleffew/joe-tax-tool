@@ -98,6 +98,8 @@
   }
   async function loadApprovedPhotos() {
     if (!window.ClassSite || !window.ClassSite.albums) return;
+    // Snapshot the built-in photos once so repeated loads don't duplicate.
+    window.ClassSite.albums.forEach(function (a) { if (a._base === undefined) a._base = a.photos.slice(); });
     var r = await sb.from("photos").select("*").eq("status", "approved").order("created_at", { ascending: false });
     if (r.error || !r.data) return;
     var grouped = {};
@@ -105,7 +107,7 @@
       var url = sb.storage.from("photos").getPublicUrl(p.storage_path).data.publicUrl;
       (grouped[p.album] = grouped[p.album] || []).push({ src: url, who: p.caption || p.uploader_name || "" });
     });
-    window.ClassSite.albums.forEach(function (a) { if (grouped[a.key]) a.photos = grouped[a.key].concat(a.photos); });
+    window.ClassSite.albums.forEach(function (a) { a.photos = (grouped[a.key] || []).concat(a._base); });
     if (window.ClassSite.renderPhotos) window.ClassSite.renderPhotos();
   }
 
@@ -142,17 +144,45 @@
         return '<div class="admin-item" data-id="' + g.id + '" data-kind="gb"><div class="ai-meta">“' + esc(g.message) + '”<br><span class="muted">— ' + esc(g.author_name) + '</span></div><div class="ai-actions"><button class="btn approve">Approve</button><button class="chip reject">Reject</button></div></div>';
       }).join("") : '<div class="empty">No notes waiting.</div>';
     }
+    // Published (approved) photos — with a Delete button.
+    var pp = await sb.from("photos").select("*").eq("status", "approved").order("created_at", { ascending: false });
+    var ppel = $("#admin-pub-photos");
+    if (ppel) {
+      var pprows = pp.data || [];
+      ppel.innerHTML = pprows.length ? pprows.map(function (p) {
+        var url = sb.storage.from("photos").getPublicUrl(p.storage_path).data.publicUrl;
+        return '<div class="admin-item" data-id="' + p.id + '" data-kind="photo" data-path="' + esc(p.storage_path) + '"><img src="' + esc(url) + '" alt=""><div class="ai-meta"><b>' + esc(p.album) + '</b> · ' + esc(p.uploader_name || p.uploader_email || "") + (p.caption ? '<br>' + esc(p.caption) : "") + '</div><div class="ai-actions"><button class="chip reject del">Delete</button></div></div>';
+      }).join("") : '<div class="empty">No published photos yet.</div>';
+    }
+    // Published guestbook notes — with a Delete button.
+    var pg = await sb.from("guestbook").select("*").eq("status", "approved").order("created_at", { ascending: false });
+    var pgel = $("#admin-pub-gb");
+    if (pgel) {
+      var pgrows = pg.data || [];
+      pgel.innerHTML = pgrows.length ? pgrows.map(function (g) {
+        return '<div class="admin-item" data-id="' + g.id + '" data-kind="gb"><div class="ai-meta">“' + esc(g.message) + '”<br><span class="muted">— ' + esc(g.author_name) + '</span></div><div class="ai-actions"><button class="chip reject del">Delete</button></div></div>';
+      }).join("") : '<div class="empty">No published notes yet.</div>';
+    }
+
     $$("#view-admin .admin-item").forEach(function (item) {
       var id = item.dataset.id, table = item.dataset.kind === "photo" ? "photos" : "guestbook";
-      item.querySelector(".approve").addEventListener("click", async function () {
+      var appr = item.querySelector(".approve"), rej = item.querySelector(".reject:not(.del)"), del = item.querySelector(".del");
+      if (appr) appr.addEventListener("click", async function () {
         var r = await sb.from(table).update({ status: "approved" }).eq("id", id);
         if (r.error) { toast(r.error.message, false); return; }
-        item.remove(); toast("Approved ✓", true); loadApprovedPhotos(); loadGuestbook();
+        toast("Approved ✓", true); loadApprovedPhotos(); loadGuestbook(); loadAdmin();
       });
-      item.querySelector(".reject").addEventListener("click", async function () {
+      if (rej) rej.addEventListener("click", async function () {
         var r = await sb.from(table).update({ status: "rejected" }).eq("id", id);
         if (r.error) { toast(r.error.message, false); return; }
         item.remove(); toast("Rejected", true);
+      });
+      if (del) del.addEventListener("click", async function () {
+        if (!confirm("Delete this permanently? It will be removed from the site.")) return;
+        if (item.dataset.path) await sb.storage.from("photos").remove([item.dataset.path]);
+        var r = await sb.from(table).delete().eq("id", id);
+        if (r.error) { toast(r.error.message, false); return; }
+        item.remove(); toast("Deleted", true); loadApprovedPhotos(); loadGuestbook();
       });
     });
   }
