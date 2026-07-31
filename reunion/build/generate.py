@@ -198,19 +198,13 @@ def build():
                 p[src] = v
 
         # photos -----------------------------------------------------------
+        # Only the public yearbook portraits are published. Classmates' personal
+        # profile-photo galleries (private on the old members-only site) are NOT
+        # imported — current photos come from consented uploads instead.
         y = match(yb, keys)
         if y:
             p["photoThen"] = copy_img(y, f"assets/img/then/{mid}{ext_of(y)}")
             stats["yearbook"] += 1
-        gal = match(pf, keys)
-        if gal:
-            urls = []
-            for i, g in enumerate(gal, 1):
-                urls.append(copy_img(g, f"assets/img/gallery/{mid}/{i:03d}{ext_of(g)}"))
-            p["photoNow"] = urls[0]
-            if len(urls) > 1:
-                p["gallery"] = urls
-            stats["profile"] += 1
         if status == "memory":
             o = match(ob, keys)
             if o:

@@ -247,7 +247,7 @@
     else if (m.photoNow) candids.push({ src: m.photoNow, who: m.name });
   });
   var albums = [
-    { key: "candids", label: "Through the Years (" + candids.length + ")", photos: candids },
+    { key: "candids", label: "Through the Years", photos: candids },
     { key: "r10", label: "10-Year Reunion · 2003", photos: [] },
     { key: "r20", label: "20-Year Reunion · 2013", photos: [] },
     { key: "r25", label: "25-Year Reunion · 2018", photos: [] },

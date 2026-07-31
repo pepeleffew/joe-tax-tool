@@ -175,14 +175,7 @@ window.CLASS_DATA = {
    "state": "TN",
    "occupation": "Weld Engineer watts bar nuclear",
    "spouse": "Kellady Bledsoe",
-   "photoThen": "assets/img/then/6146033.jpg",
-   "photoNow": "assets/img/gallery/6146033/001.jpg",
-   "gallery": [
-    "assets/img/gallery/6146033/001.jpg",
-    "assets/img/gallery/6146033/002.jpg",
-    "assets/img/gallery/6146033/003.jpg",
-    "assets/img/gallery/6146033/004.jpg"
-   ]
+   "photoThen": "assets/img/then/6146033.jpg"
   },
   {
    "id": "6146034",
@@ -215,34 +208,7 @@ window.CLASS_DATA = {
    "college": "No",
    "homepage": "Www.kingdomrisingoutreach.com",
    "comments": "I am a survivor of a spinal cord injury.I was paralyzed from the waist down for 4 yrs and the doctors said I would never walk again and they gave me 2 yrs to live but God had other plans.In feb.2013,he brought me out of the wheelchair and off my cane in march.He restored my sight of my blind eye,I now have 20/20 vision.He healed the pressure in my brain.In june 2013, I went on a missions trip with onenationoneday with over 2,000 missionaries to proclaim that God is a healer.We saw thousands saved and healed.my husband and I run a ministry called K-ROC in Graysville,tn.It is an outreach center designed to feed families,assist in clothing,and also run a makeup ministry for battered women for makeup,hygiene products and baby products.If you would like to check our whole vision out,go to www.kingdomrisingoutreach.com. also,if you need more income for your family,check out www.levigoldandsilver.weebly.com or on facebook at facebook.com/levigoldandsilver. This business has helped my family tremendously and it also funds our ministry of what we do .you can also message me for more info.",
-   "photoThen": "assets/img/then/6146036.jpg",
-   "photoNow": "assets/img/gallery/6146036/001.jpg",
-   "gallery": [
-    "assets/img/gallery/6146036/001.jpg",
-    "assets/img/gallery/6146036/002.jpg",
-    "assets/img/gallery/6146036/003.jpg",
-    "assets/img/gallery/6146036/004.jpg",
-    "assets/img/gallery/6146036/005.jpg",
-    "assets/img/gallery/6146036/006.jpg",
-    "assets/img/gallery/6146036/007.jpg",
-    "assets/img/gallery/6146036/008.jpg",
-    "assets/img/gallery/6146036/009.jpg",
-    "assets/img/gallery/6146036/010.jpg",
-    "assets/img/gallery/6146036/011.jpg",
-    "assets/img/gallery/6146036/012.jpg",
-    "assets/img/gallery/6146036/013.jpg",
-    "assets/img/gallery/6146036/014.jpg",
-    "assets/img/gallery/6146036/015.jpg",
-    "assets/img/gallery/6146036/016.jpg",
-    "assets/img/gallery/6146036/017.jpg",
-    "assets/img/gallery/6146036/018.jpg",
-    "assets/img/gallery/6146036/019.jpg",
-    "assets/img/gallery/6146036/020.jpg",
-    "assets/img/gallery/6146036/021.jpg",
-    "assets/img/gallery/6146036/022.jpg",
-    "assets/img/gallery/6146036/023.jpg",
-    "assets/img/gallery/6146036/024.jpg"
-   ]
+   "photoThen": "assets/img/then/6146036.jpg"
   },
   {
    "id": "6146037",
@@ -273,14 +239,7 @@ window.CLASS_DATA = {
    "occupation": "self employed",
    "children": "Nicole born 1992 , Rebecca born 1996 and Laura born 2001",
    "college": "No",
-   "comments": "I don't regret not finishing school because my 3 girls are the best thing that's happened to me",
-   "photoNow": "assets/img/gallery/6146039/001.jpg",
-   "gallery": [
-    "assets/img/gallery/6146039/001.jpg",
-    "assets/img/gallery/6146039/002.jpg",
-    "assets/img/gallery/6146039/003.jpg",
-    "assets/img/gallery/6146039/004.jpg"
-   ]
+   "comments": "I don't regret not finishing school because my 3 girls are the best thing that's happened to me"
   },
   {
    "id": "6146040",
@@ -289,21 +248,7 @@ window.CLASS_DATA = {
    "city": "Atlanta",
    "state": "GA",
    "occupation": "Police Officer in Atlanta Ga",
-   "photoThen": "assets/img/then/6146040.jpg",
-   "photoNow": "assets/img/gallery/6146040/001.jpg",
-   "gallery": [
-    "assets/img/gallery/6146040/001.jpg",
-    "assets/img/gallery/6146040/002.jpg",
-    "assets/img/gallery/6146040/003.jpg",
-    "assets/img/gallery/6146040/004.jpg",
-    "assets/img/gallery/6146040/005.jpg",
-    "assets/img/gallery/6146040/006.jpg",
-    "assets/img/gallery/6146040/007.jpg",
-    "assets/img/gallery/6146040/008.jpg",
-    "assets/img/gallery/6146040/009.jpg",
-    "assets/img/gallery/6146040/010.jpg",
-    "assets/img/gallery/6146040/011.jpg"
-   ]
+   "photoThen": "assets/img/then/6146040.jpg"
   },
   {
    "id": "6146041",
@@ -333,25 +278,7 @@ window.CLASS_DATA = {
    "spouse": "Dana Britt",
    "college": "No",
    "homepage": "Horizontees.com, 1blade.net",
-   "photoThen": "assets/img/then/6146044.jpg",
-   "photoNow": "assets/img/gallery/6146044/001.jpg",
-   "gallery": [
-    "assets/img/gallery/6146044/001.jpg",
-    "assets/img/gallery/6146044/002.jpg",
-    "assets/img/gallery/6146044/003.jpg",
-    "assets/img/gallery/6146044/004.jpg",
-    "assets/img/gallery/6146044/005.jpg",
-    "assets/img/gallery/6146044/006.jpg",
-    "assets/img/gallery/6146044/007.jpg",
-    "assets/img/gallery/6146044/008.jpg",
-    "assets/img/gallery/6146044/009.jpg",
-    "assets/img/gallery/6146044/010.jpg",
-    "assets/img/gallery/6146044/011.jpg",
-    "assets/img/gallery/6146044/012.jpg",
-    "assets/img/gallery/6146044/013.jpg",
-    "assets/img/gallery/6146044/014.jpg",
-    "assets/img/gallery/6146044/015.png"
-   ]
+   "photoThen": "assets/img/then/6146044.jpg"
   },
   {
    "id": "6146045",
@@ -363,14 +290,7 @@ window.CLASS_DATA = {
    "occupation": "Wife and Mother",
    "spouse": "Rusty Froelich",
    "children": "Chris Fennell born 1992, Kala Fennell born 1993, Katie Froelich born 1997",
-   "photoThen": "assets/img/then/6146045.jpg",
-   "photoNow": "assets/img/gallery/6146045/001.jpg",
-   "gallery": [
-    "assets/img/gallery/6146045/001.jpg",
-    "assets/img/gallery/6146045/002.jpg",
-    "assets/img/gallery/6146045/003.jpg",
-    "assets/img/gallery/6146045/004.jpg"
-   ]
+   "photoThen": "assets/img/then/6146045.jpg"
   },
   {
    "id": "6146046",
@@ -399,17 +319,7 @@ window.CLASS_DATA = {
    "occupation": "Toyota of Cleveland",
    "children": "Rachel, born 2003; Allison, born 2006",
    "college": "No",
-   "photoThen": "assets/img/then/6146049.jpg",
-   "photoNow": "assets/img/gallery/6146049/001.jpg",
-   "gallery": [
-    "assets/img/gallery/6146049/001.jpg",
-    "assets/img/gallery/6146049/002.jpg",
-    "assets/img/gallery/6146049/003.jpg",
-    "assets/img/gallery/6146049/004.jpg",
-    "assets/img/gallery/6146049/005.jpg",
-    "assets/img/gallery/6146049/006.jpg",
-    "assets/img/gallery/6146049/007.jpg"
-   ]
+   "photoThen": "assets/img/then/6146049.jpg"
   },
   {
    "id": "6146050",
@@ -440,15 +350,7 @@ window.CLASS_DATA = {
    "state": "TN",
    "spouse": "Charlie Newt",
    "children": "Emily Newt,1990; Steven Newt,1993; Nathan Newt, 2002",
-   "comments": "Being the best mom and wife ever. Loving life with all it's ups and downs.",
-   "photoNow": "assets/img/gallery/6146052/001.jpg",
-   "gallery": [
-    "assets/img/gallery/6146052/001.jpg",
-    "assets/img/gallery/6146052/002.jpg",
-    "assets/img/gallery/6146052/003.jpg",
-    "assets/img/gallery/6146052/004.jpg",
-    "assets/img/gallery/6146052/005.jpg"
-   ]
+   "comments": "Being the best mom and wife ever. Loving life with all it's ups and downs."
   },
   {
    "id": "6146053",
@@ -468,8 +370,7 @@ window.CLASS_DATA = {
    "children": "Son, Jayden born 1999 Son, Baylor born 2002 Son, Grayson born 2015",
    "college": "Master's",
    "story": "Graduated from UTC with Bachelors in Business Administration with concentration in Human Resources and MTSU with Masters in Professional Studies with a concentration in Training and Development.",
-   "photoThen": "assets/img/then/6146054.jpg",
-   "photoNow": "assets/img/gallery/6146054/001.jpg"
+   "photoThen": "assets/img/then/6146054.jpg"
   },
   {
    "id": "6146055",
@@ -516,8 +417,7 @@ window.CLASS_DATA = {
    "name": "Carl Carpenter",
    "status": "active",
    "city": "Soddy Daisy",
-   "state": "TN",
-   "photoNow": "assets/img/gallery/6146059/001.jpg"
+   "state": "TN"
   },
   {
    "id": "6146060",
@@ -564,8 +464,7 @@ window.CLASS_DATA = {
    "spouse": "Dewayne Bales",
    "children": "Brianna, born 2001; Ainsleigh, born 2005",
    "college": "No",
-   "photoThen": "assets/img/then/6146065.jpg",
-   "photoNow": "assets/img/gallery/6146065/001.jpg"
+   "photoThen": "assets/img/then/6146065.jpg"
   },
   {
    "id": "6146066",
@@ -656,8 +555,7 @@ window.CLASS_DATA = {
    "state": "FL",
    "occupation": "D.C., Chiropractor with a focus in scoliosis",
    "college": "MD",
-   "photoThen": "assets/img/then/6146075.jpg",
-   "photoNow": "assets/img/gallery/6146075/001.jpg"
+   "photoThen": "assets/img/then/6146075.jpg"
   },
   {
    "id": "6146076",
@@ -844,18 +742,7 @@ window.CLASS_DATA = {
    "homepage": "Unburiedtreasures/alittle sassy facebook",
    "story": "Prom was prob. my best memory. I loved being with all my friends: Genia Reynolds, Tiana Wilson, Danny Flaherty my prom date, Steve Flaherty, Teresa Crocker and many more dear friends dancing with my girl Heather Smith and yes we cut a rug ha ha and bowling afterwards :) We had a blast!!!",
    "comments": "I married an awesome guy from Soddy Daisy high school class of 91 Tim Chandler and we have been married for 16 years. We have no children of our own. But that's ok because I have lots of children, because I have been a teacher for the last 15 years. I received my bachelors degree in Elem. Education in 1998 from UTC and have been teacher ever since. I also work @ Bath and body works part time and have worked there for 7 years. During my spare time ha ha I have 2 booths and a shelf @ the Peddlers Market in Hixson. I sell a variety of home décor, jewelry, purses and I paint furniture. I love it!!! Come check out our Facebook page Unburied treasures/ A Little Sassy and see what I'm up to. As you can see I stay pretty busy and I'm not afraid to work. :)",
-   "photoThen": "assets/img/then/6146099.jpg",
-   "photoNow": "assets/img/gallery/6146099/001.jpg",
-   "gallery": [
-    "assets/img/gallery/6146099/001.jpg",
-    "assets/img/gallery/6146099/002.jpg",
-    "assets/img/gallery/6146099/003.jpg",
-    "assets/img/gallery/6146099/004.jpg",
-    "assets/img/gallery/6146099/005.jpg",
-    "assets/img/gallery/6146099/006.jpg",
-    "assets/img/gallery/6146099/007.jpg",
-    "assets/img/gallery/6146099/008.jpg"
-   ]
+   "photoThen": "assets/img/then/6146099.jpg"
   },
   {
    "id": "6146100",
@@ -908,12 +795,7 @@ window.CLASS_DATA = {
    "occupation": "homemaker",
    "spouse": "Charles Sharp a.k.a. Nick",
    "children": "Oryon Anastasia, born 1994 - passed away 2008; Logan Chase, Born 1999; Dominick Ryan, born 2011; Arianna Michelle, born 2013",
-   "photoThen": "assets/img/then/6146106.jpg",
-   "photoNow": "assets/img/gallery/6146106/001.jpg",
-   "gallery": [
-    "assets/img/gallery/6146106/001.jpg",
-    "assets/img/gallery/6146106/002.jpg"
-   ]
+   "photoThen": "assets/img/then/6146106.jpg"
   },
   {
    "id": "6146107",
@@ -980,8 +862,7 @@ window.CLASS_DATA = {
    "spouse": "Tommy May",
    "children": "Stone, born 2000 Bryce, born 2002 Cami, born 2009",
    "college": "Bachelor's",
-   "photoThen": "assets/img/then/6146113.jpg",
-   "photoNow": "assets/img/gallery/6146113/001.jpg"
+   "photoThen": "assets/img/then/6146113.jpg"
   },
   {
    "id": "6146114",
@@ -1083,12 +964,7 @@ window.CLASS_DATA = {
    "homepage": "www.facebook.com/torah.made.flesh",
    "story": "Rotc rapelling and six flags trips.... Not to mention all my Evis Presley impersonations... lol",
    "comments": "Spent six years in the Marines. Divorced. One Son. Messianic Pastor.",
-   "photoThen": "assets/img/then/6146129.jpg",
-   "photoNow": "assets/img/gallery/6146129/001.jpg",
-   "gallery": [
-    "assets/img/gallery/6146129/001.jpg",
-    "assets/img/gallery/6146129/002.jpg"
-   ]
+   "photoThen": "assets/img/then/6146129.jpg"
   },
   {
    "id": "6146130",
@@ -1113,8 +989,7 @@ window.CLASS_DATA = {
    "children": "Rayne, born 2009",
    "college": "Bachelor's",
    "comments": "After high school, I entered college and obtained my degree in Business Administration. I married my husband in 1995 and left the area at that time. Rich is an active duty member of the United States Navy, so we have lived in several places - Guam being the furthest from \"home\"! We have one daughter, Rayne. I have found that parenthood is the most challenging thing I have ever done, but it is also the most rewarding.",
-   "photoThen": "assets/img/then/6146132.jpg",
-   "photoNow": "assets/img/gallery/6146132/001.jpg"
+   "photoThen": "assets/img/then/6146132.jpg"
   },
   {
    "id": "6146133",
@@ -1175,12 +1050,7 @@ window.CLASS_DATA = {
    "city": "Soddy Daisy",
    "state": "TN",
    "college": "No",
-   "photoThen": "assets/img/then/6146139.jpg",
-   "photoNow": "assets/img/gallery/6146139/001.jpg",
-   "gallery": [
-    "assets/img/gallery/6146139/001.jpg",
-    "assets/img/gallery/6146139/002.jpg"
-   ]
+   "photoThen": "assets/img/then/6146139.jpg"
   },
   {
    "id": "6146140",
@@ -1382,8 +1252,7 @@ window.CLASS_DATA = {
    "state": "TN",
    "occupation": "Radiographer",
    "college": "Associate's",
-   "photoThen": "assets/img/then/6146167.jpg",
-   "photoNow": "assets/img/gallery/6146167/001.jpg"
+   "photoThen": "assets/img/then/6146167.jpg"
   },
   {
    "id": "6146168",
@@ -1518,24 +1387,7 @@ window.CLASS_DATA = {
    "children": "Brianna, 1996 Christopher, 2003 Step Kids Tracy,1987 Devin,1993 Nick, 1994",
    "college": "No",
    "comments": "Married over 17 years. Been in some low budget movies, acting, director, casting director,etc. I will list movies and such later when I have time to complete it. Here are a few. Jonezin 1999. short film Main actor. a guy who wake up and did not have any cigarettes Faith & Asphalt 1999/2001 Played Street Preacher/homeless man. This is the only thing I can find on this film I was in Faith and Asphalt. Religious satire meets The Blair Witch Project. Released by a small production company, New Planet Pictures (world premier screened in Chattanooga, TN on Sunday May 27, 2001), the film is described as a pseudo-documentary of street preachers in Chattanooga. A series of vignettes depicting various combinations of simple-minded faith, psycho-pathology, and duplicity, each with its own humorous coda. The pseudo-documentary style, replete with intentional (?) movement of the microphone into the camera frame, interferes, I think, with some rather more serious points that might have been made. After all, the genius of the Witch Project is that it presents itself not as a clever contrivance, but as an actual documentary. The same thing might have been done here, since many of the actors were very convincing. Has some very fine moments, particularly a new version of the 10 commandments, embroidered on two pillows. See it if you want to feel the currents of new directions in film. 20Q http://www.imdb.com/title/tt1034375/ http://www.20qfilm.com/ Behold The Raven http://www.imdb.com/title/tt0409729/ http://www.amazon.com/Behold-The-Raven/dp/B004XM0Q3C Owned a few home based businesses at one time. Quixtar, Watkins, New planet Pictures, SpaceDriveFilms.",
-   "photoThen": "assets/img/then/6146182.jpg",
-   "photoNow": "assets/img/gallery/6146182/001.jpg",
-   "gallery": [
-    "assets/img/gallery/6146182/001.jpg",
-    "assets/img/gallery/6146182/002.jpg",
-    "assets/img/gallery/6146182/003.jpg",
-    "assets/img/gallery/6146182/004.jpg",
-    "assets/img/gallery/6146182/005.jpg",
-    "assets/img/gallery/6146182/006.jpg",
-    "assets/img/gallery/6146182/007.jpg",
-    "assets/img/gallery/6146182/008.jpg",
-    "assets/img/gallery/6146182/009.jpg",
-    "assets/img/gallery/6146182/010.jpg",
-    "assets/img/gallery/6146182/011.jpg",
-    "assets/img/gallery/6146182/012.jpg",
-    "assets/img/gallery/6146182/013.jpg",
-    "assets/img/gallery/6146182/014.jpg"
-   ]
+   "photoThen": "assets/img/then/6146182.jpg"
   },
   {
    "id": "6146183",
@@ -1777,8 +1629,7 @@ window.CLASS_DATA = {
    "college": "Master's",
    "story": "I can't narrow down one or even two great stories from school but what I do know is I am very proud to have made and remained great friends with a group of the best guys on the planet. Travis Beene, Ryan Blanks, Jon Elliott, and Clint Stanfield THANK YOU for being stand-up guys and impeccable friends. I can't narrow down to one story but the lyrics to one song certainly come to mind. \"Never stop to think 'What's in it for me?' or 'It's way too far'. They just show on up with their big old heart\"",
    "comments": "Over the last 20 years I have completed my MBA, had two amazing children, and found the love of my life. It has certainly been a struggle and taken me the better part of the last 20 years to get my feet on the ground but I'm almost there. I find myself wondering frequently if this is really what it is suppose to feel like to be an \"adult\". Yikes! Ashley and I have recently moved back to SD from ER and I hope to see a lot of you around the schools and ball fields with your little ones.",
-   "photoThen": "assets/img/then/6145952.jpg",
-   "photoNow": "assets/img/gallery/6145952/001.jpg"
+   "photoThen": "assets/img/then/6145952.jpg"
   },
   {
    "id": "6146213",
@@ -1797,34 +1648,7 @@ window.CLASS_DATA = {
    "name": "Christy Levi",
    "status": "active",
    "maidenName": "Hamrick",
-   "photoThen": "assets/img/then/6146215.jpg",
-   "photoNow": "assets/img/gallery/6146215/001.jpg",
-   "gallery": [
-    "assets/img/gallery/6146215/001.jpg",
-    "assets/img/gallery/6146215/002.jpg",
-    "assets/img/gallery/6146215/003.jpg",
-    "assets/img/gallery/6146215/004.jpg",
-    "assets/img/gallery/6146215/005.jpg",
-    "assets/img/gallery/6146215/006.jpg",
-    "assets/img/gallery/6146215/007.jpg",
-    "assets/img/gallery/6146215/008.jpg",
-    "assets/img/gallery/6146215/009.jpg",
-    "assets/img/gallery/6146215/010.jpg",
-    "assets/img/gallery/6146215/011.jpg",
-    "assets/img/gallery/6146215/012.jpg",
-    "assets/img/gallery/6146215/013.jpg",
-    "assets/img/gallery/6146215/014.jpg",
-    "assets/img/gallery/6146215/015.jpg",
-    "assets/img/gallery/6146215/016.jpg",
-    "assets/img/gallery/6146215/017.jpg",
-    "assets/img/gallery/6146215/018.jpg",
-    "assets/img/gallery/6146215/019.jpg",
-    "assets/img/gallery/6146215/020.jpg",
-    "assets/img/gallery/6146215/021.jpg",
-    "assets/img/gallery/6146215/022.jpg",
-    "assets/img/gallery/6146215/023.jpg",
-    "assets/img/gallery/6146215/024.jpg"
-   ]
+   "photoThen": "assets/img/then/6146215.jpg"
   },
   {
    "id": "6146216",
@@ -1961,8 +1785,7 @@ window.CLASS_DATA = {
    "college": "No",
    "story": "Middle Tennessee State, football for a year University of Tennessee at Chattanooga Currently enrolled in Florida Technical Institute of Technology",
    "comments": "Work in retail management for the last 18 years. Began living a healthy lifestyle where I enjoy participating in sporting events, working out and spending time with wife. Traveling and anything to give back to community is what its all about.",
-   "photoThen": "assets/img/then/6146234.jpg",
-   "photoNow": "assets/img/gallery/6146234/001.jpg"
+   "photoThen": "assets/img/then/6146234.jpg"
   },
   {
    "id": "6146235",
@@ -2005,8 +1828,7 @@ window.CLASS_DATA = {
    "city": "Soddy Daisy",
    "state": "TN",
    "occupation": "Associate Chief Nursing Officer",
-   "college": "Master's",
-   "photoNow": "assets/img/gallery/6146240/001.jpg"
+   "college": "Master's"
   },
   {
    "id": "6146242",
@@ -2356,8 +2178,7 @@ window.CLASS_DATA = {
    "occupation": "Insurance Agent/Professional Photographer",
    "spouse": "Jennifer Scroggins",
    "children": "none",
-   "homepage": "sceniccityphotography.com",
-   "photoNow": "assets/img/gallery/6146281/001.jpg"
+   "homepage": "sceniccityphotography.com"
   },
   {
    "id": "6146285",
@@ -2558,14 +2379,7 @@ window.CLASS_DATA = {
    "spouse": "Philip",
    "children": "Hunter, born 1995; Raylynn, born 2000; Lucas, born 2002",
    "college": "Master's",
-   "photoThen": "assets/img/then/6146311.jpg",
-   "photoNow": "assets/img/gallery/6146311/001.jpg",
-   "gallery": [
-    "assets/img/gallery/6146311/001.jpg",
-    "assets/img/gallery/6146311/002.jpg",
-    "assets/img/gallery/6146311/003.jpg",
-    "assets/img/gallery/6146311/004.jpg"
-   ]
+   "photoThen": "assets/img/then/6146311.jpg"
   },
   {
    "id": "6146312",
@@ -2605,14 +2419,7 @@ window.CLASS_DATA = {
    "occupation": "scheduling operator university surgical associate",
    "children": "Rachel 1/16/05 Rebecca 7/27/06",
    "college": "Certificate",
-   "photoThen": "assets/img/then/6146314.jpg",
-   "photoNow": "assets/img/gallery/6146314/001.jpg",
-   "gallery": [
-    "assets/img/gallery/6146314/001.jpg",
-    "assets/img/gallery/6146314/002.jpg",
-    "assets/img/gallery/6146314/003.jpg",
-    "assets/img/gallery/6146314/004.jpg"
-   ]
+   "photoThen": "assets/img/then/6146314.jpg"
   },
   {
    "id": "6146457",
@@ -2693,15 +2500,7 @@ window.CLASS_DATA = {
    "children": "Hunter 1993, Drake 1996, Tanner 2000",
    "college": "No",
    "comments": "I worked for several years in Insurance and attended Chattanooga State for Surgical Tech and Computer Programming. In the past couple years I have been off work due to medical issues. I have had heart surgery and am currently unable to work. And let me tell you it is boring..lol. But has allowed me to spend alot of time with my boys. for that much I am grateful.",
-   "photoThen": "assets/img/then/6146323.jpg",
-   "photoNow": "assets/img/gallery/6146323/001.jpg",
-   "gallery": [
-    "assets/img/gallery/6146323/001.jpg",
-    "assets/img/gallery/6146323/002.jpg",
-    "assets/img/gallery/6146323/003.jpg",
-    "assets/img/gallery/6146323/004.jpg",
-    "assets/img/gallery/6146323/005.jpg"
-   ]
+   "photoThen": "assets/img/then/6146323.jpg"
   },
   {
    "id": "6146324",
@@ -2919,12 +2718,7 @@ window.CLASS_DATA = {
    "state": "TN",
    "spouse": "Vincent Wayne Eldridge",
    "children": "Jennifer Wilson- Born 1992 Christopher Wilson - Born 1995",
-   "photoThen": "assets/img/then/6146348.jpg",
-   "photoNow": "assets/img/gallery/6146348/001.jpg",
-   "gallery": [
-    "assets/img/gallery/6146348/001.jpg",
-    "assets/img/gallery/6146348/002.jpg"
-   ]
+   "photoThen": "assets/img/then/6146348.jpg"
   },
   {
    "id": "6146349",
