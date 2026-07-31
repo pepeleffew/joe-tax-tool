@@ -31,6 +31,28 @@
     t.textContent = msg; t.className = ok === false ? "show err" : "show";
     clearTimeout(t._t); t._t = setTimeout(function () { t.className = ""; }, 4500);
   }
+  // Fire-and-forget email alert to the admin (no-op until Netlify env is set).
+  function notifyAdmin(type, name) {
+    try { fetch("/.netlify/functions/notify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: type, name: name }) }); } catch (e) {}
+  }
+  // Show a count badge on the Admin tab + browser tab when items await approval.
+  function setBadge(n) {
+    var btn = document.querySelector('.tabs button[data-view="admin"]');
+    if (btn) {
+      var b = btn.querySelector(".nav-badge");
+      if (n > 0) { if (!b) { b = document.createElement("span"); b.className = "nav-badge"; btn.appendChild(b); } b.textContent = n; }
+      else if (b) { b.remove(); }
+    }
+    document.title = (n > 0 ? "(" + n + ") " : "") + "Soddy-Daisy High School — Class of 1993";
+  }
+  async function updatePendingBadge() {
+    if (!isAdmin()) { setBadge(0); return; }
+    try {
+      var q = function (tbl) { return sb.from(tbl).select("id", { count: "exact", head: true }).eq("status", "pending"); };
+      var r = await Promise.all([q("photos"), q("guestbook"), q("profile_claims")]);
+      setBadge(r.reduce(function (s, x) { return s + (x.count || 0); }, 0));
+    } catch (e) {}
+  }
 
   /* ---------- AUTH ---------- */
   function renderAuth() {
@@ -74,7 +96,7 @@
     var name = ($("#gb-name") && $("#gb-name").value.trim()) || displayName();
     var r = await sb.from("guestbook").insert({ author_id: user.id, author_name: name, author_email: user.email, message: msg, status: "pending" });
     if (r.error) { toast(r.error.message, false); return; }
-    ta.value = ""; toast("Thanks! Your note is pending approval.", true);
+    ta.value = ""; toast("Thanks! Your note is pending approval.", true); notifyAdmin("guestbook note", name);
   }
 
   /* ---------- PHOTO UPLOAD ---------- */
@@ -97,6 +119,7 @@
     $("#upload-submit").disabled = false; $("#upload-file").value = ""; $("#upload-caption").value = "";
     closeUpload();
     toast(ok + " photo" + (ok === 1 ? "" : "s") + " submitted — pending your approval. Thank you!", true);
+    if (ok) notifyAdmin("photo", displayName());
   }
   async function loadApprovedPhotos() {
     if (!window.ClassSite || !window.ClassSite.albums) return;
@@ -135,7 +158,7 @@
       if (up.error) { toast(up.error.message, false); return; }
       var ins = await sb.from("photos").insert({ album: "thennow", classmate_id: m.id, caption: "Now — " + m.name, storage_path: path, uploader_id: user.id, uploader_email: user.email, uploader_name: displayName(), status: "pending" });
       if (ins.error) { toast(ins.error.message, false); return; }
-      toast("Thanks! " + m.name + "'s current photo is pending approval.", true);
+      toast("Thanks! " + m.name + "'s current photo is pending approval.", true); notifyAdmin("current photo", m.name);
     };
     inp.click();
   }
@@ -220,12 +243,12 @@
       if (appr) appr.addEventListener("click", async function () {
         var r = await sb.from(table).update({ status: "approved" }).eq("id", id);
         if (r.error) { toast(r.error.message, false); return; }
-        toast("Approved ✓", true); loadApprovedPhotos(); loadThenNow(); loadGuestbook(); loadAdmin();
+        toast("Approved ✓", true); loadApprovedPhotos(); loadThenNow(); loadGuestbook(); loadAdmin(); updatePendingBadge();
       });
       if (rej) rej.addEventListener("click", async function () {
         var r = await sb.from(table).update({ status: "rejected" }).eq("id", id);
         if (r.error) { toast(r.error.message, false); return; }
-        item.remove(); toast("Rejected", true);
+        item.remove(); toast("Rejected", true); updatePendingBadge();
       });
       if (del) del.addEventListener("click", async function () {
         if (!confirm("Delete this permanently? It will be removed from the site.")) return;
@@ -293,7 +316,7 @@
     if (!user) { openAuth(); return; }
     var r = await sb.from("profile_claims").insert({ classmate_id: m.id, user_id: user.id, email: user.email, status: "pending" });
     if (r.error) { toast(r.error.message, false); return; }
-    toast("Claim sent — the admin will confirm it's you, then you can edit.", true);
+    toast("Claim sent — the admin will confirm it's you, then you can edit.", true); notifyAdmin("profile claim", m.name);
   }
   function editProfile(m) {
     var defs = [["city", "City", 0], ["state", "State", 0], ["maidenName", "Maiden / other name", 0],
@@ -390,9 +413,9 @@
     await loadMyOwnership();
     sb.auth.onAuthStateChange(async function (_e, sess) {
       user = sess ? sess.user : null; renderAuth(); await loadMyOwnership();
-      loadApprovedPhotos(); loadThenNow(); if (isAdmin()) loadAdmin();
+      loadApprovedPhotos(); loadThenNow(); updatePendingBadge(); if (isAdmin()) loadAdmin();
     });
-    loadGuestbook(); loadApprovedPhotos(); loadThenNow(); loadOverrides(); loadEdits();
+    loadGuestbook(); loadApprovedPhotos(); loadThenNow(); loadOverrides(); loadEdits(); updatePendingBadge();
     if (isAdmin()) loadAdmin();
   }
   init();
