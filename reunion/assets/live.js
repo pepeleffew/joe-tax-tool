@@ -180,6 +180,36 @@
     inp.click();
   }
 
+  // ----- Yearbook photo: admin fills in a missing 1993 portrait -----
+  async function loadYearbookPhotos() {
+    if (!window.ClassSite || !window.ClassSite.mates) return;
+    var r = await sb.from("photos").select("*").eq("album", "yearbook").eq("status", "approved").order("created_at", { ascending: false });
+    if (r.error || !r.data) return;
+    var byId = {};
+    r.data.forEach(function (p) { if (p.classmate_id && !byId[p.classmate_id]) byId[p.classmate_id] = sb.storage.from("photos").getPublicUrl(p.storage_path).data.publicUrl; });
+    window.ClassSite.mates.forEach(function (m) { if (byId[m.id]) m.photoThen = byId[m.id]; });
+    if (window.ClassSite.refresh) window.ClassSite.refresh();
+  }
+  function uploadYearbookPhoto(m) {
+    if (!isAdmin()) { toast("Admins only.", false); return; }
+    var inp = document.createElement("input"); inp.type = "file"; inp.accept = "image/*";
+    inp.onchange = async function () {
+      var f = inp.files && inp.files[0]; if (!f) return;
+      toast("Uploading…", true);
+      var safe = f.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+      var path = "yearbook/" + m.id + "/" + Date.now() + "-" + safe;
+      var up = await sb.storage.from("photos").upload(path, f);
+      if (up.error) { toast(up.error.message, false); return; }
+      var ins = await sb.from("photos").insert({ album: "yearbook", classmate_id: m.id, caption: m.name, storage_path: path, uploader_id: user.id, uploader_email: user.email, uploader_name: displayName(), status: "pending" }).select("id").single();
+      if (ins.error) { toast(ins.error.message, false); return; }
+      await sb.from("photos").update({ status: "approved" }).eq("id", ins.data.id);   // admin uploads publish immediately
+      await loadYearbookPhotos();
+      toast("Photo added for " + m.name + " ✓", true);
+      if (window.__openModal) window.__openModal(m);
+    };
+    inp.click();
+  }
+
   // ----- Memorial photos: admin-added photos on an In Memory page -----
   // Builds the full photo pool (original data + uploads) and picks the profile
   // photo: an admin's chosen one (classmate_overrides.mem_photo), else the
@@ -545,9 +575,12 @@
     if (!myId && m.status !== "memory") parts.push('<button class="chip" data-act="claim">✋ This is me</button>');
     if (isAdmin()) {
       parts.push('<span class="amt-label">Admin</span>');
-      parts.push(m.status === "memory"
-        ? '<button class="btn amt-now" data-act="addmem">📷 ' + (m.photoThen || m.photoMem ? "Add a photo" : "Add profile photo") + '</button><button class="chip" data-act="edityear">Edit year</button><button class="chip" data-act="restore">Return to directory</button>'
-        : '<button class="btn amt-mem" data-act="tomem">🕊 Move to In Memory</button>');
+      if (m.status === "memory") {
+        parts.push('<button class="btn amt-now" data-act="addmem">📷 ' + (m.photoThen || m.photoMem ? "Add a photo" : "Add profile photo") + '</button><button class="chip" data-act="edityear">Edit year</button><button class="chip" data-act="restore">Return to directory</button>');
+      } else {
+        if (!m.photoThen) parts.push('<button class="btn amt-now" data-act="addthen">📷 Add photo</button>');
+        parts.push('<button class="btn amt-mem" data-act="tomem">🕊 Move to In Memory</button>');
+      }
     }
     if (!parts.length) return;
     var box = document.createElement("div");
@@ -558,6 +591,7 @@
       b.addEventListener("click", function () {
         var a = b.dataset.act;
         if (a === "addnow") uploadNowPhoto(m);
+        else if (a === "addthen") uploadYearbookPhoto(m);
         else if (a === "addmem") uploadMemorialPhoto(m);
         else if (a === "editme") editProfile(m);
         else if (a === "claim") manualClaim(m);
@@ -592,7 +626,7 @@
       user = sess ? sess.user : null; await refreshAdmin(); renderAuth(); await loadMyOwnership();
       loadApprovedPhotos(); loadThenNow(); updatePendingBadge(); if (isAdmin()) loadAdmin();
     });
-    loadGuestbook(); loadApprovedPhotos(); loadThenNow(); loadMemorialPhotos(); loadOverrides(); loadEdits(); updatePendingBadge();
+    loadGuestbook(); loadApprovedPhotos(); loadThenNow(); loadMemorialPhotos(); loadYearbookPhotos(); loadOverrides(); loadEdits(); updatePendingBadge();
     if (isAdmin()) loadAdmin();
   }
   init();
