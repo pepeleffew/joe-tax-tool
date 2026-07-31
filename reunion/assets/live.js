@@ -20,7 +20,7 @@
   var sb = window.supabase.createClient(cfg.url, cfg.anonKey);
   var user = null;
   var myId = null;                       // the classmate id this user owns (if any)
-  var EDITABLE = ["city", "state", "occupation", "spouse", "children", "college", "homepage", "maidenName", "story"];
+  var EDITABLE = ["city", "state", "occupation", "spouse", "children", "college", "homepage", "maidenName", "story", "comments"];
   var isAdmin = function () { return !!(user && user.email && cfg.adminEmail && user.email.toLowerCase() === cfg.adminEmail.toLowerCase()); };
   var displayName = function () { return (user && user.user_metadata && user.user_metadata.name) || (user && user.email) || "Classmate"; };
   var fmtDate = function (s) { try { return new Date(s).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }); } catch (e) { return ""; } };
@@ -321,7 +321,8 @@
   function editProfile(m) {
     var defs = [["city", "City", 0], ["state", "State", 0], ["maidenName", "Maiden / other name", 0],
       ["occupation", "Occupation", 0], ["spouse", "Spouse / Partner", 0], ["children", "Children", 0],
-      ["college", "Education", 0], ["homepage", "Website", 0], ["story", "Your story", 1]];
+      ["college", "Education", 0], ["homepage", "Website", 0],
+      ["story", "School story (back in 1993)", 1], ["comments", "Life since graduation", 1]];
     var html = '<h3 style="font-family:var(--display);text-transform:uppercase;margin:0 0 4px">Edit my profile</h3>' +
       '<p class="muted" style="margin:0 0 14px">Only you can edit this. Changes go live right away.</p>';
     defs.forEach(function (f) {
