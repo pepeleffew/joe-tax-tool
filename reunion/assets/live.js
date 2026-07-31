@@ -181,27 +181,60 @@
   }
 
   // ----- Memorial photos: admin-added photos on an In Memory page -----
+  // Builds the full photo pool (original data + uploads) and picks the profile
+  // photo: an admin's chosen one (classmate_overrides.mem_photo), else the
+  // original portrait, else the first upload. The rest form a small gallery.
   async function loadMemorialPhotos() {
     if (!window.ClassSite || !window.ClassSite.mates) return;
-    var r = await sb.from("photos").select("*").eq("album", "memorial").eq("status", "approved").order("created_at", { ascending: true });
-    if (r.error || !r.data) return;
-    var byId = {};
-    r.data.forEach(function (p) {
+    var pr = await sb.from("photos").select("*").eq("album", "memorial").eq("status", "approved").order("created_at", { ascending: true });
+    var ov = await sb.from("classmate_overrides").select("classmate_id, mem_photo");
+    var uploads = {}, primary = {};
+    if (!pr.error && pr.data) pr.data.forEach(function (p) {
       if (!p.classmate_id) return;
       var url = sb.storage.from("photos").getPublicUrl(p.storage_path).data.publicUrl;
-      (byId[p.classmate_id] = byId[p.classmate_id] || []).push(url);
+      (uploads[p.classmate_id] = uploads[p.classmate_id] || []).push(url);
     });
+    if (!ov.error && ov.data) ov.data.forEach(function (o) { if (o.mem_photo) primary[o.classmate_id] = o.mem_photo; });
     window.ClassSite.mates.forEach(function (m) {
+      if (m._memPhotoMem === undefined) m._memPhotoMem = m.photoMem || "";   // original class-data portrait
       if (m._memBase === undefined) m._memBase = m.memGallery ? m.memGallery.slice() : [];
-      if (m._hadPortrait === undefined) m._hadPortrait = !!(m.photoThen || m.photoMem);
-      var ups = byId[m.id]; if (!ups) return;
-      var extra = ups.slice();
-      // If they have no yearbook/portrait (e.g. passed before HS), the first
-      // uploaded photo becomes their profile picture; any extras go to a gallery.
-      if (!m._hadPortrait) m.photoMem = extra.shift();
-      m.memGallery = m._memBase.concat(extra);
+      var ups = uploads[m.id] || [];
+      if (!ups.length && !m._memPhotoMem && !m._memBase.length) return;
+      var pool = [];
+      if (m._memPhotoMem) pool.push(m._memPhotoMem);
+      m._memBase.forEach(function (u) { if (pool.indexOf(u) < 0) pool.push(u); });
+      ups.forEach(function (u) { if (pool.indexOf(u) < 0) pool.push(u); });
+      if (!pool.length) return;
+      var chosen = (primary[m.id] && pool.indexOf(primary[m.id]) >= 0) ? primary[m.id] : (m._memPhotoMem || pool[0]);
+      m.photoMem = chosen;
+      m.memGallery = pool.filter(function (u) { return u !== chosen; });
     });
     if (window.ClassSite.refresh) window.ClassSite.refresh();
+  }
+  // Admin: set which photo is a memorial classmate's profile picture.
+  async function setPrimaryMemPhoto(m, url) {
+    if (!isAdmin()) return;
+    var r = await sb.from("classmate_overrides").upsert({ classmate_id: m.id, mem_photo: url, updated_at: new Date().toISOString(), updated_by: user.email }, { onConflict: "classmate_id" });
+    if (r.error) { toast(r.error.message, false); return; }
+    await loadMemorialPhotos();
+    toast("Profile photo updated ✓", true);
+    if (window.__openModal) window.__openModal(m);
+  }
+  function renderMemPhotoPicker(m, body) {
+    var pool = [m.photoMem].concat(m.memGallery || []).filter(Boolean);
+    if (pool.length < 2) return;
+    var box = document.createElement("div");
+    box.className = "fld mem-pick";
+    box.innerHTML = '<span>Profile photo <span class="muted" style="font-weight:400">(admin — pick which shows first)</span></span><div class="mem-pick-row">' +
+      pool.map(function (u) {
+        var cur = (u === m.photoMem);
+        return '<div class="mem-pick-item' + (cur ? " current" : "") + '"><img src="' + esc(u) + '" alt="">' +
+          (cur ? '<div class="mem-pick-tag">Current</div>' : '<button class="chip mem-pick-set" data-url="' + esc(u) + '">Use this</button>') + '</div>';
+      }).join("") + '</div>';
+    body.appendChild(box);
+    $$(".mem-pick-set", box).forEach(function (b) {
+      b.addEventListener("click", function () { setPrimaryMemPhoto(m, b.dataset.url); });
+    });
   }
   function uploadMemorialPhoto(m) {
     if (!isAdmin()) { toast("Admins only.", false); return; }
@@ -531,6 +564,7 @@
         else adminAct(a, m);
       });
     });
+    if (isAdmin() && m.status === "memory") renderMemPhotoPicker(m, body);
   };
 
   /* ---------- wire + init ---------- */

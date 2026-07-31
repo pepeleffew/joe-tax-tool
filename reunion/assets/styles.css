@@ -382,3 +382,11 @@ body.nolive #add-photos-btn, body.nolive .gb-form, body.nolive .rsvp-box { displ
 .up-subhead { margin: 0 0 10px; font-family: var(--display); text-transform: uppercase; letter-spacing: .5px; font-size: 15px; }
 .up-check { display: flex; align-items: flex-start; gap: 9px; font-size: 14px; margin-bottom: 12px; cursor: pointer; line-height: 1.4; }
 .up-check input { margin-top: 3px; flex: none; width: 17px; height: 17px; }
+
+/* In Memory — admin profile-photo picker */
+.mem-pick-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+.mem-pick-item { position: relative; width: 96px; }
+.mem-pick-item img { width: 96px; height: 96px; object-fit: cover; border-radius: 10px; border: 2px solid var(--border); display: block; }
+.mem-pick-item.current img { border-color: var(--accent); }
+.mem-pick-tag { text-align: center; font-size: 12px; font-weight: 700; color: var(--accent); margin-top: 4px; }
+.mem-pick-set { width: 100%; margin-top: 6px; justify-content: center; cursor: pointer; }

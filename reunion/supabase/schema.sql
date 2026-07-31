@@ -144,9 +144,11 @@ create table if not exists public.classmate_overrides (
   status       text check (status in ('active','missing','memory')),
   passed_year  text,
   note         text,
+  mem_photo    text,                     -- admin's chosen In Memory profile photo (URL)
   updated_at   timestamptz not null default now(),
   updated_by   text
 );
+alter table public.classmate_overrides add column if not exists mem_photo text;
 alter table public.classmate_overrides enable row level security;
 
 drop policy if exists co_read_all on public.classmate_overrides;
