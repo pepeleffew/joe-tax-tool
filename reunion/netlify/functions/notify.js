@@ -2,7 +2,7 @@
 // Configure in Netlify env vars: RESEND_API_KEY and NOTIFY_EMAIL.
 // Uses Resend's onboarding sender, which delivers to the account owner's own
 // address with no domain verification required.
-exports.handler = async function (event) {
+export const handler = async function (event) {
   const cors = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "Content-Type",
