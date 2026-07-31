@@ -137,3 +137,79 @@ create policy co_read_all on public.classmate_overrides for select using (true);
 drop policy if exists co_admin_write on public.classmate_overrides;
 create policy co_admin_write on public.classmate_overrides
   for all using (public.is_admin()) with check (public.is_admin());
+
+-- ===================================================================
+-- SELF-SERVICE PROFILE EDITING (claim your profile, edit your own only)
+-- ===================================================================
+
+-- Private map of known emails -> classmate id (populated separately, never
+-- exposed to the client; only the SECURITY DEFINER function below reads it).
+create table if not exists public.email_map (
+  email        text primary key,
+  classmate_id text not null
+);
+alter table public.email_map enable row level security;   -- no policies = no client access
+
+-- Ownership claims.
+create table if not exists public.profile_claims (
+  id           uuid primary key default gen_random_uuid(),
+  classmate_id text not null,
+  user_id      uuid not null references auth.users(id),
+  email        text,
+  status       text not null default 'pending' check (status in ('pending','approved','rejected')),
+  created_at   timestamptz not null default now()
+);
+alter table public.profile_claims enable row level security;
+create unique index if not exists pc_one_owner    on public.profile_claims (classmate_id) where status = 'approved';
+create unique index if not exists pc_one_per_user on public.profile_claims (user_id)      where status = 'approved';
+
+drop policy if exists pc_read on public.profile_claims;
+create policy pc_read on public.profile_claims for select using (user_id = auth.uid() or public.is_admin());
+drop policy if exists pc_insert on public.profile_claims;
+create policy pc_insert on public.profile_claims for insert to authenticated with check (user_id = auth.uid() and status = 'pending');
+drop policy if exists pc_admin_upd on public.profile_claims;
+create policy pc_admin_upd on public.profile_claims for update using (public.is_admin()) with check (public.is_admin());
+drop policy if exists pc_admin_del on public.profile_claims;
+create policy pc_admin_del on public.profile_claims for delete using (public.is_admin());
+
+-- Does the current user own this classmate profile?
+create or replace function public.owns_classmate(cid text) returns boolean
+language sql stable as $$
+  select exists (select 1 from public.profile_claims c
+    where c.classmate_id = cid and c.user_id = auth.uid() and c.status = 'approved')
+$$;
+
+-- Auto-verify by matching the signed-in email against the private map.
+create or replace function public.claim_my_profile() returns text
+language plpgsql security definer set search_path = public as $$
+declare cid text; myemail text;
+begin
+  myemail := lower(coalesce(auth.jwt() ->> 'email', ''));
+  if myemail = '' then return null; end if;
+  select classmate_id into cid from public.email_map where email = myemail limit 1;
+  if cid is null then return null; end if;
+  if exists (select 1 from public.profile_claims where user_id = auth.uid() and status = 'approved') then
+    return (select classmate_id from public.profile_claims where user_id = auth.uid() and status = 'approved' limit 1);
+  end if;
+  if exists (select 1 from public.profile_claims where classmate_id = cid and status = 'approved') then
+    return null;                       -- already owned by someone else
+  end if;
+  insert into public.profile_claims (classmate_id, user_id, email, status)
+    values (cid, auth.uid(), myemail, 'approved');
+  return cid;
+end $$;
+grant execute on function public.claim_my_profile() to authenticated;
+
+-- Public, self-edited profile fields (name/story/city/etc.) — owner or admin.
+create table if not exists public.profile_edits (
+  classmate_id text primary key,
+  fields       jsonb not null default '{}'::jsonb,
+  updated_at   timestamptz not null default now()
+);
+alter table public.profile_edits enable row level security;
+drop policy if exists pe_read on public.profile_edits;
+create policy pe_read on public.profile_edits for select using (true);
+drop policy if exists pe_write on public.profile_edits;
+create policy pe_write on public.profile_edits for all
+  using (public.owns_classmate(classmate_id) or public.is_admin())
+  with check (public.owns_classmate(classmate_id) or public.is_admin());

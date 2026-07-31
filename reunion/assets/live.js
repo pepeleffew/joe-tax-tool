@@ -19,6 +19,8 @@
   }
   var sb = window.supabase.createClient(cfg.url, cfg.anonKey);
   var user = null;
+  var myId = null;                       // the classmate id this user owns (if any)
+  var EDITABLE = ["city", "state", "occupation", "spouse", "children", "college", "homepage", "maidenName", "story"];
   var isAdmin = function () { return !!(user && user.email && cfg.adminEmail && user.email.toLowerCase() === cfg.adminEmail.toLowerCase()); };
   var displayName = function () { return (user && user.user_metadata && user.user_metadata.name) || (user && user.email) || "Classmate"; };
   var fmtDate = function (s) { try { return new Date(s).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }); } catch (e) { return ""; } };
@@ -165,6 +167,16 @@
   /* ---------- ADMIN ---------- */
   async function loadAdmin() {
     if (!isAdmin()) return;
+    // Pending profile claims (people asking to own/edit a profile).
+    var cl = await sb.from("profile_claims").select("*").eq("status", "pending").order("created_at", { ascending: true });
+    var cel = $("#admin-claims");
+    if (cel) {
+      var crows = cl.data || [];
+      var nameById = {}; (window.ClassSite && window.ClassSite.mates || []).forEach(function (m) { nameById[m.id] = m.name; });
+      cel.innerHTML = crows.length ? crows.map(function (c) {
+        return '<div class="admin-item" data-id="' + c.id + '" data-kind="claim"><div class="ai-meta"><b>' + esc(nameById[c.classmate_id] || c.classmate_id) + '</b><br><span class="muted">' + esc(c.email || "") + '</span></div><div class="ai-actions"><button class="btn approve">Approve</button><button class="chip reject">Reject</button></div></div>';
+      }).join("") : '<div class="empty">No profile claims waiting.</div>';
+    }
     var ph = await sb.from("photos").select("*").eq("status", "pending").order("created_at", { ascending: true });
     var pel = $("#admin-photos");
     if (pel) {
@@ -203,7 +215,7 @@
     }
 
     $$("#view-admin .admin-item").forEach(function (item) {
-      var id = item.dataset.id, table = item.dataset.kind === "photo" ? "photos" : "guestbook";
+      var id = item.dataset.id, table = item.dataset.kind === "photo" ? "photos" : item.dataset.kind === "claim" ? "profile_claims" : "guestbook";
       var appr = item.querySelector(".approve"), rej = item.querySelector(".reject:not(.del)"), del = item.querySelector(".del");
       if (appr) appr.addEventListener("click", async function () {
         var r = await sb.from(table).update({ status: "approved" }).eq("id", id);
@@ -269,28 +281,89 @@
     if (window.ClassSite.refresh) window.ClassSite.refresh();
     if (window.__openModal) window.__openModal(m);   // re-render the profile with new state
   }
+  // Who do I own? Auto-verify by email, else any admin-approved claim.
+  async function loadMyOwnership() {
+    myId = null;
+    if (!user) return;
+    try { var rc = await sb.rpc("claim_my_profile"); if (rc && rc.data) myId = rc.data; } catch (e) {}
+    var r = await sb.from("profile_claims").select("classmate_id").eq("user_id", user.id).eq("status", "approved").limit(1);
+    if (!r.error && r.data && r.data.length) myId = r.data[0].classmate_id;
+  }
+  async function manualClaim(m) {
+    if (!user) { openAuth(); return; }
+    var r = await sb.from("profile_claims").insert({ classmate_id: m.id, user_id: user.id, email: user.email, status: "pending" });
+    if (r.error) { toast(r.error.message, false); return; }
+    toast("Claim sent — the admin will confirm it's you, then you can edit.", true);
+  }
+  function editProfile(m) {
+    var defs = [["city", "City", 0], ["state", "State", 0], ["maidenName", "Maiden / other name", 0],
+      ["occupation", "Occupation", 0], ["spouse", "Spouse / Partner", 0], ["children", "Children", 0],
+      ["college", "Education", 0], ["homepage", "Website", 0], ["story", "Your story", 1]];
+    var html = '<h3 style="font-family:var(--display);text-transform:uppercase;margin:0 0 4px">Edit my profile</h3>' +
+      '<p class="muted" style="margin:0 0 14px">Only you can edit this. Changes go live right away.</p>';
+    defs.forEach(function (f) {
+      var v = esc(m[f[0]] || "");
+      html += '<label class="up-label">' + f[1] + '</label>' +
+        (f[2] ? '<textarea class="up-input" data-f="' + f[0] + '" rows="4">' + v + '</textarea>'
+              : '<input class="up-input" data-f="' + f[0] + '" value="' + v + '">');
+    });
+    html += '<div style="display:flex;gap:10px;margin-top:16px"><button class="btn" data-editact="save">Save changes</button><button class="chip" data-editact="cancel">Cancel</button></div>';
+    var body = $("#modal-body"); if (!body) return;
+    body.innerHTML = html;
+    $$("[data-editact]", body).forEach(function (b) {
+      b.addEventListener("click", function () {
+        if (b.dataset.editact === "cancel") { if (window.__openModal) window.__openModal(m); return; }
+        var fields = {};
+        $$("[data-f]", body).forEach(function (inp) { var v = inp.value.trim(); if (v) fields[inp.dataset.f] = v; });
+        saveEdits(m, fields);
+      });
+    });
+  }
+  async function saveEdits(m, fields) {
+    var r = await sb.from("profile_edits").upsert({ classmate_id: m.id, fields: fields, updated_at: new Date().toISOString() }, { onConflict: "classmate_id" });
+    if (r.error) { toast(r.error.message, false); return; }
+    EDITABLE.forEach(function (k) { if (fields[k] != null && fields[k] !== "") m[k] = fields[k]; });
+    toast("Profile saved ✓", true);
+    if (window.ClassSite.refresh) window.ClassSite.refresh();
+    if (window.__openModal) window.__openModal(m);
+  }
+  async function loadEdits() {
+    if (!window.ClassSite || !window.ClassSite.mates) return;
+    var r = await sb.from("profile_edits").select("*");
+    if (r.error || !r.data) return;
+    var byId = {}; r.data.forEach(function (e) { byId[e.classmate_id] = e.fields || {}; });
+    window.ClassSite.mates.forEach(function (m) {
+      var f = byId[m.id]; if (!f) return;
+      EDITABLE.forEach(function (k) { if (f[k] != null && f[k] !== "") m[k] = f[k]; });
+    });
+    if (window.ClassSite.refresh) window.ClassSite.refresh();
+  }
+
   window.ClassSite = window.ClassSite || {};
   window.ClassSite.onModalOpen = function (m, body) {
-    if (!user) return;                       // must be signed in to add anything
-    var html = "";
-    if (m.status !== "memory" && m.photoThen) {
-      html += '<button class="btn amt-now" data-act="addnow">📷 Add a current photo</button>';
-    }
+    if (!user) return;                       // must be signed in to do anything
+    var parts = [];
+    if (myId && m.id === myId) parts.push('<button class="btn amt-edit" data-act="editme">✏️ Edit my profile</button>');
+    if (m.status !== "memory" && m.photoThen) parts.push('<button class="btn amt-now" data-act="addnow">📷 Add a current photo</button>');
+    if (!myId && m.status !== "memory") parts.push('<button class="chip" data-act="claim">✋ This is me</button>');
     if (isAdmin()) {
-      html += '<span class="amt-label">Admin</span>';
-      html += (m.status === "memory")
+      parts.push('<span class="amt-label">Admin</span>');
+      parts.push(m.status === "memory"
         ? '<button class="chip" data-act="edityear">Edit year</button><button class="chip" data-act="restore">Return to directory</button>'
-        : '<button class="btn amt-mem" data-act="tomem">🕊 Move to In Memory</button>';
+        : '<button class="btn amt-mem" data-act="tomem">🕊 Move to In Memory</button>');
     }
-    if (!html) return;
+    if (!parts.length) return;
     var box = document.createElement("div");
     box.className = "admin-modal-tools";
-    box.innerHTML = html;
+    box.innerHTML = parts.join("");
     body.appendChild(box);
     $$("[data-act]", box).forEach(function (b) {
       b.addEventListener("click", function () {
-        if (b.dataset.act === "addnow") uploadNowPhoto(m);
-        else adminAct(b.dataset.act, m);
+        var a = b.dataset.act;
+        if (a === "addnow") uploadNowPhoto(m);
+        else if (a === "editme") editProfile(m);
+        else if (a === "claim") manualClaim(m);
+        else adminAct(a, m);
       });
     });
   };
@@ -314,8 +387,12 @@
     wire();
     var s = await sb.auth.getSession(); user = s.data.session ? s.data.session.user : null;
     renderAuth();
-    sb.auth.onAuthStateChange(function (_e, sess) { user = sess ? sess.user : null; renderAuth(); loadApprovedPhotos(); if (isAdmin()) loadAdmin(); });
-    loadGuestbook(); loadApprovedPhotos(); loadThenNow(); loadOverrides();
+    await loadMyOwnership();
+    sb.auth.onAuthStateChange(async function (_e, sess) {
+      user = sess ? sess.user : null; renderAuth(); await loadMyOwnership();
+      loadApprovedPhotos(); loadThenNow(); if (isAdmin()) loadAdmin();
+    });
+    loadGuestbook(); loadApprovedPhotos(); loadThenNow(); loadOverrides(); loadEdits();
     if (isAdmin()) loadAdmin();
   }
   init();
