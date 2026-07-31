@@ -119,3 +119,21 @@ create policy storage_photos_write on storage.objects
 drop policy if exists storage_photos_admin_del on storage.objects;
 create policy storage_photos_admin_del on storage.objects
   for delete using (bucket_id = 'photos' and public.is_admin());
+
+-- ---------- CLASSMATE OVERRIDES (admin: move to In Memory, fix year) --
+create table if not exists public.classmate_overrides (
+  classmate_id text primary key,
+  status       text check (status in ('active','missing','memory')),
+  passed_year  text,
+  note         text,
+  updated_at   timestamptz not null default now(),
+  updated_by   text
+);
+alter table public.classmate_overrides enable row level security;
+
+drop policy if exists co_read_all on public.classmate_overrides;
+create policy co_read_all on public.classmate_overrides for select using (true);
+
+drop policy if exists co_admin_write on public.classmate_overrides;
+create policy co_admin_write on public.classmate_overrides
+  for all using (public.is_admin()) with check (public.is_admin());

@@ -198,6 +198,67 @@
     });
   }
 
+  /* ---------- Classmate overrides (move to In Memory, fix year, restore) ---------- */
+  async function loadOverrides() {
+    if (!window.ClassSite || !window.ClassSite.mates) return;
+    var r = await sb.from("classmate_overrides").select("*");
+    if (r.error || !r.data) return;
+    var byId = {}; r.data.forEach(function (o) { byId[o.classmate_id] = o; });
+    window.ClassSite.mates.forEach(function (m) {
+      var o = byId[m.id]; if (!o) return;
+      if (o.status) m.status = o.status;
+      if (o.passed_year) m.passedYear = o.passed_year; else if (o.status && o.status !== "memory") delete m.passedYear;
+      if (o.note) m.memNote = o.note; else delete m.memNote;
+    });
+    if (window.ClassSite.refresh) window.ClassSite.refresh();
+  }
+  function applyLocal(m, ch) { Object.keys(ch).forEach(function (k) { if (ch[k] === undefined) delete m[k]; else m[k] = ch[k]; }); }
+  async function saveOverride(id, fields) {
+    var row = { classmate_id: id, status: fields.status, passed_year: fields.passed_year, note: fields.note, updated_by: user ? user.email : null };
+    var r = await sb.from("classmate_overrides").upsert(row, { onConflict: "classmate_id" });
+    if (r.error) { toast(r.error.message, false); return false; }
+    return true;
+  }
+  async function adminAct(act, m) {
+    if (act === "tomem") {
+      var yr = prompt("Year " + m.name + " passed away (optional — you can add it later):", "");
+      if (yr === null) return;
+      var note = prompt("A short remembrance note (optional):", "") || "";
+      if (!(await saveOverride(m.id, { status: "memory", passed_year: yr.trim() || null, note: note.trim() || null }))) return;
+      applyLocal(m, { status: "memory", passedYear: yr.trim() || undefined, memNote: note.trim() || undefined });
+      toast(m.name + " moved to In Memory 🕊", true);
+    } else if (act === "restore") {
+      if (!confirm("Move " + m.name + " back to the directory?")) return;
+      if (!(await saveOverride(m.id, { status: "active", passed_year: null, note: null }))) return;
+      applyLocal(m, { status: "active", passedYear: undefined, memNote: undefined });
+      toast(m.name + " moved back to the directory", true);
+    } else if (act === "edityear") {
+      var y2 = prompt("Passing year for " + m.name + ":", m.passedYear || "");
+      if (y2 === null) return;
+      if (!(await saveOverride(m.id, { status: "memory", passed_year: y2.trim() || null, note: m.memNote || null }))) return;
+      applyLocal(m, { passedYear: y2.trim() || undefined });
+      toast("Updated ✓", true);
+    }
+    if (window.ClassSite.refresh) window.ClassSite.refresh();
+    if (window.__openModal) window.__openModal(m);   // re-render the profile with new state
+  }
+  window.ClassSite = window.ClassSite || {};
+  window.ClassSite.onModalOpen = function (m, body) {
+    if (!isAdmin()) return;
+    var box = document.createElement("div");
+    box.className = "admin-modal-tools";
+    if (m.status === "memory") {
+      box.innerHTML = '<span class="amt-label">Admin</span>' +
+        '<button class="chip" data-act="edityear">Edit year</button>' +
+        '<button class="chip" data-act="restore">Return to directory</button>';
+    } else {
+      box.innerHTML = '<span class="amt-label">Admin</span>' +
+        '<button class="btn amt-mem" data-act="tomem">🕊 Move to In Memory</button>';
+    }
+    body.appendChild(box);
+    $$("[data-act]", box).forEach(function (b) { b.addEventListener("click", function () { adminAct(b.dataset.act, m); }); });
+  };
+
   /* ---------- wire + init ---------- */
   function wire() {
     if ($("#gb-post-btn")) $("#gb-post-btn").addEventListener("click", postGuestbook);
@@ -218,7 +279,7 @@
     var s = await sb.auth.getSession(); user = s.data.session ? s.data.session.user : null;
     renderAuth();
     sb.auth.onAuthStateChange(function (_e, sess) { user = sess ? sess.user : null; renderAuth(); loadApprovedPhotos(); if (isAdmin()) loadAdmin(); });
-    loadGuestbook(); loadApprovedPhotos();
+    loadGuestbook(); loadApprovedPhotos(); loadOverrides();
     if (isAdmin()) loadAdmin();
   }
   init();

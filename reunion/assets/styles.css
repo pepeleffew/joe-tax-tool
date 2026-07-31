@@ -337,3 +337,8 @@ body.nolive #add-photos-btn, body.nolive .gb-form, body.nolive .rsvp-box { displ
   display: none; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,.4); }
 .ph:hover .ph-del { display: flex; }
 .ph .ph-del:hover { background: #b3261e; transform: scale(1.08); }
+
+/* Admin controls inside a classmate profile modal */
+.admin-modal-tools { margin-top: 20px; padding-top: 16px; border-top: 1px dashed var(--border); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.amt-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); font-weight: 700; }
+.amt-mem { padding: 9px 16px; font-size: 14px; }

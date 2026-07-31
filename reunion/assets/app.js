@@ -45,8 +45,13 @@
 
   var active = byStatus("active"), memory = byStatus("memory");
   var living = mates.filter(function (m) { return m.status !== "memory"; });
-  var counts = { "#stat-total": living.length, "#stat-active": active.length, "#stat-memory": memory.length };
-  Object.keys(counts).forEach(function (sel) { var e = $(sel); if (e) e.setAttribute("data-count", counts[sel]); });
+  function updateHeroCounts() {
+    active = byStatus("active"); memory = byStatus("memory");
+    living = mates.filter(function (m) { return m.status !== "memory"; });
+    var counts = { "#stat-total": living.length, "#stat-active": active.length, "#stat-memory": memory.length };
+    Object.keys(counts).forEach(function (sel) { var e = $(sel); if (e) { e.setAttribute("data-count", counts[sel]); e.textContent = counts[sel]; } });
+  }
+  updateHeroCounts();
 
   // Hero mosaic built from real yearbook faces.
   (function buildMosaic() {
@@ -98,6 +103,7 @@
     if (m.comments) html += '<div class="fld"><span>Life Since</span><p>' + esc(m.comments) + '</p></div>';
     if (m.homepage) html += '<div class="fld"><span>Website</span><div><a href="' + esc(m.homepage) + '" target="_blank" rel="noopener">' + esc(m.homepage) + '</a></div></div>';
     if (m.obituaryUrl) html += '<div class="fld"><span>Obituary</span><div><a href="' + esc(m.obituaryUrl) + '" target="_blank" rel="noopener">Read remembrance</a></div></div>';
+    if (m.memNote) html += '<div class="fld"><span>Remembrance</span><p>' + esc(m.memNote) + '</p></div>';
     if (m.memGallery && m.memGallery.length) {
       var fn = String(m.name || "").split(" ")[0];
       html += '<div class="fld"><span>Remembering ' + esc(fn) + '</span><div class="thumbs">' +
@@ -116,9 +122,11 @@
         openLightbox(thumbs.map(function (t) { return { src: t.src, who: m.name }; }), i);
       });
     });
+    if (window.ClassSite && typeof window.ClassSite.onModalOpen === "function") window.ClassSite.onModalOpen(m, modalBody);
     modal.classList.add("open");
     document.body.style.overflow = "hidden";
   }
+  window.__openModal = openModal;   // let the live layer reopen a profile after an edit
   function closeModal() { modal.classList.remove("open"); document.body.style.overflow = ""; }
   modal.addEventListener("click", function (e) { if (e.target === modal || e.target.closest("[data-close]")) closeModal(); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeModal(); });
@@ -131,7 +139,7 @@
       .some(function (v) { return v && String(v).toLowerCase().indexOf(q) >= 0; });
   }
   function pool() {
-    if (dirState.filter === "all") return living;
+    if (dirState.filter === "all") return mates.filter(function (m) { return m.status !== "memory"; });
     return byStatus(dirState.filter);
   }
   function renderDirectory() {
@@ -179,20 +187,23 @@
 
   /* ---- In Memory ---- */
   var mem = $("#memory-grid");
-  if (memory.length) {
-    memory.sort(function (a, b) { return String(a.name).localeCompare(String(b.name)); });
-    mem.innerHTML = memory.map(function (m, i) {
+  function renderMemorial() {
+    if (!mem) return;
+    var list = byStatus("memory").sort(function (a, b) { return String(a.name).localeCompare(String(b.name)); });
+    if (!list.length) { mem.innerHTML = '<div class="empty">No memorial entries.</div>'; return; }
+    mem.innerHTML = list.map(function (m, i) {
       return '<div class="mem-card" data-i="' + i + '" tabindex="0" role="button">' + avatar(m, "", "then", true) +
         '<div class="name">' + esc(m.name) + '</div>' +
         (m.passedYear ? '<div class="muted">' + esc(m.passedYear) + '</div>' : "") +
         '</div>';
     }).join("");
     $$("#memory-grid .mem-card").forEach(function (c) {
-      var open = function () { openModal(memory[+c.dataset.i]); };
+      var open = function () { openModal(list[+c.dataset.i]); };
       c.addEventListener("click", open);
       c.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } });
     });
-  } else { mem.innerHTML = '<div class="empty">No memorial entries.</div>'; }
+  }
+  renderMemorial();
 
   /* ---- Yearbook wall ---- */
   var ybPeople = mates.filter(function (m) { return m.photoThen; })
@@ -367,7 +378,12 @@
     renderPhotos: renderPhotos,
     currentAlbumKey: function () { return curAlbum ? curAlbum.key : null; },
     openLightbox: openLightbox,
-    showView: function (v) {}      // replaced once show() is defined
+    mates: mates,
+    onModalOpen: null,             // live.js sets this to inject admin controls
+    showView: function (v) {},     // replaced once show() is defined
+    // Re-render everything that depends on classmate status/data (used after
+    // an admin moves someone to In Memory, etc.).
+    refresh: function () { updateHeroCounts(); renderDirectory(); renderMemorial(); }
   };
 
   /* ---- Tabs ---- */
