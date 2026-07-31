@@ -26,7 +26,18 @@
   var user = null;
   var myId = null;                       // the classmate id this user owns (if any)
   var EDITABLE = ["city", "state", "occupation", "spouse", "children", "college", "homepage", "maidenName", "story", "comments"];
-  var isAdmin = function () { return !!(user && user.email && cfg.adminEmail && user.email.toLowerCase() === cfg.adminEmail.toLowerCase()); };
+  var amAdmin = false;                     // resolved from the server (public.admins)
+  var isAdmin = function () { return amAdmin; };
+  // Determine admin from the DB (public.is_admin RPC), with a client-side
+  // fallback list so the primary admin is never locked out of the UI.
+  async function refreshAdmin() {
+    if (!user || !user.email) { amAdmin = false; return; }
+    var email = user.email.toLowerCase();
+    var list = (cfg.adminEmails || (cfg.adminEmail ? [cfg.adminEmail] : [])).map(function (e) { return String(e).toLowerCase(); });
+    if (list.indexOf(email) > -1) { amAdmin = true; return; }
+    try { var r = await sb.rpc("is_admin"); amAdmin = (r.data === true); }
+    catch (e) { amAdmin = false; }
+  }
   var displayName = function () { return (user && user.user_metadata && user.user_metadata.name) || (user && user.email) || "Classmate"; };
   var fmtDate = function (s) { try { return new Date(s).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }); } catch (e) { return ""; } };
 
@@ -526,10 +537,11 @@
   async function init() {
     wire();
     var s = await sb.auth.getSession(); user = s.data.session ? s.data.session.user : null;
+    await refreshAdmin();
     renderAuth();
     await loadMyOwnership();
     sb.auth.onAuthStateChange(async function (_e, sess) {
-      user = sess ? sess.user : null; renderAuth(); await loadMyOwnership();
+      user = sess ? sess.user : null; await refreshAdmin(); renderAuth(); await loadMyOwnership();
       loadApprovedPhotos(); loadThenNow(); updatePendingBadge(); if (isAdmin()) loadAdmin();
     });
     loadGuestbook(); loadApprovedPhotos(); loadThenNow(); loadMemorialPhotos(); loadOverrides(); loadEdits(); updatePendingBadge();

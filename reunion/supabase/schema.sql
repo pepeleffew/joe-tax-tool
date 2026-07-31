@@ -8,11 +8,29 @@
 -- only 'approved' rows. Only the admin (adminEmail) can approve/reject.
 -- =====================================================================
 
--- Who is the admin? (matches SUPA_CONFIG.adminEmail in the site)
+-- Admins live in a table so you can add/remove them without code changes.
+create table if not exists public.admins (
+  email      text primary key,
+  added_at   timestamptz not null default now()
+);
+alter table public.admins enable row level security;   -- no select policy: the list is never exposed to clients
+insert into public.admins (email) values ('joe.c.leffew@gmail.com') on conflict do nothing;
+
+-- Is the signed-in user an admin? SECURITY DEFINER so it can read public.admins
+-- past RLS. Used by every policy below AND callable from the site via RPC.
 create or replace function public.is_admin() returns boolean
-language sql stable as $$
-  select coalesce(auth.jwt() ->> 'email', '') = 'joe.c.leffew@gmail.com'
+language sql stable security definer set search_path = public as $$
+  select exists (
+    select 1 from public.admins
+    where lower(email) = lower(coalesce(auth.jwt() ->> 'email', ''))
+  )
 $$;
+grant execute on function public.is_admin() to authenticated, anon;
+
+-- To add another admin later, run:
+--   insert into public.admins (email) values ('their.email@example.com');
+-- To remove one:
+--   delete from public.admins where email = 'their.email@example.com';
 
 -- ---------- PHOTOS ---------------------------------------------------
 create table if not exists public.photos (
