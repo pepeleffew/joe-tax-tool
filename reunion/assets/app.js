@@ -48,7 +48,8 @@
   function updateHeroCounts() {
     active = byStatus("active"); memory = byStatus("memory");
     living = mates.filter(function (m) { return m.status !== "memory"; });
-    var counts = { "#stat-total": living.length, "#stat-active": active.length, "#stat-memory": memory.length };
+    var portraits = mates.filter(function (m) { return m.photoThen; }).length;
+    var counts = { "#stat-total": living.length, "#stat-active": portraits, "#stat-memory": memory.length };
     Object.keys(counts).forEach(function (sel) { var e = $(sel); if (e) { e.setAttribute("data-count", counts[sel]); e.textContent = counts[sel]; } });
   }
   updateHeroCounts();
@@ -148,7 +149,7 @@
     $("#dir-count").textContent = list.length;
     if (!list.length) { el.innerHTML = '<div class="empty">No classmates match “' + esc(dirState.q) + '”.</div>'; return; }
     el.innerHTML = list.map(function (m, i) {
-      var badge = m.status === "active" ? '<span class="pill">Reconnected</span>' : "";
+      var badge = "";
       return '<article class="card" data-i="' + i + '" tabindex="0" role="button">' + badge + avatar(m) +
         '<div class="name">' + esc(m.name) + (m.maidenName ? ' <span class="maiden">(' + esc(m.maidenName) + ')</span>' : "") + '</div>' +
         (loc(m) ? '<div class="loc">' + esc(loc(m)) + '</div>' : "") +
@@ -358,7 +359,7 @@
       var distinctCities = topCounts(cities, 9999, titleCase).length;
       var distinctStates = states.filter(function (v, i, a) { return a.indexOf(v) === i; }).length;
       var data = [
-        [living.length, "Classmates"], [active.length, "Reconnected"],
+        [living.length, "Classmates"], [active.length, "With Profiles"],
         [mates.filter(function (m) { return m.photoThen; }).length, "Senior Portraits"],
         [distinctCities, "Cities"], [distinctStates, "States"], [memory.length, "In Memory"]
       ];
