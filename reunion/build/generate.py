@@ -11,6 +11,7 @@ intentionally NOT written to the public data file. City/State and reunion-
 appropriate profile fields are kept.
 """
 import csv, os, re, json, shutil, unicodedata, collections, html
+from PIL import Image, ImageOps, ImageEnhance
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -149,10 +150,27 @@ def match(idx, keys):
             return idx[k]
     return None
 
-def copy_img(src, dst_rel):
+def enhance_photo(path):
+    """Gentle, face-safe cleanup for old scanned portraits: per-channel
+    auto-levels (neutralizes red/yellow casts + restores contrast), then a
+    touch of color, contrast, and sharpness. Global tone only."""
+    try:
+        im = Image.open(path).convert("RGB")
+    except Exception:
+        return
+    lv = ImageOps.autocontrast(im, cutoff=0.75)
+    im = Image.blend(im, lv, 0.85)
+    im = ImageEnhance.Color(im).enhance(1.07)
+    im = ImageEnhance.Contrast(im).enhance(1.03)
+    im = ImageEnhance.Sharpness(im).enhance(1.15)
+    im.save(path, quality=90)
+
+def copy_img(src, dst_rel, enhance=False):
     dst = os.path.join(ROOT, dst_rel)
     os.makedirs(os.path.dirname(dst), exist_ok=True)
     shutil.copy2(src, dst)
+    if enhance:
+        enhance_photo(dst)
     return dst_rel.replace(os.sep, "/")
 
 def ext_of(p):
@@ -203,12 +221,12 @@ def build():
         # imported — current photos come from consented uploads instead.
         y = match(yb, keys)
         if y:
-            p["photoThen"] = copy_img(y, f"assets/img/then/{mid}{ext_of(y)}")
+            p["photoThen"] = copy_img(y, f"assets/img/then/{mid}{ext_of(y)}", enhance=True)
             stats["yearbook"] += 1
         if status == "memory":
             o = match(ob, keys)
             if o:
-                p["photoMem"] = copy_img(o, f"assets/img/mem/{mid}{ext_of(o)}")
+                p["photoMem"] = copy_img(o, f"assets/img/mem/{mid}{ext_of(o)}", enhance=True)
                 stats["obituary"] += 1
             yd = clean(r.get("Year Deceased"))
             if yd:
@@ -221,9 +239,9 @@ def build():
             if extra:
                 mp = os.path.join(ROOT, "build", "mem_photos")
                 if extra.get("portrait") and "photoMem" not in p:
-                    p["photoMem"] = copy_img(os.path.join(mp, extra["portrait"]), f"assets/img/mem/{mid}.jpg")
+                    p["photoMem"] = copy_img(os.path.join(mp, extra["portrait"]), f"assets/img/mem/{mid}.jpg", enhance=True)
                     stats["mem_pdf"] = stats.get("mem_pdf", 0) + 1
-                gal = [copy_img(os.path.join(mp, fn), f"assets/img/mem/{mid}-life-{i}.jpg")
+                gal = [copy_img(os.path.join(mp, fn), f"assets/img/mem/{mid}-life-{i}.jpg", enhance=True)
                        for i, fn in enumerate(extra.get("gallery", []), 1)]
                 if gal:
                     p["memGallery"] = gal
