@@ -25,7 +25,8 @@
   });
   var user = null;
   var myId = null;                       // the classmate id this user owns (if any)
-  var EDITABLE = ["city", "state", "occupation", "spouse", "children", "college", "homepage", "maidenName", "story", "comments"];
+  var EDITABLE = ["city", "state", "occupation", "spouse", "children", "college", "homepage", "maidenName", "story", "comments",
+    "bizList", "bizName", "bizWhat", "bizUrl", "bizPhone", "bizDesc"];
   var amAdmin = false;                     // resolved from the server (public.admins)
   var isAdmin = function () { return amAdmin; };
   // Determine admin from the DB (public.is_admin RPC), with a client-side
@@ -409,6 +410,17 @@
         (f[2] ? '<textarea class="up-input" data-f="' + f[0] + '" rows="4">' + v + '</textarea>'
               : '<input class="up-input" data-f="' + f[0] + '" value="' + v + '">');
     });
+    var bizDefs = [["bizName", "Business / company name", 0], ["bizWhat", "What you do (e.g. Realtor, Wedding Planner)", 0],
+      ["bizUrl", "Business website", 0], ["bizPhone", "Business phone", 0], ["bizDesc", "Short description (optional)", 1]];
+    html += '<div class="biz-fieldset"><h4 class="up-subhead">💼 Class Business Directory</h4>' +
+      '<label class="up-check"><input type="checkbox" data-fc="bizList"' + (m.bizList === "yes" ? " checked" : "") + '> List my business / service in the “Support Our Own” directory</label>';
+    bizDefs.forEach(function (f) {
+      var v = esc(m[f[0]] || "");
+      html += '<label class="up-label">' + f[1] + '</label>' +
+        (f[2] ? '<textarea class="up-input" data-f="' + f[0] + '" rows="3">' + v + '</textarea>'
+              : '<input class="up-input" data-f="' + f[0] + '" value="' + v + '">');
+    });
+    html += '</div>';
     html += '<div style="display:flex;gap:10px;margin-top:16px"><button class="btn" data-editact="save">Save changes</button><button class="chip" data-editact="cancel">Cancel</button></div>';
     var body = $("#modal-body"); if (!body) return;
     body.innerHTML = html;
@@ -417,6 +429,8 @@
         if (b.dataset.editact === "cancel") { if (window.__openModal) window.__openModal(m); return; }
         var fields = {};
         $$("[data-f]", body).forEach(function (inp) { var v = inp.value.trim(); if (v) fields[inp.dataset.f] = v; });
+        var chk = body.querySelector('[data-fc="bizList"]');
+        fields.bizList = (chk && chk.checked) ? "yes" : "no";
         saveEdits(m, fields);
       });
     });

@@ -23,6 +23,8 @@
     return ((p[0] || "")[0] || "?").toUpperCase() + ((p[p.length - 1] || "")[0] || "").toUpperCase();
   };
   var hue = function (name) { var h = 0, s = String(name || ""); for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) % 360; return h; };
+  var fixUrl = function (u) { u = String(u || "").trim(); return u && !/^https?:\/\//i.test(u) ? "http://" + u : u; };
+  var cleanUrl = function (u) { return String(u || "").replace(/^https?:\/\//i, "").replace(/\/$/, ""); };
   function avatar(m, cls, prefer, mono) {
     var src = prefer === "then" ? (m.photoThen || m.photoMem || m.photoNow) : (m.photoNow || m.photoThen || m.photoMem);
     if (src) return '<img class="avatar ' + (cls || "") + '" loading="lazy" alt="' + esc(m.name) + '" src="' + esc(src) + '">';
@@ -103,6 +105,16 @@
     if (m.story) html += '<div class="fld"><span>School Story</span><p>' + esc(m.story) + '</p></div>';
     if (m.comments) html += '<div class="fld"><span>Life Since</span><p>' + esc(m.comments) + '</p></div>';
     if (m.homepage) html += '<div class="fld"><span>Website</span><div><a href="' + esc(m.homepage) + '" target="_blank" rel="noopener">' + esc(m.homepage) + '</a></div></div>';
+    if (m.bizList === "yes" && (m.bizName || m.bizWhat || m.bizUrl || m.bizPhone)) {
+      var bsite = m.bizUrl || m.homepage || "";
+      html += '<div class="fld biz-fld"><span>💼 Business</span><div>' +
+        (m.bizName ? '<strong>' + esc(m.bizName) + '</strong>' : "") +
+        (m.bizWhat ? (m.bizName ? " — " : "") + esc(m.bizWhat) : "") +
+        (m.bizDesc ? '<br>' + esc(m.bizDesc) : "") +
+        (bsite ? '<br><a href="' + esc(fixUrl(bsite)) + '" target="_blank" rel="noopener">' + esc(cleanUrl(bsite)) + '</a>' : "") +
+        (m.bizPhone ? '<br>📞 ' + esc(m.bizPhone) : "") +
+        '</div></div>';
+    }
     if (m.obituaryUrl) html += '<div class="fld"><span>Obituary</span><div><a href="' + esc(m.obituaryUrl) + '" target="_blank" rel="noopener">Read remembrance</a></div></div>';
     if (m.memNote) html += '<div class="fld"><span>Remembrance</span><p>' + esc(m.memNote) + '</p></div>';
     if (m.memGallery && m.memGallery.length) {
@@ -190,6 +202,41 @@
     $$("#thennow-grid .tn").forEach(function (c) { c.addEventListener("click", function () { openModal(pairs[+c.dataset.i]); }); });
   }
   renderThenNow();
+
+  /* ---- Businesses — "Support Our Own" (opt-in) ---- */
+  function renderBusinesses() {
+    var el = $("#biz-grid"); if (!el) return;
+    var list = mates.filter(function (m) { return m.bizList === "yes"; })
+      .sort(function (a, b) { return String(a.bizName || a.name).localeCompare(String(b.bizName || b.name)); });
+    if (!list.length) {
+      el.className = "";
+      el.innerHTML = '<div class="album-empty"><div style="font-size:38px">💼</div><p style="margin:.6em 0 0"><strong>No businesses listed yet.</strong><br>' +
+        'Own a business or offer a service? Open your profile in <strong>Classmates</strong>, tap <strong>“Edit my profile,”</strong> and add it — you could be the first!</p></div>';
+      return;
+    }
+    el.className = "biz-grid";
+    el.innerHTML = list.map(function (m) {
+      var idx = mates.indexOf(m);
+      var title = m.bizName || m.occupation || m.name;
+      var what = m.bizWhat || (m.bizName ? m.occupation : "") || "";
+      var site = m.bizUrl || m.homepage || "";
+      return '<article class="biz-card" data-i="' + idx + '" tabindex="0" role="button">' +
+        '<div class="biz-head">' + avatar(m, "biz-av") + '<div class="biz-headtext"><h3>' + esc(title) + '</h3>' +
+        '<div class="biz-by">' + esc(m.name) + (m.maidenName ? ' (' + esc(m.maidenName) + ')' : "") + (loc(m) ? ' · ' + esc(loc(m)) : "") + '</div>' +
+        (what ? '<div class="biz-what">' + esc(what) + '</div>' : "") + '</div></div>' +
+        (m.bizDesc ? '<p class="biz-desc">' + esc(m.bizDesc) + '</p>' : "") +
+        '<div class="biz-links">' +
+        (site ? '<a class="biz-link" href="' + esc(fixUrl(site)) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">🌐 ' + esc(cleanUrl(site)) + '</a>' : "") +
+        (m.bizPhone ? '<a class="biz-link" href="tel:' + esc(String(m.bizPhone).replace(/[^0-9+]/g, "")) + '" onclick="event.stopPropagation()">📞 ' + esc(m.bizPhone) + '</a>' : "") +
+        '</div></article>';
+    }).join("");
+    $$("#biz-grid .biz-card").forEach(function (c) {
+      var open = function () { openModal(mates[+c.dataset.i]); };
+      c.addEventListener("click", open);
+      c.addEventListener("keypress", function (e) { if (e.key === "Enter") open(); });
+    });
+  }
+  renderBusinesses();
 
   /* ---- In Memory ---- */
   var mem = $("#memory-grid");
@@ -391,7 +438,7 @@
     renderThenNow: renderThenNow,
     // Re-render everything that depends on classmate status/data (used after
     // an admin moves someone to In Memory, adds a Now photo, etc.).
-    refresh: function () { updateHeroCounts(); renderDirectory(); renderMemorial(); renderThenNow(); }
+    refresh: function () { updateHeroCounts(); renderDirectory(); renderMemorial(); renderThenNow(); renderBusinesses(); }
   };
 
   /* ---- Tabs ---- */
