@@ -13,8 +13,9 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
-# Long-cache the immutable photo assets.
+# Cache photos but always revalidate, so re-processed images (same filename)
+# still refresh for returning visitors.
 [[headers]]
   for = "/assets/img/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=0, must-revalidate"
