@@ -168,6 +168,49 @@
     inp.click();
   }
 
+  // ----- Memorial photos: admin-added photos on an In Memory page -----
+  async function loadMemorialPhotos() {
+    if (!window.ClassSite || !window.ClassSite.mates) return;
+    var r = await sb.from("photos").select("*").eq("album", "memorial").eq("status", "approved").order("created_at", { ascending: true });
+    if (r.error || !r.data) return;
+    var byId = {};
+    r.data.forEach(function (p) {
+      if (!p.classmate_id) return;
+      var url = sb.storage.from("photos").getPublicUrl(p.storage_path).data.publicUrl;
+      (byId[p.classmate_id] = byId[p.classmate_id] || []).push(url);
+    });
+    window.ClassSite.mates.forEach(function (m) {
+      if (m._memBase === undefined) m._memBase = m.memGallery ? m.memGallery.slice() : [];
+      if (m._hadPortrait === undefined) m._hadPortrait = !!(m.photoThen || m.photoMem);
+      var ups = byId[m.id]; if (!ups) return;
+      var extra = ups.slice();
+      // If they have no yearbook/portrait (e.g. passed before HS), the first
+      // uploaded photo becomes their profile picture; any extras go to a gallery.
+      if (!m._hadPortrait) m.photoMem = extra.shift();
+      m.memGallery = m._memBase.concat(extra);
+    });
+    if (window.ClassSite.refresh) window.ClassSite.refresh();
+  }
+  function uploadMemorialPhoto(m) {
+    if (!isAdmin()) { toast("Admins only.", false); return; }
+    var inp = document.createElement("input"); inp.type = "file"; inp.accept = "image/*";
+    inp.onchange = async function () {
+      var f = inp.files && inp.files[0]; if (!f) return;
+      toast("Uploading…", true);
+      var safe = f.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+      var path = "memorial/" + m.id + "/" + Date.now() + "-" + safe;
+      var up = await sb.storage.from("photos").upload(path, f);
+      if (up.error) { toast(up.error.message, false); return; }
+      var ins = await sb.from("photos").insert({ album: "memorial", classmate_id: m.id, caption: m.name, storage_path: path, uploader_id: user.id, uploader_email: user.email, uploader_name: displayName(), status: "pending" }).select("id").single();
+      if (ins.error) { toast(ins.error.message, false); return; }
+      await sb.from("photos").update({ status: "approved" }).eq("id", ins.data.id);   // admin uploads publish immediately
+      await loadMemorialPhotos();
+      toast("Photo added to " + m.name + "'s page ✓", true);
+      if (window.__openModal) window.__openModal(m);   // reopen so it shows right away
+    };
+    inp.click();
+  }
+
   // Delete an uploaded photo straight from the album (admin only).
   window.ClassSite = window.ClassSite || {};
   window.ClassSite.deletePhoto = async function (id, path) {
@@ -445,7 +488,7 @@
     if (isAdmin()) {
       parts.push('<span class="amt-label">Admin</span>');
       parts.push(m.status === "memory"
-        ? '<button class="chip" data-act="edityear">Edit year</button><button class="chip" data-act="restore">Return to directory</button>'
+        ? '<button class="btn amt-now" data-act="addmem">📷 ' + (m.photoThen || m.photoMem ? "Add a photo" : "Add profile photo") + '</button><button class="chip" data-act="edityear">Edit year</button><button class="chip" data-act="restore">Return to directory</button>'
         : '<button class="btn amt-mem" data-act="tomem">🕊 Move to In Memory</button>');
     }
     if (!parts.length) return;
@@ -457,6 +500,7 @@
       b.addEventListener("click", function () {
         var a = b.dataset.act;
         if (a === "addnow") uploadNowPhoto(m);
+        else if (a === "addmem") uploadMemorialPhoto(m);
         else if (a === "editme") editProfile(m);
         else if (a === "claim") manualClaim(m);
         else adminAct(a, m);
@@ -488,7 +532,7 @@
       user = sess ? sess.user : null; renderAuth(); await loadMyOwnership();
       loadApprovedPhotos(); loadThenNow(); updatePendingBadge(); if (isAdmin()) loadAdmin();
     });
-    loadGuestbook(); loadApprovedPhotos(); loadThenNow(); loadOverrides(); loadEdits(); updatePendingBadge();
+    loadGuestbook(); loadApprovedPhotos(); loadThenNow(); loadMemorialPhotos(); loadOverrides(); loadEdits(); updatePendingBadge();
     if (isAdmin()) loadAdmin();
   }
   init();
