@@ -219,7 +219,7 @@
   $("#reunion-location").textContent = R.location || "";
   $("#reunion-blurb").textContent = R.blurb || "";
   var rsvp = $("#reunion-rsvp");
-  if (R.rsvpUrl) { rsvp.href = R.rsvpUrl; rsvp.style.display = "inline-block"; } else { rsvp.style.display = "none"; }
+  if (rsvp) { if (R.rsvpUrl) { rsvp.href = R.rsvpUrl; rsvp.style.display = "inline-block"; } else { rsvp.style.display = "none"; } }
   $("#reunion-timeline").innerHTML = (R.pastReunions || []).map(function (p) {
     return '<li><span class="yr">' + esc(p.year) + '</span><span>' + esc(p.label) +
       (p.photos ? " · " + p.photos + " photos" : "") + '</span></li>';
@@ -351,6 +351,15 @@
 
   renderAlbumChips(); renderPhotos();
 
+  // Hooks for the optional live layer (live.js) to add approved uploads.
+  window.ClassSite = {
+    albums: albums,
+    renderPhotos: renderPhotos,
+    currentAlbumKey: function () { return curAlbum ? curAlbum.key : null; },
+    openLightbox: openLightbox,
+    showView: function (v) {}      // replaced once show() is defined
+  };
+
   /* ---- Tabs ---- */
   function show(view) {
     $$("section.view").forEach(function (s) { s.classList.toggle("active", s.id === "view-" + view); });
@@ -365,6 +374,8 @@
   $$(".tabs button, [data-goto]").forEach(function (b) {
     b.addEventListener("click", function () { show(b.dataset.view || b.dataset.goto); });
   });
+
+  window.ClassSite.showView = show;
 
   // Solidify the header once the user scrolls off the hero.
   var onScroll = function () { document.body.classList.toggle("scrolled", window.scrollY > 30); };

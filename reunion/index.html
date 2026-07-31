@@ -42,11 +42,14 @@
         <button data-view="yearbook">Yearbook</button>
         <button data-view="photos">Photos</button>
         <button data-view="thennow">Then &amp; Now</button>
-        <button data-view="stats">Class Stats</button>
+        <button data-view="stats">Stats</button>
         <button data-view="nineties">1993</button>
+        <button data-view="guestbook">Guestbook</button>
         <button data-view="memory">In Memory</button>
         <button data-view="reunion">Reunion</button>
+        <button data-view="admin" class="admin-only" style="display:none">Admin</button>
       </nav>
+      <div id="auth-slot" class="auth-slot"></div>
     </div>
   </header>
 
@@ -133,7 +136,10 @@
   <!-- PHOTOS -->
   <section id="view-photos" class="view">
     <div class="wrap">
-      <div class="section-head"><div><h2>Photo Albums</h2><p>Candids through the years &amp; reunion galleries · click any photo to enlarge</p></div></div>
+      <div class="section-head">
+        <div><h2>Photo Albums</h2><p>Candids through the years &amp; reunion galleries · click any photo to enlarge</p></div>
+        <button class="btn" id="add-photos-btn">＋ Add Photos</button>
+      </div>
       <div id="album-chips" class="toolbar"></div>
       <div id="photo-grid" class="masonry"></div>
     </div>
@@ -174,6 +180,33 @@
     </div>
   </section>
 
+  <!-- GUESTBOOK -->
+  <section id="view-guestbook" class="view">
+    <div class="wrap">
+      <div class="section-head"><div><h2>Guestbook</h2><p>Say hello, share a memory, tell everyone what you’ve been up to.</p></div></div>
+      <div class="gb-form">
+        <input id="gb-name" type="text" placeholder="Your name (optional)">
+        <textarea id="gb-message" rows="3" placeholder="Leave a note for the class…"></textarea>
+        <div class="gb-form-foot">
+          <span class="muted" style="font-size:13px">Notes appear after a quick review.</span>
+          <button class="btn" id="gb-post-btn">Sign the Guestbook</button>
+        </div>
+      </div>
+      <div id="gb-list" class="gb-list"></div>
+    </div>
+  </section>
+
+  <!-- ADMIN (only visible when signed in as admin) -->
+  <section id="view-admin" class="view">
+    <div class="wrap">
+      <div class="section-head"><div><h2>Admin · Approvals</h2><p>Approve or reject classmate submissions before they go public.</p></div></div>
+      <h3 class="admin-h">Pending Photos</h3>
+      <div id="admin-photos" class="admin-grid"></div>
+      <h3 class="admin-h">Pending Guestbook Notes</h3>
+      <div id="admin-guestbook" class="admin-grid"></div>
+    </div>
+  </section>
+
   <!-- IN MEMORY -->
   <section id="view-memory" class="view memorial">
     <div class="wrap">
@@ -189,7 +222,16 @@
       <div class="reunion-card">
         <div id="countdown" class="countdown"></div>
         <p id="reunion-blurb" style="text-align:center; max-width:640px; margin:0 auto"></p>
-        <div style="text-align:center; margin-top:20px"><a id="reunion-rsvp" class="btn" href="#" target="_blank" rel="noopener">RSVP</a></div>
+        <div id="rsvp-box" class="rsvp-box">
+          <h3 class="rsvp-h">Will you be there?</h3>
+          <div class="rsvp-row">
+            <input id="rsvp-name" type="text" placeholder="Your name">
+            <label class="rsvp-guests">Party size <input id="rsvp-guests" type="number" min="0" max="20" value="1"></label>
+            <label class="rsvp-no"><input id="rsvp-no" type="checkbox"> Can’t make it</label>
+          </div>
+          <input id="rsvp-note" type="text" placeholder="Note (optional)">
+          <button class="btn" id="rsvp-btn">Send my RSVP</button>
+        </div>
         <ul id="reunion-timeline" class="timeline"></ul>
       </div>
     </div>
@@ -216,7 +258,47 @@
     <button class="lb-nav lb-next" data-lb-next aria-label="Next">›</button>
   </div>
 
+  <!-- Auth modal -->
+  <div id="auth-modal" class="modal" aria-hidden="true">
+    <div class="modal-card" style="max-width:420px">
+      <button class="close" data-auth-close aria-label="Close">×</button>
+      <div style="padding:28px">
+        <h3 style="font-family:var(--display);text-transform:uppercase;margin:0 0 6px">Sign in</h3>
+        <p class="muted" style="margin:0 0 16px">Enter your email and we’ll send a one-tap sign-in link — no password needed.</p>
+        <input id="auth-email" type="email" placeholder="you@email.com" style="width:100%;padding:12px 14px;border-radius:11px;border:1px solid var(--border);background:var(--surface);color:var(--text);font:inherit">
+        <button class="btn" id="auth-send" style="width:100%;justify-content:center;margin-top:12px">Email me a link</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upload modal -->
+  <div id="upload-modal" class="modal" aria-hidden="true">
+    <div class="modal-card" style="max-width:460px">
+      <button class="close" data-upload-close aria-label="Close">×</button>
+      <div style="padding:28px">
+        <h3 style="font-family:var(--display);text-transform:uppercase;margin:0 0 14px">Add Photos</h3>
+        <label class="up-label">Album</label>
+        <select id="upload-album" class="up-input">
+          <option value="next">Next Reunion</option>
+          <option value="r25">25-Year Reunion · 2018</option>
+          <option value="r20">20-Year Reunion · 2013</option>
+          <option value="r10">10-Year Reunion · 2003</option>
+          <option value="candids">Through the Years</option>
+        </select>
+        <label class="up-label">Photos</label>
+        <input id="upload-file" class="up-input" type="file" accept="image/*" multiple>
+        <label class="up-label">Caption (optional)</label>
+        <input id="upload-caption" class="up-input" type="text" placeholder="Who / what / when">
+        <button class="btn" id="upload-submit" style="width:100%;justify-content:center;margin-top:14px">Submit for approval</button>
+        <p class="muted" style="font-size:13px;margin:10px 0 0">Your photos go live once an admin approves them.</p>
+      </div>
+    </div>
+  </div>
+
   <script src="data/class-data.js"></script>
   <script src="assets/app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/supabase-config.js"></script>
+  <script src="assets/live.js"></script>
 </body>
 </html>
