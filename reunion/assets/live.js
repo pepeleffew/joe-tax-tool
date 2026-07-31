@@ -111,6 +111,33 @@
     window.ClassSite.canDelete = isAdmin();
     if (window.ClassSite.renderPhotos) window.ClassSite.renderPhotos();
   }
+  // ----- Then & Now: current photos tied to a specific classmate -----
+  async function loadThenNow() {
+    if (!window.ClassSite || !window.ClassSite.mates) return;
+    var r = await sb.from("photos").select("*").eq("album", "thennow").eq("status", "approved").order("created_at", { ascending: false });
+    if (r.error || !r.data) return;
+    var byId = {};
+    r.data.forEach(function (p) { if (p.classmate_id && !byId[p.classmate_id]) byId[p.classmate_id] = sb.storage.from("photos").getPublicUrl(p.storage_path).data.publicUrl; });
+    window.ClassSite.mates.forEach(function (m) { if (byId[m.id]) m.photoNow = byId[m.id]; });
+    if (window.ClassSite.refresh) window.ClassSite.refresh();
+  }
+  function uploadNowPhoto(m) {
+    if (!user) { openAuth(); return; }
+    var inp = document.createElement("input"); inp.type = "file"; inp.accept = "image/*";
+    inp.onchange = async function () {
+      var f = inp.files && inp.files[0]; if (!f) return;
+      toast("Uploading…", true);
+      var safe = f.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+      var path = "thennow/" + m.id + "/" + Date.now() + "-" + safe;
+      var up = await sb.storage.from("photos").upload(path, f);
+      if (up.error) { toast(up.error.message, false); return; }
+      var ins = await sb.from("photos").insert({ album: "thennow", classmate_id: m.id, caption: "Now — " + m.name, storage_path: path, uploader_id: user.id, uploader_email: user.email, uploader_name: displayName(), status: "pending" });
+      if (ins.error) { toast(ins.error.message, false); return; }
+      toast("Thanks! " + m.name + "'s current photo is pending approval.", true);
+    };
+    inp.click();
+  }
+
   // Delete an uploaded photo straight from the album (admin only).
   window.ClassSite = window.ClassSite || {};
   window.ClassSite.deletePhoto = async function (id, path) {
@@ -119,7 +146,7 @@
     if (path) await sb.storage.from("photos").remove([path]);
     var r = await sb.from("photos").delete().eq("id", id);
     if (r.error) { toast(r.error.message, false); return; }
-    toast("Photo deleted", true); loadApprovedPhotos(); loadAdmin();
+    toast("Photo deleted", true); loadApprovedPhotos(); loadThenNow(); loadAdmin();
   };
 
   /* ---------- RSVP ---------- */
@@ -181,7 +208,7 @@
       if (appr) appr.addEventListener("click", async function () {
         var r = await sb.from(table).update({ status: "approved" }).eq("id", id);
         if (r.error) { toast(r.error.message, false); return; }
-        toast("Approved ✓", true); loadApprovedPhotos(); loadGuestbook(); loadAdmin();
+        toast("Approved ✓", true); loadApprovedPhotos(); loadThenNow(); loadGuestbook(); loadAdmin();
       });
       if (rej) rej.addEventListener("click", async function () {
         var r = await sb.from(table).update({ status: "rejected" }).eq("id", id);
@@ -193,7 +220,7 @@
         if (item.dataset.path) await sb.storage.from("photos").remove([item.dataset.path]);
         var r = await sb.from(table).delete().eq("id", id);
         if (r.error) { toast(r.error.message, false); return; }
-        item.remove(); toast("Deleted", true); loadApprovedPhotos(); loadGuestbook();
+        item.remove(); toast("Deleted", true); loadApprovedPhotos(); loadThenNow(); loadGuestbook();
       });
     });
   }
@@ -244,19 +271,28 @@
   }
   window.ClassSite = window.ClassSite || {};
   window.ClassSite.onModalOpen = function (m, body) {
-    if (!isAdmin()) return;
+    if (!user) return;                       // must be signed in to add anything
+    var html = "";
+    if (m.status !== "memory" && m.photoThen) {
+      html += '<button class="btn amt-now" data-act="addnow">📷 Add a current photo</button>';
+    }
+    if (isAdmin()) {
+      html += '<span class="amt-label">Admin</span>';
+      html += (m.status === "memory")
+        ? '<button class="chip" data-act="edityear">Edit year</button><button class="chip" data-act="restore">Return to directory</button>'
+        : '<button class="btn amt-mem" data-act="tomem">🕊 Move to In Memory</button>';
+    }
+    if (!html) return;
     var box = document.createElement("div");
     box.className = "admin-modal-tools";
-    if (m.status === "memory") {
-      box.innerHTML = '<span class="amt-label">Admin</span>' +
-        '<button class="chip" data-act="edityear">Edit year</button>' +
-        '<button class="chip" data-act="restore">Return to directory</button>';
-    } else {
-      box.innerHTML = '<span class="amt-label">Admin</span>' +
-        '<button class="btn amt-mem" data-act="tomem">🕊 Move to In Memory</button>';
-    }
+    box.innerHTML = html;
     body.appendChild(box);
-    $$("[data-act]", box).forEach(function (b) { b.addEventListener("click", function () { adminAct(b.dataset.act, m); }); });
+    $$("[data-act]", box).forEach(function (b) {
+      b.addEventListener("click", function () {
+        if (b.dataset.act === "addnow") uploadNowPhoto(m);
+        else adminAct(b.dataset.act, m);
+      });
+    });
   };
 
   /* ---------- wire + init ---------- */
@@ -279,7 +315,7 @@
     var s = await sb.auth.getSession(); user = s.data.session ? s.data.session.user : null;
     renderAuth();
     sb.auth.onAuthStateChange(function (_e, sess) { user = sess ? sess.user : null; renderAuth(); loadApprovedPhotos(); if (isAdmin()) loadAdmin(); });
-    loadGuestbook(); loadApprovedPhotos(); loadOverrides();
+    loadGuestbook(); loadApprovedPhotos(); loadThenNow(); loadOverrides();
     if (isAdmin()) loadAdmin();
   }
   init();

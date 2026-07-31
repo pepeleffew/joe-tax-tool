@@ -172,9 +172,15 @@
   });
 
   /* ---- Then & Now ---- */
-  var pairs = mates.filter(function (m) { return m.photoThen && m.photoNow && m.status !== "memory"; });
   var tn = $("#thennow-grid");
-  if (pairs.length) {
+  function renderThenNow() {
+    if (!tn) return;
+    var pairs = mates.filter(function (m) { return m.photoThen && m.photoNow && m.status !== "memory"; });
+    if (!pairs.length) {
+      tn.innerHTML = '<div class="empty">📸 No Then &amp; Now photos yet.<br>' +
+        'Open any classmate in the <strong>Classmates</strong> tab and add their current photo — once approved it pairs with their 1993 yearbook shot right here.</div>';
+      return;
+    }
     tn.innerHTML = pairs.map(function (m, i) {
       return '<div class="tn" data-i="' + i + '"><div class="pair">' +
         '<figure><img loading="lazy" alt="then" src="' + esc(m.photoThen) + '"><figcaption>1993</figcaption></figure>' +
@@ -182,9 +188,8 @@
         '</div><div class="cap">' + esc(m.name) + '</div></div>';
     }).join("");
     $$("#thennow-grid .tn").forEach(function (c) { c.addEventListener("click", function () { openModal(pairs[+c.dataset.i]); }); });
-  } else {
-    tn.innerHTML = '<div class="empty">No Then &amp; Now pairs yet.</div>';
   }
+  renderThenNow();
 
   /* ---- In Memory ---- */
   var mem = $("#memory-grid");
@@ -382,9 +387,10 @@
     mates: mates,
     onModalOpen: null,             // live.js sets this to inject admin controls
     showView: function (v) {},     // replaced once show() is defined
+    renderThenNow: renderThenNow,
     // Re-render everything that depends on classmate status/data (used after
-    // an admin moves someone to In Memory, etc.).
-    refresh: function () { updateHeroCounts(); renderDirectory(); renderMemorial(); }
+    // an admin moves someone to In Memory, adds a Now photo, etc.).
+    refresh: function () { updateHeroCounts(); renderDirectory(); renderMemorial(); renderThenNow(); }
   };
 
   /* ---- Tabs ---- */
