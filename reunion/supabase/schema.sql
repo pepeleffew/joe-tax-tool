@@ -200,6 +200,41 @@ begin
 end $$;
 grant execute on function public.claim_my_profile() to authenticated;
 
+-- ---------- TRIBUTES (remembrances on In Memory pages) --------------
+-- Signed-in classmates leave a memory on a specific classmate's memorial.
+-- Lands as 'pending'; only the admin approves. Public sees 'approved' only.
+create table if not exists public.tributes (
+  id           uuid primary key default gen_random_uuid(),
+  created_at   timestamptz not null default now(),
+  classmate_id text not null,
+  author_id    uuid references auth.users(id),
+  author_name  text not null,
+  author_email text,
+  message      text not null check (char_length(message) between 1 and 2000),
+  status       text not null default 'pending'
+               check (status in ('pending','approved','rejected'))
+);
+alter table public.tributes enable row level security;
+
+drop policy if exists tr_read_approved on public.tributes;
+create policy tr_read_approved on public.tributes
+  for select using (status = 'approved' or public.is_admin());
+
+drop policy if exists tr_insert_auth on public.tributes;
+create policy tr_insert_auth on public.tributes
+  for insert to authenticated
+  with check (status = 'pending' and author_id = auth.uid());
+
+drop policy if exists tr_admin_update on public.tributes;
+create policy tr_admin_update on public.tributes
+  for update using (public.is_admin()) with check (public.is_admin());
+
+drop policy if exists tr_admin_delete on public.tributes;
+create policy tr_admin_delete on public.tributes
+  for delete using (public.is_admin());
+
+create index if not exists tr_by_classmate on public.tributes (classmate_id) where status = 'approved';
+
 -- Public, self-edited profile fields (name/story/city/etc.) — owner or admin.
 create table if not exists public.profile_edits (
   classmate_id text primary key,

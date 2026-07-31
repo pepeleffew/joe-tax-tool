@@ -54,7 +54,7 @@
     if (!isAdmin()) { setBadge(0); return; }
     try {
       var q = function (tbl) { return sb.from(tbl).select("id", { count: "exact", head: true }).eq("status", "pending"); };
-      var r = await Promise.all([q("photos"), q("guestbook"), q("profile_claims")]);
+      var r = await Promise.all([q("photos"), q("guestbook"), q("profile_claims"), q("tributes")]);
       setBadge(r.reduce(function (s, x) { return s + (x.count || 0); }, 0));
     } catch (e) {}
   }
@@ -222,6 +222,15 @@
         return '<div class="admin-item" data-id="' + g.id + '" data-kind="gb"><div class="ai-meta">“' + esc(g.message) + '”<br><span class="muted">— ' + esc(g.author_name) + '</span></div><div class="ai-actions"><button class="btn approve">Approve</button><button class="chip reject">Reject</button></div></div>';
       }).join("") : '<div class="empty">No notes waiting.</div>';
     }
+    var tr = await sb.from("tributes").select("*").eq("status", "pending").order("created_at", { ascending: true });
+    var tel = $("#admin-tributes");
+    if (tel) {
+      var trows = tr.data || [];
+      var tnameById = {}; (window.ClassSite && window.ClassSite.mates || []).forEach(function (m) { tnameById[m.id] = m.name; });
+      tel.innerHTML = trows.length ? trows.map(function (t) {
+        return '<div class="admin-item" data-id="' + t.id + '" data-kind="tribute"><div class="ai-meta">For <b>' + esc(tnameById[t.classmate_id] || t.classmate_id) + '</b><br>“' + esc(t.message) + '”<br><span class="muted">— ' + esc(t.author_name) + '</span></div><div class="ai-actions"><button class="btn approve">Approve</button><button class="chip reject">Reject</button></div></div>';
+      }).join("") : '<div class="empty">No remembrances waiting.</div>';
+    }
     // Published (approved) photos — with a Delete button.
     var pp = await sb.from("photos").select("*").eq("status", "approved").order("created_at", { ascending: false });
     var ppel = $("#admin-pub-photos");
@@ -231,6 +240,16 @@
         var url = sb.storage.from("photos").getPublicUrl(p.storage_path).data.publicUrl;
         return '<div class="admin-item" data-id="' + p.id + '" data-kind="photo" data-path="' + esc(p.storage_path) + '"><img src="' + esc(url) + '" alt=""><div class="ai-meta"><b>' + esc(p.album) + '</b> · ' + esc(p.uploader_name || p.uploader_email || "") + (p.caption ? '<br>' + esc(p.caption) : "") + '</div><div class="ai-actions"><button class="chip reject del">Delete</button></div></div>';
       }).join("") : '<div class="empty">No published photos yet.</div>';
+    }
+    // Published remembrances — with a Delete button.
+    var pt = await sb.from("tributes").select("*").eq("status", "approved").order("created_at", { ascending: false });
+    var ptel = $("#admin-pub-tributes");
+    if (ptel) {
+      var ptrows = pt.data || [];
+      var tnameById2 = {}; (window.ClassSite && window.ClassSite.mates || []).forEach(function (m) { tnameById2[m.id] = m.name; });
+      ptel.innerHTML = ptrows.length ? ptrows.map(function (t) {
+        return '<div class="admin-item" data-id="' + t.id + '" data-kind="tribute"><div class="ai-meta">For <b>' + esc(tnameById2[t.classmate_id] || t.classmate_id) + '</b><br>“' + esc(t.message) + '”<br><span class="muted">— ' + esc(t.author_name) + '</span></div><div class="ai-actions"><button class="chip reject del">Delete</button></div></div>';
+      }).join("") : '<div class="empty">No published remembrances yet.</div>';
     }
     // Published guestbook notes — with a Delete button.
     var pg = await sb.from("guestbook").select("*").eq("status", "approved").order("created_at", { ascending: false });
@@ -243,7 +262,7 @@
     }
 
     $$("#view-admin .admin-item").forEach(function (item) {
-      var id = item.dataset.id, table = item.dataset.kind === "photo" ? "photos" : item.dataset.kind === "claim" ? "profile_claims" : "guestbook";
+      var id = item.dataset.id, table = item.dataset.kind === "photo" ? "photos" : item.dataset.kind === "claim" ? "profile_claims" : item.dataset.kind === "tribute" ? "tributes" : "guestbook";
       var appr = item.querySelector(".approve"), rej = item.querySelector(".reject:not(.del)"), del = item.querySelector(".del");
       if (appr) appr.addEventListener("click", async function () {
         var r = await sb.from(table).update({ status: "approved" }).eq("id", id);
@@ -369,8 +388,56 @@
   }
 
   window.ClassSite = window.ClassSite || {};
+  /* ---------- TRIBUTES (In Memory remembrances) ---------- */
+  function tributeHtml(t) {
+    return '<div class="tribute"><p class="tr-msg">' + esc(t.message) + '</p><div class="tr-by">— ' + esc(t.author_name) + ' · ' + fmtDate(t.created_at) + '</div></div>';
+  }
+  async function postTribute(m, msg, nameVal, ta, list) {
+    if (!user) { openAuth(); return; }
+    if (!msg) { toast("Write a memory first.", false); return; }
+    var name = (nameVal || "").trim() || displayName();
+    var r = await sb.from("tributes").insert({ classmate_id: m.id, author_id: user.id, author_name: name, author_email: user.email, message: msg, status: "pending" });
+    if (r.error) { toast(r.error.message, false); return; }
+    if (ta) ta.value = "";
+    toast("Thank you 💛 Your remembrance is pending approval.", true);
+    notifyAdmin("remembrance", m.name);
+    updatePendingBadge();
+  }
+  async function renderTributes(m, body) {
+    var sec = document.createElement("div");
+    sec.className = "fld tributes";
+    var fn = esc(String(m.name || "").split(" ")[0] || "them");
+    sec.innerHTML = '<span>Remembrances</span><div class="tr-list"><p class="muted" style="margin:.2em 0 0">Loading…</p></div>';
+    body.appendChild(sec);
+    var list = sec.querySelector(".tr-list");
+    var r = await sb.from("tributes").select("*").eq("classmate_id", m.id).eq("status", "approved").order("created_at", { ascending: true });
+    var items = (r.error || !r.data) ? [] : r.data;
+    var listHtml = items.length ? items.map(tributeHtml).join("")
+      : '<p class="muted" style="margin:.2em 0 .6em">Be the first to share a memory of ' + fn + '.</p>';
+    var formHtml;
+    if (user) {
+      var defName = displayName(); if (defName.indexOf("@") > -1) defName = defName.split("@")[0];
+      formHtml = '<div class="tr-form">' +
+        '<input class="tr-name" type="text" placeholder="Your name" value="' + esc(defName) + '">' +
+        '<textarea class="tr-input" rows="3" maxlength="2000" placeholder="Share a memory of ' + fn + '…"></textarea>' +
+        '<button class="btn tr-post">Post remembrance</button>' +
+        '<div class="muted tr-hint">Reviewed before it appears.</div></div>';
+    } else {
+      formHtml = '<button class="chip tr-signin">Sign in to leave a remembrance</button>';
+    }
+    list.innerHTML = listHtml + formHtml;
+    var pb = list.querySelector(".tr-post");
+    if (pb) pb.addEventListener("click", function () {
+      var ta = list.querySelector(".tr-input"), nm = list.querySelector(".tr-name");
+      postTribute(m, (ta.value || "").trim(), nm ? nm.value : "", ta, list);
+    });
+    var si = list.querySelector(".tr-signin");
+    if (si) si.addEventListener("click", openAuth);
+  }
+
   window.ClassSite.onModalOpen = function (m, body) {
-    if (!user) return;                       // must be signed in to do anything
+    if (m.status === "memory") renderTributes(m, body);   // remembrances — visible to all
+    if (!user) return;                       // must be signed in to do anything else
     var parts = [];
     if (myId && m.id === myId) parts.push('<button class="btn amt-edit" data-act="editme">✏️ Edit my profile</button>');
     if (m.status !== "memory" && m.photoThen) parts.push('<button class="btn amt-now" data-act="addnow">📷 Add a current photo</button>');

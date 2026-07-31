@@ -349,3 +349,14 @@ body.nolive #add-photos-btn, body.nolive .gb-form, body.nolive .rsvp-box { displ
 /* Admin pending-count badge on the nav tab */
 .nav .tabs button[data-view="admin"] { position: relative; }
 .nav-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; margin-left: 6px; border-radius: 9px; background: #d33; color: #fff; font-size: 11px; font-weight: 800; vertical-align: middle; }
+
+/* In Memory — remembrances / tributes */
+.tributes .tr-list { margin-top: 6px; }
+.tribute { background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; margin: 0 0 8px; }
+.tribute .tr-msg { margin: 0; white-space: pre-wrap; line-height: 1.55; }
+.tribute .tr-by { margin-top: 4px; font-size: 13px; color: var(--text-dim); }
+.tr-form { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
+.tr-form .tr-name, .tr-form .tr-input { width: 100%; padding: 9px 11px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text); font: inherit; }
+.tr-form .tr-input { resize: vertical; }
+.tr-form .tr-post { align-self: flex-start; }
+.tr-hint { font-size: 12px; }
