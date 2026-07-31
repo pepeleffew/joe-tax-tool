@@ -17,7 +17,12 @@
     document.body.classList.add("nolive");
     return;
   }
-  var sb = window.supabase.createClient(cfg.url, cfg.anonKey);
+  // Implicit flow puts the token in the redirect link itself, so sign-in works
+  // even when the email link opens in a different browser than the one that
+  // requested it (very common — Mail's in-app viewer, phone default browser).
+  var sb = window.supabase.createClient(cfg.url, cfg.anonKey, {
+    auth: { flowType: "implicit", detectSessionInUrl: true, persistSession: true, autoRefreshToken: true },
+  });
   var user = null;
   var myId = null;                       // the classmate id this user owns (if any)
   var EDITABLE = ["city", "state", "occupation", "spouse", "children", "college", "homepage", "maidenName", "story", "comments"];
