@@ -136,6 +136,12 @@ window.CLASS_DATA = {
    "photoThen": "assets/img/then/6146028.jpg"
   },
   {
+   "id": "donna-bell-shropshire",
+   "name": "Donna Bell",
+   "status": "active",
+   "maidenName": "Shropshire"
+  },
+  {
    "id": "6146029",
    "name": "Carla Bice",
    "status": "memory",
