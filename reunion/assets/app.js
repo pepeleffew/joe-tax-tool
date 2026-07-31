@@ -275,11 +275,21 @@
       return;
     }
     el.className = "masonry";
+    var canDel = window.ClassSite && window.ClassSite.canDelete;
     el.innerHTML = curAlbum.photos.map(function (p, i) {
-      return '<div class="ph" data-i="' + i + '"><img loading="lazy" alt="' + esc(p.who || "") + '" src="' + esc(p.src) + '">' +
+      var del = (canDel && p.id) ? '<button class="ph-del" data-id="' + esc(p.id) + '" data-path="' + esc(p.path || "") + '" title="Delete photo" aria-label="Delete photo">✕</button>' : "";
+      return '<div class="ph" data-i="' + i + '">' + del + '<img loading="lazy" alt="' + esc(p.who || "") + '" src="' + esc(p.src) + '">' +
         (p.who ? '<div class="who">' + esc(p.who) + '</div>' : "") + '</div>';
     }).join("");
-    $$("#photo-grid .ph").forEach(function (c) { c.addEventListener("click", function () { openLightbox(curAlbum.photos, +c.dataset.i); }); });
+    $$("#photo-grid .ph").forEach(function (c) {
+      c.addEventListener("click", function (e) { if (e.target.closest(".ph-del")) return; openLightbox(curAlbum.photos, +c.dataset.i); });
+    });
+    $$("#photo-grid .ph-del").forEach(function (btn) {
+      btn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        if (window.ClassSite && window.ClassSite.deletePhoto) window.ClassSite.deletePhoto(btn.dataset.id, btn.dataset.path);
+      });
+    });
   }
 
   var lb = $("#lightbox"), lbImg = $("#lb-img"), lbCap = $("#lb-cap"), lbList = [], lbIdx = 0;

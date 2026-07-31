@@ -105,11 +105,22 @@
     var grouped = {};
     r.data.forEach(function (p) {
       var url = sb.storage.from("photos").getPublicUrl(p.storage_path).data.publicUrl;
-      (grouped[p.album] = grouped[p.album] || []).push({ src: url, who: p.caption || p.uploader_name || "" });
+      (grouped[p.album] = grouped[p.album] || []).push({ src: url, who: p.caption || p.uploader_name || "", id: p.id, path: p.storage_path });
     });
     window.ClassSite.albums.forEach(function (a) { a.photos = (grouped[a.key] || []).concat(a._base); });
+    window.ClassSite.canDelete = isAdmin();
     if (window.ClassSite.renderPhotos) window.ClassSite.renderPhotos();
   }
+  // Delete an uploaded photo straight from the album (admin only).
+  window.ClassSite = window.ClassSite || {};
+  window.ClassSite.deletePhoto = async function (id, path) {
+    if (!isAdmin()) return;
+    if (!confirm("Delete this photo permanently? It will be removed from the site.")) return;
+    if (path) await sb.storage.from("photos").remove([path]);
+    var r = await sb.from("photos").delete().eq("id", id);
+    if (r.error) { toast(r.error.message, false); return; }
+    toast("Photo deleted", true); loadApprovedPhotos(); loadAdmin();
+  };
 
   /* ---------- RSVP ---------- */
   async function submitRSVP() {
@@ -206,7 +217,7 @@
     wire();
     var s = await sb.auth.getSession(); user = s.data.session ? s.data.session.user : null;
     renderAuth();
-    sb.auth.onAuthStateChange(function (_e, sess) { user = sess ? sess.user : null; renderAuth(); if (isAdmin()) loadAdmin(); });
+    sb.auth.onAuthStateChange(function (_e, sess) { user = sess ? sess.user : null; renderAuth(); loadApprovedPhotos(); if (isAdmin()) loadAdmin(); });
     loadGuestbook(); loadApprovedPhotos();
     if (isAdmin()) loadAdmin();
   }

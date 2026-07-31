@@ -330,3 +330,10 @@ body.home:not(.scrolled) .auth-slot .chip:hover { background: rgba(255,255,255,.
 .ai-actions .btn, .ai-actions .chip { padding: 8px 14px; }
 .ai-actions .reject { color: #b3261e; border-color: color-mix(in srgb,#b3261e 40%,var(--border)); }
 body.nolive #add-photos-btn, body.nolive .gb-form, body.nolive .rsvp-box { display: none; }
+
+/* Admin delete button on album photos */
+.ph .ph-del { position: absolute; top: 8px; right: 8px; z-index: 3; width: 30px; height: 30px; border-radius: 50%;
+  border: 0; background: rgba(179,38,30,.92); color: #fff; font-size: 15px; line-height: 1; cursor: pointer;
+  display: none; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,.4); }
+.ph:hover .ph-del { display: flex; }
+.ph .ph-del:hover { background: #b3261e; transform: scale(1.08); }
