@@ -26,7 +26,7 @@
   var user = null;
   var myId = null;                       // the classmate id this user owns (if any)
   var EDITABLE = ["city", "state", "occupation", "spouse", "children", "college", "homepage", "maidenName", "story", "comments",
-    "bizList", "bizName", "bizWhat", "bizUrl", "bizPhone", "bizDesc"];
+    "birthMonth", "birthDay", "bizList", "bizName", "bizWhat", "bizUrl", "bizPhone", "bizDesc"];
   var amAdmin = false;                     // resolved from the server (public.admins)
   var isAdmin = function () { return amAdmin; };
   // Determine admin from the DB (public.is_admin RPC), with a client-side
@@ -473,6 +473,13 @@
         (f[2] ? '<textarea class="up-input" data-f="' + f[0] + '" rows="4">' + v + '</textarea>'
               : '<input class="up-input" data-f="' + f[0] + '" value="' + v + '">');
     });
+    var BMON = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    var curM = +m.birthMonth || 0, curD = +m.birthDay || 0;
+    html += '<label class="up-label">Birthday</label><div style="display:flex;gap:8px">' +
+      '<select class="up-input" data-fb="birthMonth" style="flex:2">' +
+      BMON.map(function (n, i) { return '<option value="' + (i || "") + '"' + (i === curM ? " selected" : "") + '>' + (i ? n : "Month") + '</option>'; }).join("") +
+      '</select>' +
+      '<input class="up-input" data-fb="birthDay" type="number" min="1" max="31" placeholder="Day" style="flex:1" value="' + (curD || "") + '"></div>';
     var bizDefs = [["bizName", "Business / company name", 0], ["bizWhat", "What you do (e.g. Realtor, Wedding Planner)", 0],
       ["bizUrl", "Business website", 0], ["bizPhone", "Business phone", 0], ["bizDesc", "Short description (optional)", 1]];
     html += '<div class="biz-fieldset"><h4 class="up-subhead">💼 Class Business Directory</h4>' +
@@ -492,6 +499,7 @@
         if (b.dataset.editact === "cancel") { if (window.__openModal) window.__openModal(m); return; }
         var fields = {};
         $$("[data-f]", body).forEach(function (inp) { var v = inp.value.trim(); if (v) fields[inp.dataset.f] = v; });
+        $$("[data-fb]", body).forEach(function (inp) { var v = (inp.value || "").trim(); if (v) fields[inp.dataset.fb] = v; });
         var chk = body.querySelector('[data-fc="bizList"]');
         fields.bizList = (chk && chk.checked) ? "yes" : "no";
         saveEdits(m, fields);

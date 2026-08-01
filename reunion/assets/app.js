@@ -25,6 +25,9 @@
   var hue = function (name) { var h = 0, s = String(name || ""); for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) % 360; return h; };
   var fixUrl = function (u) { u = String(u || "").trim(); return u && !/^https?:\/\//i.test(u) ? "http://" + u : u; };
   var cleanUrl = function (u) { return String(u || "").replace(/^https?:\/\//i, "").replace(/\/$/, ""); };
+  var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  var bMonth = function (m) { return +m.birthMonth || 0; };
+  var bDay = function (m) { return +m.birthDay || 0; };
   function avatar(m, cls, prefer, mono) {
     var src = prefer === "then" ? (m.photoThen || m.photoMem || m.photoNow) : (m.photoNow || m.photoThen || m.photoMem);
     if (src) return '<img class="avatar ' + (cls || "") + '" loading="lazy" alt="' + esc(m.name) + '" src="' + esc(src) + '">';
@@ -99,6 +102,7 @@
       html += '<div class="modal-tn"><figure><img src="' + esc(m.photoThen) + '"><figcaption>1993</figcaption></figure>' +
               '<figure><img src="' + esc(m.photoNow) + '"><figcaption>Now</figcaption></figure></div>';
     }
+    if (bMonth(m) && bDay(m)) html += field("Birthday", MONTHS[bMonth(m) - 1] + " " + bDay(m));
     html += field("Occupation", m.occupation) + field("Spouse / Partner", m.spouse) +
             field("Children", m.children) + field("College", m.college) +
             field("Military Service", m.military);
@@ -237,6 +241,29 @@
     });
   }
   renderBusinesses();
+
+  /* ---- Birthdays this month (home) ---- */
+  function renderBirthdays() {
+    var band = $("#birthdays-band"), el = $("#birthday-list");
+    if (!el) return;
+    var now = new Date(), mo = now.getMonth() + 1, dd = now.getDate();
+    var list = mates.filter(function (m) { return m.status !== "memory" && bMonth(m) === mo; })
+      .sort(function (a, b) { return bDay(a) - bDay(b); });
+    if (!list.length) { if (band) band.style.display = "none"; return; }
+    if (band) band.style.display = "";
+    el.innerHTML = list.map(function (m) {
+      var idx = mates.indexOf(m), today = bDay(m) === dd;
+      return '<div class="bday-card' + (today ? " today" : "") + '" data-i="' + idx + '" role="button" tabindex="0">' +
+        avatar(m, "bday-av") +
+        '<div class="bday-info"><div class="bday-name">' + esc(m.name) + '</div>' +
+        '<div class="bday-date">' + MONTHS[mo - 1] + ' ' + bDay(m) + (today ? ' · 🎉 Today!' : '') + '</div></div></div>';
+    }).join("");
+    $$("#birthday-list .bday-card").forEach(function (c) {
+      c.addEventListener("click", function () { openModal(mates[+c.dataset.i]); });
+      c.addEventListener("keypress", function (e) { if (e.key === "Enter") openModal(mates[+c.dataset.i]); });
+    });
+  }
+  renderBirthdays();
 
   /* ---- In Memory ---- */
   var mem = $("#memory-grid");
@@ -438,7 +465,7 @@
     renderThenNow: renderThenNow,
     // Re-render everything that depends on classmate status/data (used after
     // an admin moves someone to In Memory, adds a Now photo, etc.).
-    refresh: function () { updateHeroCounts(); renderDirectory(); renderMemorial(); renderThenNow(); renderBusinesses(); }
+    refresh: function () { updateHeroCounts(); renderDirectory(); renderMemorial(); renderThenNow(); renderBusinesses(); renderBirthdays(); }
   };
 
   /* ---- Tabs ---- */

@@ -390,3 +390,13 @@ body.nolive #add-photos-btn, body.nolive .gb-form, body.nolive .rsvp-box { displ
 .mem-pick-item.current img { border-color: var(--accent); }
 .mem-pick-tag { text-align: center; font-size: 12px; font-weight: 700; color: var(--accent); margin-top: 4px; }
 .mem-pick-set { width: 100%; margin-top: 6px; justify-content: center; cursor: pointer; }
+
+/* Birthdays this month (home) */
+.bday-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-top: 22px; }
+.bday-card { display: flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; cursor: pointer; transition: transform .15s, box-shadow .15s, border-color .15s; text-align: left; }
+.bday-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.bday-card.today { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, var(--surface)); }
+.bday-av { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; flex: none; }
+.bday-name { font-weight: 700; }
+.bday-date { font-size: 13px; color: var(--text-dim); margin-top: 1px; }
+.bday-card.today .bday-date { color: var(--accent); font-weight: 700; }
