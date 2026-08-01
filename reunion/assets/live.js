@@ -578,7 +578,7 @@
       if (m.status === "memory") {
         parts.push('<button class="btn amt-now" data-act="addmem">📷 ' + (m.photoThen || m.photoMem ? "Add a photo" : "Add profile photo") + '</button><button class="chip" data-act="edityear">Edit year</button><button class="chip" data-act="restore">Return to directory</button>');
       } else {
-        if (!m.photoThen) parts.push('<button class="btn amt-now" data-act="addthen">📷 Add photo</button>');
+        parts.push('<button class="btn amt-now" data-act="addthen">📷 ' + (m.photoThen ? "Replace photo" : "Add photo") + '</button>');
         parts.push('<button class="btn amt-mem" data-act="tomem">🕊 Move to In Memory</button>');
       }
     }
