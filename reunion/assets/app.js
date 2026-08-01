@@ -591,6 +591,9 @@
   });
 
   window.ClassSite.showView = show;
+  // Re-attach these AFTER the ClassSite object above is (re)created, or they'd be wiped.
+  window.ClassSite.startGame = function () { if (!gw.current) gwRound(); };
+  window.ClassSite.renderMapView = function () { renderMapList(); loadUsMap(); };
 
   // Solidify the header once the user scrolls off the hero.
   var onScroll = function () { document.body.classList.toggle("scrolled", window.scrollY > 30); };
