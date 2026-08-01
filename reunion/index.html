@@ -10,7 +10,8 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-4DNLG28YZJ');
+    // Strip the URL fragment so one-time sign-in tokens are never sent to GA.
+    gtag('config', 'G-4DNLG28YZJ', { page_location: location.origin + location.pathname + location.search });
   </script>
   <meta name="description" content="The official reunion site for the Soddy-Daisy High School Class of 1993 — classmate directory, Then &amp; Now photos, reunion news, and In Memory.">
   <link rel="canonical" href="https://soddydaisyclassof1993.com/">
