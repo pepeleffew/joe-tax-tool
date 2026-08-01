@@ -16,9 +16,20 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
-# Cache photos but always revalidate, so re-processed images (same filename)
-# still refresh for returning visitors.
+# Always revalidate site code, data, and images so updates show up on a normal
+# visit — no hard-refresh needed. Netlify's ETags mean unchanged files are still
+# served from cache (a quick 304), so this stays fast.
 [[headers]]
-  for = "/assets/img/*"
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/data/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/index.html"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
