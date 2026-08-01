@@ -265,6 +265,43 @@
   }
   renderBirthdays();
 
+  /* ---- Guess Who? game ---- */
+  var gwPool = mates.filter(function (m) { return m.photoThen && m.status !== "memory"; });
+  var gw = { score: 0, total: 0, streak: 0, answered: false, current: null };
+  function gwSet(id, v) { var e = $(id); if (e) e.textContent = v; }
+  function gwShuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function gwRound() {
+    if (gwPool.length < 4) return;
+    gw.answered = false;
+    gwSet("#gw-feedback", ""); var fb = $("#gw-feedback"); if (fb) fb.className = "gw-feedback";
+    var nx = $("#gw-next"); if (nx) nx.style.display = "none";
+    gw.current = gwPool[Math.floor(Math.random() * gwPool.length)];
+    var img = $("#gw-photo"); if (img) img.src = gw.current.photoThen;
+    var others = gwShuffle(gwPool.filter(function (m) { return m !== gw.current; })).slice(0, 3);
+    var box = $("#gw-options"); if (!box) return;
+    box.innerHTML = gwShuffle([gw.current].concat(others)).map(function (m) {
+      return '<button class="gw-opt" data-name="' + esc(m.name) + '">' + esc(m.name) + '</button>';
+    }).join("");
+    $$("#gw-options .gw-opt").forEach(function (b) { b.addEventListener("click", function () { gwGuess(b); }); });
+  }
+  function gwGuess(btn) {
+    if (gw.answered) return; gw.answered = true; gw.total++;
+    var correct = btn.dataset.name === gw.current.name;
+    $$("#gw-options .gw-opt").forEach(function (b) {
+      if (b.dataset.name === gw.current.name) b.classList.add("right");
+      else if (b === btn) b.classList.add("wrong");
+      b.disabled = true;
+    });
+    var fb = $("#gw-feedback");
+    if (correct) { gw.score++; gw.streak++; if (fb) { fb.textContent = "✅ Correct — " + gw.current.name + "!"; fb.className = "gw-feedback ok"; } }
+    else { gw.streak = 0; if (fb) { fb.textContent = "❌ That was " + gw.current.name + "."; fb.className = "gw-feedback err"; } }
+    gwSet("#gw-score", gw.score); gwSet("#gw-total", gw.total); gwSet("#gw-streak", gw.streak);
+    var nx = $("#gw-next"); if (nx) nx.style.display = "";
+  }
+  (function () { var nx = $("#gw-next"); if (nx) nx.addEventListener("click", gwRound); })();
+  window.ClassSite = window.ClassSite || {};
+  window.ClassSite.startGame = function () { if (!gw.current) gwRound(); };
+
   /* ---- In Memory ---- */
   var mem = $("#memory-grid");
   function renderMemorial() {
@@ -480,6 +517,7 @@
     if (!keepUrl && history.replaceState) history.replaceState(null, "", "#" + view);
     if (view === "home") { animateCounts(); }
     if (view === "stats") { setTimeout(animateBars, 60); }
+    if (view === "game" && window.ClassSite && window.ClassSite.startGame) window.ClassSite.startGame();
     bindReveals();
   }
   $$(".tabs button, [data-goto]").forEach(function (b) {
