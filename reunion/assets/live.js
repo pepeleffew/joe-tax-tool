@@ -579,6 +579,7 @@
     if (!user) return;                       // must be signed in to do anything else
     var parts = [];
     if (myId && m.id === myId) parts.push('<button class="btn amt-edit" data-act="editme">✏️ Edit my profile</button>');
+    else if (isAdmin()) parts.push('<button class="btn amt-edit" data-act="editme">✏️ Edit profile</button>');
     if (m.status !== "memory" && m.photoThen) parts.push('<button class="btn amt-now" data-act="addnow">📷 Add a current photo</button>');
     if (!myId && m.status !== "memory") parts.push('<button class="chip" data-act="claim">✋ This is me</button>');
     if (isAdmin()) {

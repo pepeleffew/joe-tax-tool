@@ -302,6 +302,71 @@
   window.ClassSite = window.ClassSite || {};
   window.ClassSite.startGame = function () { if (!gw.current) gwRound(); };
 
+  /* ---- Where We Are Now (map) ---- */
+  var STATE_NAMES = { AL: "Alabama", AK: "Alaska", AZ: "Arizona", AR: "Arkansas", CA: "California", CO: "Colorado", CT: "Connecticut", DE: "Delaware", DC: "District of Columbia", FL: "Florida", GA: "Georgia", HI: "Hawaii", ID: "Idaho", IL: "Illinois", IN: "Indiana", IA: "Iowa", KS: "Kansas", KY: "Kentucky", LA: "Louisiana", ME: "Maine", MD: "Maryland", MA: "Massachusetts", MI: "Michigan", MN: "Minnesota", MS: "Mississippi", MO: "Missouri", MT: "Montana", NE: "Nebraska", NV: "Nevada", NH: "New Hampshire", NJ: "New Jersey", NM: "New Mexico", NY: "New York", NC: "North Carolina", ND: "North Dakota", OH: "Ohio", OK: "Oklahoma", OR: "Oregon", PA: "Pennsylvania", RI: "Rhode Island", SC: "South Carolina", SD: "South Dakota", TN: "Tennessee", TX: "Texas", UT: "Utah", VT: "Vermont", VA: "Virginia", WA: "Washington", WV: "West Virginia", WI: "Wisconsin", WY: "Wyoming" };
+  var STATE_FIPS = { AL: "01", AK: "02", AZ: "04", AR: "05", CA: "06", CO: "08", CT: "09", DE: "10", DC: "11", FL: "12", GA: "13", HI: "15", ID: "16", IL: "17", IN: "18", IA: "19", KS: "20", KY: "21", LA: "22", ME: "23", MD: "24", MA: "25", MI: "26", MN: "27", MS: "28", MO: "29", MT: "30", NE: "31", NV: "32", NH: "33", NJ: "34", NM: "35", NY: "36", NC: "37", ND: "38", OH: "39", OK: "40", OR: "41", PA: "42", RI: "44", SC: "45", SD: "46", TN: "47", TX: "48", UT: "49", VT: "50", VA: "51", WA: "53", WV: "54", WI: "55", WY: "56" };
+  var NAME_TO_ABBR = (function () { var o = {}; Object.keys(STATE_NAMES).forEach(function (a) { o[STATE_NAMES[a].toLowerCase()] = a; }); return o; })();
+  function stAbbr(m) {
+    var s = String(m.state || "").trim();
+    if (!s) return "";
+    if (s.length === 2 && STATE_NAMES[s.toUpperCase()]) return s.toUpperCase();
+    return NAME_TO_ABBR[s.toLowerCase()] || "";
+  }
+  function mapByState() {
+    var by = {};
+    mates.forEach(function (m) { if (m.status === "memory") return; var a = stAbbr(m); if (a) (by[a] = by[a] || []).push(m); });
+    return by;
+  }
+  var mapSel = null;
+  function mapHeat(n, max) { var t = max ? n / max : 0; return "hsl(43 70% " + (82 - Math.round(t * 48)) + "%)"; }
+  function renderMapList() {
+    var el = $("#map-state-list"); if (!el) return;
+    var by = mapByState();
+    var states = Object.keys(by).sort(function (a, b) { return by[b].length - by[a].length || STATE_NAMES[a].localeCompare(STATE_NAMES[b]); });
+    var max = states.length ? by[states[0]].length : 0;
+    el.innerHTML = '<h3 class="map-h">By state</h3>' + states.map(function (a) {
+      var n = by[a].length, pct = max ? Math.round(n / max * 100) : 0;
+      return '<button class="map-strow' + (a === mapSel ? " sel" : "") + '" data-abbr="' + a + '"><span class="map-stname">' + esc(STATE_NAMES[a]) + '</span><span class="map-stbar"><span style="width:' + pct + '%"></span></span><span class="map-stn">' + n + '</span></button>';
+    }).join("");
+    $$("#map-state-list .map-strow").forEach(function (b) { b.addEventListener("click", function () { showStatePeople(b.dataset.abbr); }); });
+  }
+  function showStatePeople(a) {
+    mapSel = a;
+    var by = mapByState(), people = (by[a] || []).slice().sort(function (x, y) { return String(x.name).localeCompare(String(y.name)); });
+    var el = $("#map-people");
+    if (el) {
+      el.innerHTML = '<h3 class="map-h">' + esc(STATE_NAMES[a] || a) + ' · ' + people.length + '</h3><div class="map-people-grid">' +
+        people.map(function (m) { var idx = mates.indexOf(m); return '<button class="map-person" data-i="' + idx + '">' + avatar(m, "map-av") + '<span>' + esc(m.name) + (loc(m) ? '<br><small class="muted">' + esc(loc(m)) + '</small>' : '') + '</span></button>'; }).join("") + '</div>';
+      $$("#map-people .map-person").forEach(function (b) { b.addEventListener("click", function () { openModal(mates[+b.dataset.i]); }); });
+    }
+    $$("#map-state-list .map-strow").forEach(function (b) { b.classList.toggle("sel", b.dataset.abbr === a); });
+    $$("#usmap path[data-abbr]").forEach(function (p) { p.classList.toggle("sel", p.dataset.abbr === a); });
+  }
+  var mapLoaded = false;
+  function loadUsMap() {
+    var host = $("#usmap"); if (!host || mapLoaded) return; mapLoaded = true;
+    var s = document.createElement("script");
+    s.src = "https://cdn.jsdelivr.net/npm/topojson-client@3";
+    s.onload = function () { fetch("https://cdn.jsdelivr.net/npm/us-atlas@3/states-albers-10m.json").then(function (r) { return r.json(); }).then(function (us) { try { drawUsMap(host, us); } catch (e) {} }).catch(function () {}); };
+    document.head.appendChild(s);
+  }
+  function ringPath(coords) { var d = ""; coords.forEach(function (pt, i) { d += (i ? "L" : "M") + pt[0].toFixed(1) + " " + pt[1].toFixed(1); }); return d + "Z"; }
+  function geomPath(g) { if (!g) return ""; var polys = g.type === "Polygon" ? [g.coordinates] : g.coordinates; var d = ""; polys.forEach(function (poly) { poly.forEach(function (r) { d += ringPath(r); }); }); return d; }
+  function drawUsMap(host, us) {
+    if (!window.topojson || !us.objects || !us.objects.states) return;
+    var feats = topojson.feature(us, us.objects.states).features;
+    var by = mapByState(), fToA = {}; Object.keys(STATE_FIPS).forEach(function (a) { fToA[STATE_FIPS[a]] = a; });
+    var max = 0; Object.keys(by).forEach(function (a) { if (by[a].length > max) max = by[a].length; });
+    var paths = feats.map(function (f) {
+      var fid = String(f.id); if (fid.length < 2) fid = "0" + fid;
+      var a = fToA[fid], n = (a && by[a]) ? by[a].length : 0;
+      return '<path d="' + geomPath(f.geometry) + '" fill="' + (n ? mapHeat(n, max) : "var(--surface-2)") + '" stroke="var(--bg)" stroke-width="1" data-abbr="' + (a || "") + '"><title>' + (a ? STATE_NAMES[a] : "") + (n ? ": " + n : "") + '</title></path>';
+    }).join("");
+    host.innerHTML = '<svg viewBox="0 0 975 610" class="us-svg" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Where classmates live">' + paths + '</svg>';
+    $$("#usmap path[data-abbr]").forEach(function (p) { if (!p.dataset.abbr) return; p.style.cursor = "pointer"; p.addEventListener("click", function () { showStatePeople(p.dataset.abbr); }); });
+  }
+  window.ClassSite.renderMapView = function () { renderMapList(); loadUsMap(); };
+
   /* ---- In Memory ---- */
   var mem = $("#memory-grid");
   function renderMemorial() {
@@ -518,6 +583,7 @@
     if (view === "home") { animateCounts(); }
     if (view === "stats") { setTimeout(animateBars, 60); }
     if (view === "game" && window.ClassSite && window.ClassSite.startGame) window.ClassSite.startGame();
+    if (view === "map" && window.ClassSite && window.ClassSite.renderMapView) window.ClassSite.renderMapView();
     bindReveals();
   }
   $$(".tabs button, [data-goto]").forEach(function (b) {
