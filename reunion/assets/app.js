@@ -533,7 +533,7 @@
   }
   function animateBars() { $$(".bar-fill").forEach(function (f) { f.style.width = f.getAttribute("data-w") + "%"; }); }
 
-  (function renderStats() {
+  function renderStats() {
     var cities = living.map(function (m) { return m.city; }).filter(Boolean);
     var states = living.map(function (m) { return (m.state || "").toUpperCase().trim(); }).filter(Boolean);
     var st = $("#stat-tiles");
@@ -551,7 +551,8 @@
     barChart("#chart-cities", topCounts(cities, 8, titleCase), true);
     barChart("#chart-college", topCounts(living.map(function (m) { return m.college; }), 6), false);
     barChart("#chart-jobs", topCounts(living.map(function (m) { return m.occupation ? jobCategory(m.occupation) : ""; }), 8), true);
-  })();
+  }
+  renderStats();
 
   renderAlbumChips(); renderPhotos();
 
@@ -567,7 +568,7 @@
     renderThenNow: renderThenNow,
     // Re-render everything that depends on classmate status/data (used after
     // an admin moves someone to In Memory, adds a Now photo, etc.).
-    refresh: function () { updateHeroCounts(); renderDirectory(); renderMemorial(); renderThenNow(); renderBusinesses(); renderBirthdays(); }
+    refresh: function () { updateHeroCounts(); renderStats(); renderDirectory(); renderMemorial(); renderThenNow(); renderBusinesses(); renderBirthdays(); }
   };
 
   /* ---- Tabs ---- */
