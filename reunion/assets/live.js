@@ -490,11 +490,21 @@
       ["story", "School story (back in 1993)", 1], ["comments", "Life since graduation", 1]];
     var html = '<h3 style="font-family:var(--display);text-transform:uppercase;margin:0 0 4px">Edit my profile</h3>' +
       '<p class="muted" style="margin:0 0 14px">Only you can edit this. Changes go live right away.</p>';
+    var US_STATES = [["AL", "Alabama"], ["AK", "Alaska"], ["AZ", "Arizona"], ["AR", "Arkansas"], ["CA", "California"], ["CO", "Colorado"], ["CT", "Connecticut"], ["DE", "Delaware"], ["DC", "District of Columbia"], ["FL", "Florida"], ["GA", "Georgia"], ["HI", "Hawaii"], ["ID", "Idaho"], ["IL", "Illinois"], ["IN", "Indiana"], ["IA", "Iowa"], ["KS", "Kansas"], ["KY", "Kentucky"], ["LA", "Louisiana"], ["ME", "Maine"], ["MD", "Maryland"], ["MA", "Massachusetts"], ["MI", "Michigan"], ["MN", "Minnesota"], ["MS", "Mississippi"], ["MO", "Missouri"], ["MT", "Montana"], ["NE", "Nebraska"], ["NV", "Nevada"], ["NH", "New Hampshire"], ["NJ", "New Jersey"], ["NM", "New Mexico"], ["NY", "New York"], ["NC", "North Carolina"], ["ND", "North Dakota"], ["OH", "Ohio"], ["OK", "Oklahoma"], ["OR", "Oregon"], ["PA", "Pennsylvania"], ["RI", "Rhode Island"], ["SC", "South Carolina"], ["SD", "South Dakota"], ["TN", "Tennessee"], ["TX", "Texas"], ["UT", "Utah"], ["VT", "Vermont"], ["VA", "Virginia"], ["WA", "Washington"], ["WV", "West Virginia"], ["WI", "Wisconsin"], ["WY", "Wyoming"]];
+    var stFull = {}; US_STATES.forEach(function (s) { stFull[s[1].toLowerCase()] = s[0]; });
+    var curState = String(m.state || "").trim();
+    if (curState.length !== 2) curState = stFull[curState.toLowerCase()] || curState;
+    curState = curState.toUpperCase();
     defs.forEach(function (f) {
       var v = esc(m[f[0]] || "");
-      html += '<label class="up-label">' + f[1] + '</label>' +
-        (f[2] ? '<textarea class="up-input" data-f="' + f[0] + '" rows="4">' + v + '</textarea>'
-              : '<input class="up-input" data-f="' + f[0] + '" value="' + v + '">');
+      if (f[0] === "state") {
+        html += '<label class="up-label">State</label><select class="up-input" data-f="state"><option value="">—</option>' +
+          US_STATES.map(function (s) { return '<option value="' + s[0] + '"' + (s[0] === curState ? " selected" : "") + '>' + s[1] + '</option>'; }).join("") + '</select>';
+      } else {
+        html += '<label class="up-label">' + f[1] + '</label>' +
+          (f[2] ? '<textarea class="up-input" data-f="' + f[0] + '" rows="4">' + v + '</textarea>'
+                : '<input class="up-input" data-f="' + f[0] + '" value="' + v + '">');
+      }
     });
     var BMON = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     var curM = +m.birthMonth || 0, curD = +m.birthDay || 0;
