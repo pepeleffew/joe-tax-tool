@@ -187,8 +187,30 @@
     if (r.error || !r.data) return;
     var byId = {};
     r.data.forEach(function (p) { if (p.classmate_id && !byId[p.classmate_id]) byId[p.classmate_id] = sb.storage.from("photos").getPublicUrl(p.storage_path).data.publicUrl; });
-    window.ClassSite.mates.forEach(function (m) { if (byId[m.id]) m.photoThen = byId[m.id]; });
+    window.ClassSite.mates.forEach(function (m) {
+      if (m._ybBase === undefined) m._ybBase = m.photoThen || "";   // original class-data portrait
+      if (byId[m.id]) { m.photoThen = byId[m.id]; m._ybUpload = true; }
+      else { m.photoThen = m._ybBase; m._ybUpload = false; }
+    });
     if (window.ClassSite.refresh) window.ClassSite.refresh();
+  }
+  // Admin: remove uploaded photo(s) for a classmate (reverts to their original,
+  // or to no photo). Only affects uploads — baked-in class photos are untouched.
+  async function removeClassmatePhoto(m) {
+    if (!isAdmin()) return;
+    if (!confirm("Remove the uploaded photo(s) for " + m.name + "? This can't be undone.")) return;
+    var r = await sb.from("photos").select("id, storage_path").in("album", ["yearbook", "memorial"]).eq("classmate_id", m.id);
+    if (r.error) { toast(r.error.message, false); return; }
+    var rows = r.data || [];
+    if (rows.length) {
+      var paths = rows.map(function (x) { return x.storage_path; }).filter(Boolean);
+      if (paths.length) await sb.storage.from("photos").remove(paths);
+      await sb.from("photos").delete().in("id", rows.map(function (x) { return x.id; }));
+    }
+    await sb.from("classmate_overrides").update({ mem_photo: null }).eq("classmate_id", m.id);
+    await loadYearbookPhotos(); await loadMemorialPhotos();
+    toast("Photo removed ✓", true);
+    if (window.__openModal) window.__openModal(m);
   }
   function uploadYearbookPhoto(m) {
     if (!isAdmin()) { toast("Admins only.", false); return; }
@@ -229,6 +251,7 @@
       if (m._memPhotoMem === undefined) m._memPhotoMem = m.photoMem || "";   // original class-data portrait
       if (m._memBase === undefined) m._memBase = m.memGallery ? m.memGallery.slice() : [];
       var ups = uploads[m.id] || [];
+      m._memUpload = ups.length > 0;
       if (!ups.length && !m._memPhotoMem && !m._memBase.length) return;
       var pool = [];
       if (m._memPhotoMem) pool.push(m._memPhotoMem);
@@ -585,9 +608,12 @@
     if (isAdmin()) {
       parts.push('<span class="amt-label">Admin</span>');
       if (m.status === "memory") {
-        parts.push('<button class="btn amt-now" data-act="addmem">📷 ' + (m.photoThen || m.photoMem ? "Add a photo" : "Add profile photo") + '</button><button class="chip" data-act="edityear">Edit year</button><button class="chip" data-act="restore">Return to directory</button>');
+        parts.push('<button class="btn amt-now" data-act="addmem">📷 ' + (m.photoThen || m.photoMem ? "Add a photo" : "Add profile photo") + '</button>');
+        if (m._memUpload) parts.push('<button class="chip" data-act="rmphoto">🗑 Remove photo</button>');
+        parts.push('<button class="chip" data-act="edityear">Edit year</button><button class="chip" data-act="restore">Return to directory</button>');
       } else {
         parts.push('<button class="btn amt-now" data-act="addthen">📷 ' + (m.photoThen ? "Replace photo" : "Add photo") + '</button>');
+        if (m._ybUpload) parts.push('<button class="chip" data-act="rmphoto">🗑 Remove photo</button>');
         parts.push('<button class="btn amt-mem" data-act="tomem">🕊 Move to In Memory</button>');
       }
     }
@@ -602,6 +628,7 @@
         if (a === "addnow") uploadNowPhoto(m);
         else if (a === "addthen") uploadYearbookPhoto(m);
         else if (a === "addmem") uploadMemorialPhoto(m);
+        else if (a === "rmphoto") removeClassmatePhoto(m);
         else if (a === "editme") editProfile(m);
         else if (a === "claim") manualClaim(m);
         else adminAct(a, m);
