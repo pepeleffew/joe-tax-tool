@@ -2931,8 +2931,7 @@ window.CLASS_DATA = {
   {
    "id": "6146347",
    "name": "Cynthia Wilson",
-   "status": "missing",
-   "photoThen": "assets/img/then/6146347.jpg"
+   "status": "missing"
   },
   {
    "id": "6146348",
