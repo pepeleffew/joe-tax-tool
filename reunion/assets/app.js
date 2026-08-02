@@ -543,6 +543,17 @@
     ["Homemaker", /homemaker|stay.?at.?home|housewife|\bmom\b/i]
   ];
   function jobCategory(o) { for (var i = 0; i < JOB_CATS.length; i++) if (JOB_CATS[i][1].test(o)) return JOB_CATS[i][0]; return "Other"; }
+  function eduLevel(c) {
+    var s = String(c || "").toLowerCase().trim();
+    if (!s) return "";
+    if (/ph\.?\s?d|doctor|dphil|ed\.?\s?d|\bj\.?\s?d\.?\b|juris|\bm\.?\s?d\.?\b|d\.?d\.?s|pharm\.?\s?d|\bd\.?o\.?\b/.test(s)) return "Doctorate / Professional";
+    if (/master|\bmba\b|\bm\.?\s?s\.?\b|\bm\.?\s?a\.?\b|\bm\.?ed\b/.test(s)) return "Master's";
+    if (/bachelor|\bb\.?\s?s\.?\b|\bb\.?\s?a\.?\b|\bb\.?\s?f\.?a\.?\b/.test(s)) return "Bachelor's";
+    if (/associate/.test(s)) return "Associate's";
+    if (/certificate|certif|trade|technical|vocational|cosmetolog|licens/.test(s)) return "Certificate / Trade";
+    if (/^no\b|didn|none|high ?school|\bhs\b|\bged\b/.test(s)) return "High school";
+    return "Other";
+  }
 
   function barChart(sel, data, gold) {
     var el = $(sel); if (!el) return;
@@ -573,7 +584,7 @@
     }
     barChart("#chart-states", topCounts(states, 8), false);
     barChart("#chart-cities", topCounts(cities, 8, titleCase), true);
-    barChart("#chart-college", topCounts(living.map(function (m) { return m.college; }), 6), false);
+    barChart("#chart-college", topCounts(living.map(function (m) { return m.college ? eduLevel(m.college) : ""; }), 8), false);
     barChart("#chart-jobs", topCounts(living.map(function (m) { return m.occupation ? jobCategory(m.occupation) : ""; }), 8), true);
   }
   renderStats();
