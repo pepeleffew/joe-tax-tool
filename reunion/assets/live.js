@@ -541,8 +541,8 @@
       b.addEventListener("click", function () {
         if (b.dataset.editact === "cancel") { if (window.__openModal) window.__openModal(m); return; }
         var fields = {};
-        $$("[data-f]", body).forEach(function (inp) { var v = inp.value.trim(); if (v) fields[inp.dataset.f] = v; });
-        $$("[data-fb]", body).forEach(function (inp) { var v = (inp.value || "").trim(); if (v) fields[inp.dataset.fb] = v; });
+        $$("[data-f]", body).forEach(function (inp) { fields[inp.dataset.f] = inp.value.trim(); });   // store all — "" means clear
+        $$("[data-fb]", body).forEach(function (inp) { fields[inp.dataset.fb] = (inp.value || "").trim(); });
         var chk = body.querySelector('[data-fc="bizList"]');
         fields.bizList = (chk && chk.checked) ? "yes" : "no";
         saveEdits(m, fields);
@@ -552,7 +552,7 @@
   async function saveEdits(m, fields) {
     var r = await sb.from("profile_edits").upsert({ classmate_id: m.id, fields: fields, updated_at: new Date().toISOString() }, { onConflict: "classmate_id" });
     if (r.error) { toast(r.error.message, false); return; }
-    EDITABLE.forEach(function (k) { if (fields[k] != null && fields[k] !== "") m[k] = fields[k]; });
+    EDITABLE.forEach(function (k) { if (fields[k] == null) return; if (fields[k] === "") delete m[k]; else m[k] = fields[k]; });
     toast("Profile saved ✓", true);
     if (window.ClassSite.refresh) window.ClassSite.refresh();
     if (window.__openModal) window.__openModal(m);
@@ -564,7 +564,7 @@
     var byId = {}; r.data.forEach(function (e) { byId[e.classmate_id] = e.fields || {}; });
     window.ClassSite.mates.forEach(function (m) {
       var f = byId[m.id]; if (!f) return;
-      EDITABLE.forEach(function (k) { if (f[k] != null && f[k] !== "") m[k] = f[k]; });
+      EDITABLE.forEach(function (k) { if (f[k] == null) return; if (f[k] === "") delete m[k]; else m[k] = f[k]; });
     });
     if (window.ClassSite.refresh) window.ClassSite.refresh();
   }
