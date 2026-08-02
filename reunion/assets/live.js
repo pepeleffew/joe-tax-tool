@@ -489,9 +489,22 @@
   }
   async function manualClaim(m) {
     if (!user) { openAuth(); return; }
-    var r = await sb.from("profile_claims").insert({ classmate_id: m.id, user_id: user.id, email: user.email, status: "pending" });
+    // Instantly connect this account to the profile (and remember the email for
+    // next time), so signing in with a new address is smooth.
+    var r = await sb.rpc("claim_profile", { cid: m.id });
     if (r.error) { toast(r.error.message, false); return; }
-    toast("Claim sent — the admin will confirm it's you, then you can edit.", true); notifyAdmin("profile claim", m.name);
+    if (r.data === m.id) {
+      myId = r.data;
+      toast("You're connected to your profile — edit away! ✓", true);
+      notifyAdmin("profile claim", m.name);
+      if (window.ClassSite.refresh) window.ClassSite.refresh();
+      if (window.__openModal) window.__openModal(m);
+    } else if (r.data) {
+      myId = r.data;
+      toast("Your account already has a profile claimed. Contact the admin to change it.", false);
+    } else {
+      toast("That profile is already claimed by someone else. If that's a mistake, contact the admin.", false);
+    }
   }
   function editProfile(m) {
     var defs = [["city", "City", 0], ["state", "State", 0], ["maidenName", "Maiden / other name", 0],

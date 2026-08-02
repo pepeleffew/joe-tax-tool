@@ -220,6 +220,31 @@ begin
 end $$;
 grant execute on function public.claim_my_profile() to authenticated;
 
+-- Self-service claim of a SPECIFIC profile (for classmates signing in with a new
+-- email not in email_map). Instantly links + remembers the email for next time.
+-- Blocks claiming a profile already owned, and one profile per user.
+create or replace function public.claim_profile(cid text) returns text
+language plpgsql security definer set search_path = public as $$
+declare myemail text;
+begin
+  if auth.uid() is null then return null; end if;
+  myemail := lower(coalesce(auth.jwt() ->> 'email', ''));
+  if exists (select 1 from public.profile_claims where user_id = auth.uid() and status = 'approved') then
+    return (select classmate_id from public.profile_claims where user_id = auth.uid() and status = 'approved' limit 1);
+  end if;
+  if exists (select 1 from public.profile_claims where classmate_id = cid and status = 'approved') then
+    return null;   -- already owned by someone else
+  end if;
+  insert into public.profile_claims (classmate_id, user_id, email, status)
+    values (cid, auth.uid(), myemail, 'approved');
+  if myemail <> '' then
+    insert into public.email_map (email, classmate_id) values (myemail, cid)
+      on conflict (email) do update set classmate_id = excluded.classmate_id;
+  end if;
+  return cid;
+end $$;
+grant execute on function public.claim_profile(text) to authenticated;
+
 -- ---------- TRIBUTES (remembrances on In Memory pages) --------------
 -- Signed-in classmates leave a memory on a specific classmate's memorial.
 -- Lands as 'pending'; only the admin approves. Public sees 'approved' only.
