@@ -173,14 +173,17 @@
       var path = "thennow/" + m.id + "/" + Date.now() + "-" + safe;
       var up = await sb.storage.from("photos").upload(path, f);
       if (up.error) { toast(up.error.message, false); return; }
-      var ins = await sb.from("photos").insert({ album: "thennow", classmate_id: m.id, caption: "Now — " + m.name, storage_path: path, uploader_id: user.id, uploader_email: user.email, uploader_name: displayName(), status: "pending" }).select("id").single();
-      if (ins.error) { toast(ins.error.message, false); return; }
-      if (isAdmin()) {   // admin uploads publish immediately
+      var row = { album: "thennow", classmate_id: m.id, caption: "Now — " + m.name, storage_path: path, uploader_id: user.id, uploader_email: user.email, uploader_name: displayName(), status: "pending" };
+      if (isAdmin()) {   // admin: publish immediately (admins may read back the pending row)
+        var ins = await sb.from("photos").insert(row).select("id").single();
+        if (ins.error) { toast(ins.error.message, false); return; }
         await sb.from("photos").update({ status: "approved" }).eq("id", ins.data.id);
         await loadThenNow();
         toast(m.name + "'s current photo added ✓", true);
         if (window.__openModal) window.__openModal(m);
-      } else {
+      } else {   // classmate: plain insert (no read-back, which RLS forbids for pending rows)
+        var insr = await sb.from("photos").insert(row);
+        if (insr.error) { toast(insr.error.message, false); return; }
         toast("Thanks! " + m.name + "'s current photo is pending approval.", true); notifyAdmin("current photo", m.name);
       }
     };
