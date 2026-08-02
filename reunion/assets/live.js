@@ -173,9 +173,16 @@
       var path = "thennow/" + m.id + "/" + Date.now() + "-" + safe;
       var up = await sb.storage.from("photos").upload(path, f);
       if (up.error) { toast(up.error.message, false); return; }
-      var ins = await sb.from("photos").insert({ album: "thennow", classmate_id: m.id, caption: "Now — " + m.name, storage_path: path, uploader_id: user.id, uploader_email: user.email, uploader_name: displayName(), status: "pending" });
+      var ins = await sb.from("photos").insert({ album: "thennow", classmate_id: m.id, caption: "Now — " + m.name, storage_path: path, uploader_id: user.id, uploader_email: user.email, uploader_name: displayName(), status: "pending" }).select("id").single();
       if (ins.error) { toast(ins.error.message, false); return; }
-      toast("Thanks! " + m.name + "'s current photo is pending approval.", true); notifyAdmin("current photo", m.name);
+      if (isAdmin()) {   // admin uploads publish immediately
+        await sb.from("photos").update({ status: "approved" }).eq("id", ins.data.id);
+        await loadThenNow();
+        toast(m.name + "'s current photo added ✓", true);
+        if (window.__openModal) window.__openModal(m);
+      } else {
+        toast("Thanks! " + m.name + "'s current photo is pending approval.", true); notifyAdmin("current photo", m.name);
+      }
     };
     inp.click();
   }
@@ -613,7 +620,7 @@
     var parts = [];
     if (myId && m.id === myId) parts.push('<button class="btn amt-edit" data-act="editme">✏️ Edit my profile</button>');
     else if (isAdmin()) parts.push('<button class="btn amt-edit" data-act="editme">✏️ Edit profile</button>');
-    if (m.status !== "memory" && m.photoThen) parts.push('<button class="btn amt-now" data-act="addnow">📷 Add a current photo</button>');
+    if (m.status !== "memory") parts.push('<button class="btn amt-now" data-act="addnow">📷 Add a current photo</button>');
     if (!myId && m.status !== "memory") parts.push('<button class="chip" data-act="claim">✋ This is me</button>');
     if (isAdmin()) {
       parts.push('<span class="amt-label">Admin</span>');
@@ -622,7 +629,7 @@
         if (m._memUpload) parts.push('<button class="chip" data-act="rmphoto">🗑 Remove photo</button>');
         parts.push('<button class="chip" data-act="edityear">Edit year</button><button class="chip" data-act="restore">Return to directory</button>');
       } else {
-        parts.push('<button class="btn amt-now" data-act="addthen">📷 ' + (m.photoThen ? "Replace photo" : "Add photo") + '</button>');
+        parts.push('<button class="btn amt-now" data-act="addthen">🎓 ' + (m.photoThen ? "Replace yearbook photo" : "Add yearbook photo") + '</button>');
         if (m._ybUpload) parts.push('<button class="chip" data-act="rmphoto">🗑 Remove photo</button>');
         parts.push('<button class="btn amt-mem" data-act="tomem">🕊 Move to In Memory</button>');
       }
