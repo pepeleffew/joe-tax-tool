@@ -445,3 +445,11 @@ body.nolive #add-photos-btn, body.nolive .gb-form, body.nolive .rsvp-box { displ
   header.site .wrap.nav { height: auto; min-height: 64px; padding: 6px 0; }
   .nav .tabs { flex-wrap: wrap; overflow: visible; justify-content: flex-end; row-gap: 4px; }
 }
+
+/* Guess Who — round indicator + final screen */
+.gw-round { font-family: var(--display); text-transform: uppercase; letter-spacing: 1px; font-size: 14px; color: var(--accent); font-weight: 700; margin-bottom: 4px; }
+.gw-final { padding: 20px 10px; }
+.gw-final-score { font-family: var(--display); font-size: 56px; font-weight: 700; color: var(--primary); line-height: 1; }
+:root[data-theme="dark"] .gw-final-score, .gw-final-score { color: var(--text); }
+.gw-final-msg { font-size: 20px; margin: 10px 0 20px; }
+.gw-again { justify-content: center; }

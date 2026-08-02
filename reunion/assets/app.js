@@ -267,25 +267,34 @@
 
   /* ---- Guess Who? game ---- */
   var gwPool = mates.filter(function (m) { return m.photoThen && m.status !== "memory"; });
-  var gw = { score: 0, total: 0, streak: 0, answered: false, current: null };
+  var GW_MAX = Math.min(100, gwPool.length);   // no-repeat run, capped
+  var gw = { queue: [], idx: 0, score: 0, streak: 0, answered: false, current: null, done: false };
   function gwSet(id, v) { var e = $(id); if (e) e.textContent = v; }
   function gwShuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function gwStart() {
+    gw.queue = gwShuffle(gwPool).slice(0, GW_MAX);
+    gw.idx = 0; gw.score = 0; gw.streak = 0; gw.done = false;
+    gwRound();
+  }
   function gwRound() {
     if (gwPool.length < 4) return;
+    if (gw.idx >= gw.queue.length) { gwFinal(); return; }
     gw.answered = false;
-    gwSet("#gw-feedback", ""); var fb = $("#gw-feedback"); if (fb) fb.className = "gw-feedback";
+    var fb = $("#gw-feedback"); if (fb) { fb.textContent = ""; fb.className = "gw-feedback"; }
     var nx = $("#gw-next"); if (nx) nx.style.display = "none";
-    gw.current = gwPool[Math.floor(Math.random() * gwPool.length)];
-    var img = $("#gw-photo"); if (img) img.src = gw.current.photoThen;
+    gw.current = gw.queue[gw.idx];
+    var img = $("#gw-photo"); if (img) { img.style.display = ""; img.src = gw.current.photoThen; }
     var others = gwShuffle(gwPool.filter(function (m) { return m !== gw.current; })).slice(0, 3);
     var box = $("#gw-options"); if (!box) return;
     box.innerHTML = gwShuffle([gw.current].concat(others)).map(function (m) {
       return '<button class="gw-opt" data-name="' + esc(m.name) + '">' + esc(m.name) + '</button>';
     }).join("");
     $$("#gw-options .gw-opt").forEach(function (b) { b.addEventListener("click", function () { gwGuess(b); }); });
+    gwSet("#gw-round", "Question " + (gw.idx + 1) + " of " + gw.queue.length);
+    gwSet("#gw-score", gw.score); gwSet("#gw-streak", gw.streak);
   }
   function gwGuess(btn) {
-    if (gw.answered) return; gw.answered = true; gw.total++;
+    if (gw.answered) return; gw.answered = true;
     var correct = btn.dataset.name === gw.current.name;
     $$("#gw-options .gw-opt").forEach(function (b) {
       if (b.dataset.name === gw.current.name) b.classList.add("right");
@@ -295,12 +304,27 @@
     var fb = $("#gw-feedback");
     if (correct) { gw.score++; gw.streak++; if (fb) { fb.textContent = "✅ Correct — " + gw.current.name + "!"; fb.className = "gw-feedback ok"; } }
     else { gw.streak = 0; if (fb) { fb.textContent = "❌ That was " + gw.current.name + "."; fb.className = "gw-feedback err"; } }
-    gwSet("#gw-score", gw.score); gwSet("#gw-total", gw.total); gwSet("#gw-streak", gw.streak);
-    var nx = $("#gw-next"); if (nx) nx.style.display = "";
+    gw.idx++;
+    gwSet("#gw-score", gw.score); gwSet("#gw-streak", gw.streak);
+    var nx = $("#gw-next"); if (nx) { nx.style.display = ""; nx.textContent = (gw.idx >= gw.queue.length) ? "See results →" : "Next →"; }
+  }
+  function gwFinal() {
+    gw.done = true;
+    var img = $("#gw-photo"); if (img) img.style.display = "none";
+    var nx = $("#gw-next"); if (nx) nx.style.display = "none";
+    var fb = $("#gw-feedback"); if (fb) { fb.textContent = ""; fb.className = "gw-feedback"; }
+    var n = gw.queue.length, pct = n ? Math.round(gw.score / n * 100) : 0;
+    var msg = pct >= 90 ? "🏆 Class legend!" : pct >= 70 ? "🎉 You really know your class!" : pct >= 40 ? "👍 Not bad at all!" : "😅 Might be time for a reunion!";
+    gwSet("#gw-round", "Game over");
+    var box = $("#gw-options");
+    if (box) {
+      box.innerHTML = '<div class="gw-final"><div class="gw-final-score">' + gw.score + ' / ' + n + '</div><div class="gw-final-msg">' + msg + '</div><button class="btn gw-again">Play again</button></div>';
+      var again = box.querySelector(".gw-again"); if (again) again.addEventListener("click", gwStart);
+    }
   }
   (function () { var nx = $("#gw-next"); if (nx) nx.addEventListener("click", gwRound); })();
   window.ClassSite = window.ClassSite || {};
-  window.ClassSite.startGame = function () { if (!gw.current) gwRound(); };
+  window.ClassSite.startGame = function () { if (!gw.queue.length || gw.done) gwStart(); };
 
   /* ---- Where We Are Now (map) ---- */
   var STATE_NAMES = { AL: "Alabama", AK: "Alaska", AZ: "Arizona", AR: "Arkansas", CA: "California", CO: "Colorado", CT: "Connecticut", DE: "Delaware", DC: "District of Columbia", FL: "Florida", GA: "Georgia", HI: "Hawaii", ID: "Idaho", IL: "Illinois", IN: "Indiana", IA: "Iowa", KS: "Kansas", KY: "Kentucky", LA: "Louisiana", ME: "Maine", MD: "Maryland", MA: "Massachusetts", MI: "Michigan", MN: "Minnesota", MS: "Mississippi", MO: "Missouri", MT: "Montana", NE: "Nebraska", NV: "Nevada", NH: "New Hampshire", NJ: "New Jersey", NM: "New Mexico", NY: "New York", NC: "North Carolina", ND: "North Dakota", OH: "Ohio", OK: "Oklahoma", OR: "Oregon", PA: "Pennsylvania", RI: "Rhode Island", SC: "South Carolina", SD: "South Dakota", TN: "Tennessee", TX: "Texas", UT: "Utah", VT: "Vermont", VA: "Virginia", WA: "Washington", WV: "West Virginia", WI: "Wisconsin", WY: "Wyoming" };
@@ -593,7 +617,7 @@
 
   window.ClassSite.showView = show;
   // Re-attach these AFTER the ClassSite object above is (re)created, or they'd be wiped.
-  window.ClassSite.startGame = function () { if (!gw.current) gwRound(); };
+  window.ClassSite.startGame = function () { if (!gw.queue.length || gw.done) gwStart(); };
   window.ClassSite.renderMapView = function () { renderMapList(); loadUsMap(); };
 
   // Solidify the header once the user scrolls off the hero.
