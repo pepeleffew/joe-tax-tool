@@ -33,6 +33,11 @@ window.CLASS_DATA = {
     "year": 2018,
     "label": "25-Year Reunion",
     "photos": 0
+   },
+   {
+    "year": 2023,
+    "label": "30-Year Reunion",
+    "photos": 0
    }
   ]
  },
