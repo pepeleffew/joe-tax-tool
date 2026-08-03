@@ -155,6 +155,11 @@ section.view.active { display: block; }
 .yb .cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 16px 8px 7px; font-size: 12px; font-weight: 700; color: #fff;
   background: linear-gradient(180deg, transparent, rgba(8,18,34,.9)); opacity: 0; transform: translateY(6px); transition: .25s; }
 .yb:hover .cap { opacity: 1; transform: none; }
+/* In Memory — quietly desaturated in the yearbook wall; hover/focus restores full color */
+.yb-mem img { filter: grayscale(1); }
+.yb-mem:hover img, .yb-mem:focus img, .yb-mem:focus-within img { filter: none; }
+.yb-ribbon { position: absolute; top: 7px; right: 8px; font-size: 15px; line-height: 1; z-index: 2;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,.55)); pointer-events: none; }
 
 /* ---- Then & Now ---- */
 .tn-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(272px,1fr)); gap: 18px; }
