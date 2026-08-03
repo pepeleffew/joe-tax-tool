@@ -29,6 +29,11 @@
     "birthMonth", "birthDay", "bizList", "bizName", "bizWhat", "bizUrl", "bizPhone", "bizDesc"];
   var amAdmin = false;                     // resolved from the server (public.admins)
   var isAdmin = function () { return amAdmin; };
+  // Classmates defined as In Memory in the base data are PERMANENT memorials.
+  // Snapshot them now (before any override mutates status) so a stray/erroneous
+  // "active" override can never silently drop a real memorial off the page.
+  var BASE_MEMORY = {};
+  try { (window.CLASS_DATA && window.CLASS_DATA.classmates || []).forEach(function (c) { if (c.status === "memory") BASE_MEMORY[c.id] = true; }); } catch (e) {}
   // Determine admin from the DB (public.is_admin RPC), with a client-side
   // fallback list so the primary admin is never locked out of the UI.
   async function refreshAdmin() {
@@ -465,7 +470,8 @@
     var byId = {}; r.data.forEach(function (o) { byId[o.classmate_id] = o; });
     window.ClassSite.mates.forEach(function (m) {
       var o = byId[m.id]; if (!o) return;
-      if (o.status) m.status = o.status;
+      // Never let an override demote a permanent (base-data) memorial to the directory.
+      if (o.status && !(o.status !== "memory" && BASE_MEMORY[m.id])) m.status = o.status;
       if (o.passed_year) m.passedYear = o.passed_year; else if (o.status && o.status !== "memory") delete m.passedYear;
       if (o.note) m.memNote = o.note; else delete m.memNote;
     });
@@ -487,6 +493,7 @@
       applyLocal(m, { status: "memory", passedYear: yr.trim() || undefined, memNote: note.trim() || undefined });
       toast(m.name + " moved to In Memory 🕊", true);
     } else if (act === "restore") {
+      if (BASE_MEMORY[m.id]) { toast(m.name + " is a permanent memorial and can't be moved to the directory.", false); return; }
       if (!confirm("⚠️ This REMOVES " + m.name + " from the In Memory page and moves them back into the living classmate directory.\n\nOnly do this if they were placed In Memory by mistake. Continue?")) return;
       if (!confirm("Are you sure? Move " + m.name + " OUT of In Memory?")) return;
       if (!(await saveOverride(m.id, { status: "active", passed_year: null, note: null }))) return;
@@ -666,7 +673,10 @@
       if (m.status === "memory") {
         parts.push('<button class="btn amt-now" data-act="addmem">📷 ' + (m.photoThen || m.photoMem ? "Add a photo" : "Add profile photo") + '</button>');
         if (m._memUpload) parts.push('<button class="chip" data-act="rmphoto">🗑 Remove photo</button>');
-        parts.push('<button class="chip" data-act="edityear">Edit year</button><button class="chip chip-danger" data-act="restore">Return to directory</button>');
+        parts.push('<button class="chip" data-act="edityear">Edit year</button>');
+        // "Return to directory" only makes sense for someone mistakenly added to In Memory.
+        // Permanent (base-data) memorials can't be moved out from here.
+        if (!BASE_MEMORY[m.id]) parts.push('<button class="chip chip-danger" data-act="restore">Return to directory</button>');
       } else {
         parts.push('<button class="btn amt-now" data-act="addthen">🎓 ' + (m.photoThen ? "Replace yearbook photo" : "Add yearbook photo") + '</button>');
         if (m._ybUpload) parts.push('<button class="chip" data-act="rmphoto">🗑 Remove photo</button>');
