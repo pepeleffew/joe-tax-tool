@@ -397,6 +397,10 @@ body.nolive #add-photos-btn, body.nolive .gb-form, body.nolive .rsvp-box { displ
 .mem-pick-item.current img { border-color: var(--accent); }
 .mem-pick-tag { text-align: center; font-size: 12px; font-weight: 700; color: var(--accent); margin-top: 4px; }
 .mem-pick-set { width: 100%; margin-top: 6px; justify-content: center; cursor: pointer; }
+.mem-pick-del { position: absolute; top: 4px; right: 4px; width: 22px; height: 22px; padding: 0; border: none; cursor: pointer;
+  border-radius: 50%; background: rgba(180,30,30,.9); color: #fff; font-size: 12px; font-weight: 700; line-height: 22px;
+  display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 3px rgba(0,0,0,.4); }
+.mem-pick-del:hover { background: #b41e1e; transform: scale(1.08); }
 
 /* Birthdays this month (home) */
 .bday-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-top: 22px; }

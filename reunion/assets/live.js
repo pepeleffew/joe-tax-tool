@@ -283,20 +283,42 @@
     toast("Profile photo updated ✓", true);
     if (window.__openModal) window.__openModal(m);
   }
+  // Admin: delete ONE specific photo from a memorial page (a duplicate/extra).
+  // Only uploaded photos live in the DB; class-data originals can't be removed here.
+  async function deleteMemPhoto(m, url) {
+    if (!isAdmin()) return;
+    if (!confirm("Remove this one photo from " + m.name + "'s page? This can't be undone.")) return;
+    var r = await sb.from("photos").select("id, storage_path").in("album", ["memorial", "yearbook"]).eq("classmate_id", m.id);
+    if (r.error) { toast(r.error.message, false); return; }
+    var match = (r.data || []).filter(function (x) {
+      return sb.storage.from("photos").getPublicUrl(x.storage_path).data.publicUrl === url;
+    });
+    if (!match.length) { toast("That photo is part of the original class data and can't be removed here.", false); return; }
+    if (match[0].storage_path) await sb.storage.from("photos").remove(match.map(function (x) { return x.storage_path; }));
+    await sb.from("photos").delete().in("id", match.map(function (x) { return x.id; }));
+    await sb.from("classmate_overrides").update({ mem_photo: null }).eq("classmate_id", m.id).eq("mem_photo", url);
+    await loadMemorialPhotos();
+    toast("Photo removed ✓", true);
+    if (window.__openModal) window.__openModal(m);
+  }
   function renderMemPhotoPicker(m, body) {
     var pool = [m.photoMem].concat(m.memGallery || []).filter(Boolean);
     if (pool.length < 2) return;
     var box = document.createElement("div");
     box.className = "fld mem-pick";
-    box.innerHTML = '<span>Profile photo <span class="muted" style="font-weight:400">(admin — pick which shows first)</span></span><div class="mem-pick-row">' +
+    box.innerHTML = '<span>Profile photo <span class="muted" style="font-weight:400">(admin — pick which shows first, or ✕ to remove a duplicate)</span></span><div class="mem-pick-row">' +
       pool.map(function (u) {
         var cur = (u === m.photoMem);
         return '<div class="mem-pick-item' + (cur ? " current" : "") + '"><img src="' + esc(u) + '" alt="">' +
+          '<button class="mem-pick-del" data-url="' + esc(u) + '" title="Remove this photo" aria-label="Remove this photo">✕</button>' +
           (cur ? '<div class="mem-pick-tag">Current</div>' : '<button class="chip mem-pick-set" data-url="' + esc(u) + '">Use this</button>') + '</div>';
       }).join("") + '</div>';
     body.appendChild(box);
     $$(".mem-pick-set", box).forEach(function (b) {
       b.addEventListener("click", function () { setPrimaryMemPhoto(m, b.dataset.url); });
+    });
+    $$(".mem-pick-del", box).forEach(function (b) {
+      b.addEventListener("click", function (e) { e.stopPropagation(); deleteMemPhoto(m, b.dataset.url); });
     });
   }
   function uploadMemorialPhoto(m) {
