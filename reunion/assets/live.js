@@ -487,7 +487,8 @@
       applyLocal(m, { status: "memory", passedYear: yr.trim() || undefined, memNote: note.trim() || undefined });
       toast(m.name + " moved to In Memory 🕊", true);
     } else if (act === "restore") {
-      if (!confirm("Move " + m.name + " back to the directory?")) return;
+      if (!confirm("⚠️ This REMOVES " + m.name + " from the In Memory page and moves them back into the living classmate directory.\n\nOnly do this if they were placed In Memory by mistake. Continue?")) return;
+      if (!confirm("Are you sure? Move " + m.name + " OUT of In Memory?")) return;
       if (!(await saveOverride(m.id, { status: "active", passed_year: null, note: null }))) return;
       applyLocal(m, { status: "active", passedYear: undefined, memNote: undefined });
       toast(m.name + " moved back to the directory", true);
@@ -665,7 +666,7 @@
       if (m.status === "memory") {
         parts.push('<button class="btn amt-now" data-act="addmem">📷 ' + (m.photoThen || m.photoMem ? "Add a photo" : "Add profile photo") + '</button>');
         if (m._memUpload) parts.push('<button class="chip" data-act="rmphoto">🗑 Remove photo</button>');
-        parts.push('<button class="chip" data-act="edityear">Edit year</button><button class="chip" data-act="restore">Return to directory</button>');
+        parts.push('<button class="chip" data-act="edityear">Edit year</button><button class="chip chip-danger" data-act="restore">Return to directory</button>');
       } else {
         parts.push('<button class="btn amt-now" data-act="addthen">🎓 ' + (m.photoThen ? "Replace yearbook photo" : "Add yearbook photo") + '</button>');
         if (m._ybUpload) parts.push('<button class="chip" data-act="rmphoto">🗑 Remove photo</button>');
