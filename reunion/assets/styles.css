@@ -174,11 +174,14 @@ section.view.active { display: block; }
 
 /* ---- Memorial ---- */
 .memorial .grid { grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); }
-.mem-card { text-align: center; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 18px;
+.mem-card { position: relative; text-align: center; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 18px;
   box-shadow: var(--shadow); cursor: pointer; transition: transform .16s, box-shadow .16s; }
 .mem-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(16,24,40,.16); }
 .mem-card .avatar { filter: grayscale(.25); }
 .mem-card .name { font-weight: 700; }
+.mem-more { position: absolute; top: 12px; right: 12px; display: inline-flex; align-items: center; gap: 3px;
+  background: rgba(16,24,40,.72); color: #fff; font-size: 11px; font-weight: 700; line-height: 1;
+  padding: 4px 7px; border-radius: 999px; backdrop-filter: blur(2px); }
 
 /* ---- Reunion ---- */
 .reunion-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 30px; box-shadow: var(--shadow); }

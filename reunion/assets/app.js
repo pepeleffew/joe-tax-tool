@@ -398,7 +398,9 @@
     var list = byStatus("memory").sort(function (a, b) { return String(a.name).localeCompare(String(b.name)); });
     if (!list.length) { mem.innerHTML = '<div class="empty">No memorial entries.</div>'; return; }
     mem.innerHTML = list.map(function (m, i) {
+      var extra = (m.memGallery && m.memGallery.length) ? m.memGallery.length + 1 : 0;
       return '<div class="mem-card" data-i="' + i + '" tabindex="0" role="button">' + avatar(m, "", "then", true) +
+        (extra ? '<span class="mem-more" title="' + extra + ' photos on file">📷 ' + extra + '</span>' : "") +
         '<div class="name">' + esc(m.name) + '</div>' +
         (m.passedYear ? '<div class="muted">' + esc(m.passedYear) + '</div>' : "") +
         '</div>';
