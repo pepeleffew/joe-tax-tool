@@ -1920,7 +1920,6 @@ window.CLASS_DATA = {
    "passedYear": "2012",
    "photoMem": "assets/img/mem/6146463.jpg",
    "memGallery": [
-    "assets/img/mem/6146463-life-1.jpg",
     "assets/img/mem/6146463-life-2.jpg"
    ]
   },
