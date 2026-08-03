@@ -152,8 +152,9 @@ section.view.active { display: block; }
   border: 1px solid var(--border); }
 .yb img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease, filter .35s; filter: grayscale(.15); }
 .yb:hover img { transform: scale(1.08); filter: none; }
-.yb .cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 16px 8px 7px; font-size: 12px; font-weight: 700; color: #fff;
-  background: linear-gradient(180deg, transparent, rgba(8,18,34,.9)); opacity: 0; transform: translateY(6px); transition: .25s; }
+.yb .cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 18px 6px 7px; font-size: 11.5px; font-weight: 700; color: #fff;
+  text-align: center; line-height: 1.15; white-space: normal; overflow-wrap: anywhere;
+  background: linear-gradient(180deg, transparent, rgba(8,18,34,.92)); opacity: 0; transform: translateY(6px); transition: .25s; }
 .yb:hover .cap { opacity: 1; transform: none; }
 /* In Memory — quietly desaturated in the yearbook wall; hover/focus restores full color */
 .yb-mem img { filter: grayscale(1); }
