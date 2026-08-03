@@ -2634,11 +2634,8 @@ window.CLASS_DATA = {
    "passedYear": "1989",
    "photoMem": "assets/img/mem/6146457.jpg",
    "memGallery": [
-    "assets/img/mem/6146457-life-1.jpg",
-    "assets/img/mem/6146457-life-2.jpg",
     "assets/img/mem/6146457-life-3.jpg",
-    "assets/img/mem/6146457-life-4.jpg",
-    "assets/img/mem/6146457-life-5.jpg"
+    "assets/img/mem/6146457-life-4.jpg"
    ]
   },
   {
