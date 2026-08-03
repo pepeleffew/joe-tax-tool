@@ -421,7 +421,6 @@
       var mem = m.status === "memory";
       return '<figure class="yb' + (mem ? " yb-mem" : "") + '" data-i="' + i + '" tabindex="0" role="button" aria-label="' + esc(m.name) + (mem ? " — In Memory" : "") + '">' +
         '<img loading="lazy" alt="' + esc(m.name) + '" src="' + esc(m.photoThen) + '">' +
-        (mem ? '<span class="yb-ribbon" title="In Memory" aria-hidden="true">🕊️</span>' : "") +
         '<figcaption class="cap">' + esc(m.name) + '</figcaption></figure>';
     }).join("");
     $$("#yearbook-wall .yb").forEach(function (c) {
