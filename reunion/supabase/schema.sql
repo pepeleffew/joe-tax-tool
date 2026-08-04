@@ -245,6 +245,18 @@ begin
 end $$;
 grant execute on function public.claim_profile(text) to authenticated;
 
+-- Admin: release the claim on a profile (someone claimed it by mistake, or a
+-- wrong email match linked to it). Clears the approved claim AND any email_map
+-- rows pointing at it, so an auto-verify can't silently re-link it next login.
+create or replace function public.release_claim(cid text) returns void
+language plpgsql security definer set search_path = public as $$
+begin
+  if not public.is_admin() then raise exception 'not authorized'; end if;
+  delete from public.profile_claims where classmate_id = cid;
+  delete from public.email_map where classmate_id = cid;
+end $$;
+grant execute on function public.release_claim(text) to authenticated;
+
 -- ---------- TRIBUTES (remembrances on In Memory pages) --------------
 -- Signed-in classmates leave a memory on a specific classmate's memorial.
 -- Lands as 'pending'; only the admin approves. Public sees 'approved' only.

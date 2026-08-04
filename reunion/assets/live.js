@@ -701,7 +701,37 @@
       });
     });
     if (isAdmin() && m.status === "memory") renderMemPhotoPicker(m, body);
+    if (isAdmin()) showClaimAdmin(m, body);
   };
+  // Admin: if an account has claimed this profile, show who — and let the admin
+  // release it (e.g. someone claimed it by mistake, blocking the real classmate).
+  async function showClaimAdmin(m, body) {
+    var r = await sb.from("profile_claims").select("email").eq("classmate_id", m.id).eq("status", "approved").limit(1);
+    if (r.error || !r.data || !r.data.length) return;
+    var who = r.data[0].email || "an unknown account";
+    var box = document.createElement("div");
+    box.className = "fld";
+    box.innerHTML = '<span>Profile claim <span class="muted" style="font-weight:400">(admin)</span></span>' +
+      '<div class="claimadmin">Claimed by <b>' + esc(who) + '</b> · ' +
+      '<button class="chip chip-danger claim-release">Release claim</button></div>';
+    body.appendChild(box);
+    box.querySelector(".claim-release").addEventListener("click", function () { releaseClaim(m, who); });
+  }
+  async function releaseClaim(m, who) {
+    if (!isAdmin()) return;
+    if (!confirm("Release the claim on " + m.name + "'s profile?\n\nCurrently held by " + who + ". They'll be disconnected and " + m.name + " can claim it herself.")) return;
+    var r = await sb.rpc("release_claim", { cid: m.id });
+    if (r.error) {
+      // Fallback if the release_claim function isn't installed yet: at least
+      // remove the claim rows (the email match is cleared by the DB function).
+      var d = await sb.from("profile_claims").delete().eq("classmate_id", m.id);
+      if (d.error) { toast(d.error.message, false); return; }
+    }
+    if (myId === m.id) myId = null;
+    toast("Claim released ✓ — " + m.name + " can now claim this profile.", true);
+    if (window.ClassSite.refresh) window.ClassSite.refresh();
+    if (window.__openModal) window.__openModal(m);
+  }
 
   /* ---------- wire + init ---------- */
   function wire() {
