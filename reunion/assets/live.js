@@ -383,6 +383,7 @@
         return '<div class="admin-item" data-id="' + c.id + '" data-kind="claim"><div class="ai-meta"><b>' + esc(nameById[c.classmate_id] || c.classmate_id) + '</b><br><span class="muted">' + esc(c.email || "") + '</span></div><div class="ai-actions"><button class="btn approve">Approve</button><button class="chip reject">Reject</button></div></div>';
       }).join("") : '<div class="empty">No profile claims waiting.</div>';
     }
+    await loadConnectedAccounts();
     var ph = await sb.from("photos").select("*").eq("status", "pending").order("created_at", { ascending: true });
     var pel = $("#admin-photos");
     if (pel) {
@@ -731,6 +732,41 @@
     toast("Claim released ✓ — " + m.name + " can now claim this profile.", true);
     if (window.ClassSite.refresh) window.ClassSite.refresh();
     if (window.__openModal) window.__openModal(m);
+  }
+  // Admin panel: every account currently linked to a profile, with Release.
+  async function loadConnectedAccounts() {
+    var el = $("#admin-connected"); if (!el) return;
+    var r = await sb.from("profile_claims").select("classmate_id,email").eq("status", "approved").order("created_at", { ascending: true });
+    if (r.error) { el.innerHTML = '<div class="empty">Could not load connected accounts.</div>'; return; }
+    var nameById = {}; (window.ClassSite && window.ClassSite.mates || []).forEach(function (m) { nameById[m.id] = m.name; });
+    var rows = (r.data || []).map(function (c) { return { cid: c.classmate_id, name: nameById[c.classmate_id] || c.classmate_id, email: c.email || "(unknown email)" }; });
+    rows.sort(function (a, b) { return String(a.name).localeCompare(String(b.name)); });
+    var render = function (f) {
+      f = (f || "").toLowerCase();
+      var list = rows.filter(function (x) { return !f || x.name.toLowerCase().indexOf(f) > -1 || x.email.toLowerCase().indexOf(f) > -1; });
+      el.innerHTML = list.length ? list.map(function (x) {
+        return '<div class="admin-item"><div class="ai-meta"><b>' + esc(x.name) + '</b><br><span class="muted">' + esc(x.email) + '</span></div><div class="ai-actions"><button class="chip chip-danger conn-release" data-cid="' + esc(x.cid) + '" data-name="' + esc(x.name) + '" data-email="' + esc(x.email) + '">Release</button></div></div>';
+      }).join("") : '<div class="empty">' + (rows.length ? "No matches." : "No connected accounts yet.") + "</div>";
+      $$(".conn-release", el).forEach(function (b) {
+        b.addEventListener("click", function () { releaseClaimById(b.dataset.cid, b.dataset.name, b.dataset.email); });
+      });
+    };
+    var fi = $("#admin-connected-filter");
+    render(fi ? fi.value : "");
+    if (fi && !fi._wired) { fi._wired = true; fi.addEventListener("input", function () { render(fi.value); }); }
+  }
+  async function releaseClaimById(cid, name, who) {
+    if (!isAdmin()) return;
+    if (!confirm("Release the claim on " + name + "'s profile?\n\nCurrently held by " + who + ". They'll be disconnected and can then claim the correct profile.")) return;
+    var r = await sb.rpc("release_claim", { cid: cid });
+    if (r.error) {
+      var d = await sb.from("profile_claims").delete().eq("classmate_id", cid);
+      if (d.error) { toast(d.error.message, false); return; }
+    }
+    if (myId === cid) myId = null;
+    toast("Claim released ✓", true);
+    await loadConnectedAccounts();
+    if (window.ClassSite && window.ClassSite.refresh) window.ClassSite.refresh();
   }
 
   /* ---------- wire + init ---------- */

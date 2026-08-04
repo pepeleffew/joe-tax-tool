@@ -332,6 +332,8 @@ body.home:not(.scrolled) .auth-slot .chip:hover { background: rgba(255,255,255,.
 .admin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 14px; }
 .admin-item { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px; box-shadow: var(--shadow); }
 .admin-item img { width: 100%; border-radius: 9px; margin-bottom: 10px; }
+.admin-filter { width: 100%; max-width: 340px; margin: 0 0 12px; padding: 9px 13px; border: 1px solid var(--border);
+  border-radius: 10px; background: var(--surface); color: var(--text); font-size: 14px; }
 .ai-meta { font-size: 14px; margin-bottom: 12px; }
 .ai-actions { display: flex; gap: 8px; }
 .ai-actions .btn, .ai-actions .chip { padding: 8px 14px; }
