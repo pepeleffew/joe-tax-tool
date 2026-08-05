@@ -168,7 +168,6 @@ section.view.active { display: block; }
 .tn .pair { display: grid; grid-template-columns: 1fr 1fr; }
 .tn .pair figure { margin: 0; position: relative; aspect-ratio: 1; background: var(--surface-2); }
 .tn .pair img { width: 100%; height: 100%; object-fit: cover; }
-.tn .pair figure:last-child img { object-position: center top; }   /* "Now" photos: keep heads from being cropped off the top */
 .tn .pair figcaption { position: absolute; left: 8px; bottom: 8px; background: rgba(0,0,0,.62); color: #fff; font-size: 11px; padding: 2px 8px;
   border-radius: 6px; letter-spacing: .5px; text-transform: uppercase; }
 .tn .cap { padding: 13px 14px; font-weight: 700; text-align: center; }
