@@ -500,6 +500,10 @@
       if (!(await saveOverride(m.id, { status: "active", passed_year: null, note: null }))) return;
       applyLocal(m, { status: "active", passedYear: undefined, memNote: undefined });
       toast(m.name + " moved back to the directory", true);
+    } else if (act === "markactive") {
+      if (!(await saveOverride(m.id, { status: "active", passed_year: null, note: null }))) return;
+      applyLocal(m, { status: "active" });
+      toast(m.name + " marked as reconnected ✓", true);
     } else if (act === "edityear") {
       var y2 = prompt("Passing year for " + m.name + ":", m.passedYear || "");
       if (y2 === null) return;
@@ -679,6 +683,7 @@
         // Permanent (base-data) memorials can't be moved out from here.
         if (!BASE_MEMORY[m.id]) parts.push('<button class="chip chip-danger" data-act="restore">Return to directory</button>');
       } else {
+        if (m.status === "missing") parts.push('<button class="btn amt-mem" data-act="markactive">✓ Mark as reconnected</button>');
         parts.push('<button class="btn amt-now" data-act="addthen">🎓 ' + (m.photoThen ? "Replace yearbook photo" : "Add yearbook photo") + '</button>');
         if (m._ybUpload) parts.push('<button class="chip" data-act="rmphoto">🗑 Remove photo</button>');
         parts.push('<button class="btn amt-mem" data-act="tomem">🕊 Move to In Memory</button>');
