@@ -414,10 +414,11 @@
   renderMemorial();
 
   /* ---- Yearbook wall ---- */
-  var ybPeople = mates.filter(function (m) { return m.photoThen; })
-    .sort(function (a, b) { return String(a.name.split(" ").slice(-1)).localeCompare(String(b.name.split(" ").slice(-1))); });
-  var wall = $("#yearbook-wall");
-  if (wall) {
+  function renderYearbook() {
+    var wall = $("#yearbook-wall");
+    if (!wall) return;
+    var ybPeople = mates.filter(function (m) { return m.photoThen; })
+      .sort(function (a, b) { return String(a.name.split(" ").slice(-1)).localeCompare(String(b.name.split(" ").slice(-1))); });
     setText("#yb-count", ybPeople.length);
     wall.innerHTML = ybPeople.map(function (m, i) {
       var mem = m.status === "memory";
@@ -431,6 +432,7 @@
       c.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } });
     });
   }
+  renderYearbook();
 
   /* ---- Reunion ---- */
   var R = D.reunion || {};
@@ -606,7 +608,7 @@
     renderThenNow: renderThenNow,
     // Re-render everything that depends on classmate status/data (used after
     // an admin moves someone to In Memory, adds a Now photo, etc.).
-    refresh: function () { updateHeroCounts(); renderStats(); renderDirectory(); renderMemorial(); renderThenNow(); renderBusinesses(); renderBirthdays(); }
+    refresh: function () { updateHeroCounts(); renderStats(); renderDirectory(); renderMemorial(); renderYearbook(); renderThenNow(); renderBusinesses(); renderBirthdays(); }
   };
 
   /* ---- Tabs ---- */
