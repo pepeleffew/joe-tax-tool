@@ -151,7 +151,7 @@
       });
     });
     $$(".yb-chip", modalBody).forEach(function (b) {
-      b.addEventListener("click", function () { modal.classList.remove("open"); window.ClassSite.openYearbook(+b.dataset.ybpage); });
+      b.addEventListener("click", function () { closeModal(); window.ClassSite.openYearbook(+b.dataset.ybpage); });
     });
     if (window.ClassSite && typeof window.ClassSite.onModalOpen === "function") window.ClassSite.onModalOpen(m, modalBody);
     modal.classList.add("open");
@@ -699,7 +699,7 @@
     }
     function close() {
       fb.classList.remove("open"); fb.setAttribute("aria-hidden", "true");
-      document.body.classList.remove("flip-lock"); document.body.style.top = "";
+      document.body.classList.remove("flip-lock"); document.body.style.top = ""; document.body.style.overflow = "";
       window.scrollTo(0, savedScroll); setZoom(false);
     }
     if (btn) btn.addEventListener("click", function () { open(0); });
