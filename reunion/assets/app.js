@@ -644,7 +644,7 @@
     if (btn) btn.style.display = "";
     var imgL = $("#flip-img-l"), imgR = $("#flip-img-r"), wrap = $("#flip-page-wrap"), stage = $("#flip-stage");
     var counter = $("#flip-count"), thumbs = $("#flip-thumbs");
-    var idx = 0, zoomed = false, thumbsBuilt = false;
+    var idx = 0, zoomed = false, thumbsBuilt = false, savedScroll = 0;
     var spread = false;                                   // two pages side by side (wide screens)
     function calcSpread() { return window.innerWidth >= 900; }
     // Book pagination: page 1 (the cover) shows ALONE; then facing pairs 2-3, 4-5…
@@ -677,11 +677,20 @@
       thumbs.innerHTML = pages.map(function (p, i) { return '<button class="flip-thumb" data-i="' + i + '"><img loading="lazy" src="' + esc(p.src) + '" alt="Page ' + (i + 1) + '"><span>' + (i + 1) + '</span></button>'; }).join("");
       $$(".flip-thumb", thumbs).forEach(function (b) { b.addEventListener("click", function () { go(+b.dataset.i); }); });
     }
-    function open(start) { spread = calcSpread(); buildThumbsOnce(); go(start || 0); fb.classList.add("open"); fb.setAttribute("aria-hidden", "false"); document.body.classList.add("flip-lock"); }
-    function close() { fb.classList.remove("open"); fb.setAttribute("aria-hidden", "true"); document.body.classList.remove("flip-lock"); setZoom(false); }
+    function open(start) {
+      spread = calcSpread(); buildThumbsOnce(); go(start || 0);
+      savedScroll = window.pageYOffset || document.documentElement.scrollTop || 0;
+      fb.classList.add("open"); fb.setAttribute("aria-hidden", "false");
+      document.body.classList.add("flip-lock"); document.body.style.top = (-savedScroll) + "px";   // freeze the page behind (iOS)
+    }
+    function close() {
+      fb.classList.remove("open"); fb.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("flip-lock"); document.body.style.top = "";
+      window.scrollTo(0, savedScroll); setZoom(false);
+    }
     if (btn) btn.addEventListener("click", function () { open(0); });
-    $("#flip-prev").addEventListener("click", function () { go(prevIdx()); });
-    $("#flip-next").addEventListener("click", function () { go(nextIdx()); });
+    $("#flip-prev").addEventListener("click", function (e) { e.preventDefault(); e.stopPropagation(); go(prevIdx()); });
+    $("#flip-next").addEventListener("click", function (e) { e.preventDefault(); e.stopPropagation(); go(nextIdx()); });
     $("#flip-close").addEventListener("click", close);
     $("#flip-zoom").addEventListener("click", function () { setZoom(!zoomed); });
     $("#flip-thumbs-toggle").addEventListener("click", function () { thumbs.hidden = !thumbs.hidden; });
@@ -696,6 +705,8 @@
     });
     var sx = 0, sy = 0, tracking = false;
     stage.addEventListener("touchstart", function (e) { if (zoomed) return; var t = e.touches[0]; sx = t.clientX; sy = t.clientY; tracking = true; }, { passive: true });
+    // Block the page/overlay from scrolling or rubber-banding while swiping a page (unless zoomed).
+    stage.addEventListener("touchmove", function (e) { if (!zoomed && e.cancelable) e.preventDefault(); }, { passive: false });
     stage.addEventListener("touchend", function (e) {
       if (!tracking || zoomed) return; tracking = false;
       var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
