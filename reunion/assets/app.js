@@ -102,9 +102,16 @@
       html += '<div class="modal-tn"><figure><img src="' + esc(m.photoThen) + '"><figcaption>1993</figcaption></figure>' +
               '<figure><img src="' + esc(m.photoNow) + '"><figcaption>Now</figcaption></figure></div>';
     }
-    var ybPage = window.YEARBOOK_PAGE_OF ? window.YEARBOOK_PAGE_OF[m.id] : undefined;
-    if (ybPage != null && window.ClassSite && window.ClassSite.openYearbook) {
-      html += '<div class="fld"><button class="btn yb-jump" data-ybpage="' + ybPage + '">📖 See ' + esc(String(m.name).split(" ")[0]) + ' in the 1993 Yearbook</button></div>';
+    var ybPages = (window.YEARBOOK_PAGES_OF && window.YEARBOOK_PAGES_OF[m.id]) || null;
+    var ybPortrait = window.YEARBOOK_PAGE_OF ? window.YEARBOOK_PAGE_OF[m.id] : undefined;
+    if (ybPages && ybPages.length && window.ClassSite && window.ClassSite.openYearbook) {
+      var others = ybPages.filter(function (i) { return i !== ybPortrait; }).sort(function (a, b) { return a - b; });
+      var ordered = (ybPortrait != null ? [ybPortrait] : []).concat(others);
+      var chips = ordered.map(function (i) {
+        var isP = (i === ybPortrait);
+        return '<button class="chip yb-chip' + (isP ? " yb-portrait" : "") + '" data-ybpage="' + i + '">' + (isP ? "★ Senior portrait" : "Page " + (i + 1)) + '</button>';
+      }).join("");
+      html += '<div class="fld"><span>📖 In the 1993 Yearbook <span class="muted" style="font-weight:400">— tap a page to open the book there</span></span><div class="yb-chips">' + chips + '</div></div>';
     }
     if (bMonth(m) && bDay(m)) html += field("Birthday", MONTHS[bMonth(m) - 1] + " " + bDay(m));
     html += field("Occupation", m.occupation) + field("Spouse / Partner", m.spouse) +
@@ -143,8 +150,9 @@
         openLightbox(thumbs.map(function (t) { return { src: t.src, who: m.name }; }), i);
       });
     });
-    var yj = modalBody.querySelector(".yb-jump");
-    if (yj) yj.addEventListener("click", function () { modal.classList.remove("open"); window.ClassSite.openYearbook(+yj.dataset.ybpage); });
+    $$(".yb-chip", modalBody).forEach(function (b) {
+      b.addEventListener("click", function () { modal.classList.remove("open"); window.ClassSite.openYearbook(+b.dataset.ybpage); });
+    });
     if (window.ClassSite && typeof window.ClassSite.onModalOpen === "function") window.ClassSite.onModalOpen(m, modalBody);
     modal.classList.add("open");
     document.body.style.overflow = "hidden";

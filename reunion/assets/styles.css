@@ -535,5 +535,8 @@ body.flip-lock { position: fixed; left: 0; right: 0; width: 100%; overflow: hidd
 .flip-thumb.active { border-color: var(--accent); }
 @media (max-width: 640px) { .flip-arrow { width: 38px; height: 56px; font-size: 24px; } .flip-title { font-size: 12px; } .flip-count { font-size: 12px; } .flip-btn { padding: 6px 9px; font-size: 12px; } .flip-thumbs { max-height: 26vh; } }
 
-/* "See them in the yearbook" jump button (profile modal) */
-.yb-jump { width: 100%; justify-content: center; text-align: center; }
+/* "In the 1993 Yearbook" appearance chips (profile modal) */
+.yb-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 6px; }
+.yb-chip { cursor: pointer; }
+.yb-chip.yb-portrait { border-color: var(--accent); color: var(--accent); font-weight: 700; }
+.yb-chip:hover { background: var(--surface-2); }
