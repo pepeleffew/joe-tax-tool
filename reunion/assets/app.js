@@ -102,6 +102,10 @@
       html += '<div class="modal-tn"><figure><img src="' + esc(m.photoThen) + '"><figcaption>1993</figcaption></figure>' +
               '<figure><img src="' + esc(m.photoNow) + '"><figcaption>Now</figcaption></figure></div>';
     }
+    var ybPage = window.YEARBOOK_PAGE_OF ? window.YEARBOOK_PAGE_OF[m.id] : undefined;
+    if (ybPage != null && window.ClassSite && window.ClassSite.openYearbook) {
+      html += '<div class="fld"><button class="btn yb-jump" data-ybpage="' + ybPage + '">📖 See ' + esc(String(m.name).split(" ")[0]) + ' in the 1993 Yearbook</button></div>';
+    }
     if (bMonth(m) && bDay(m)) html += field("Birthday", MONTHS[bMonth(m) - 1] + " " + bDay(m));
     html += field("Occupation", m.occupation) + field("Spouse / Partner", m.spouse) +
             field("Children", m.children) + field("College", m.college) +
@@ -139,6 +143,8 @@
         openLightbox(thumbs.map(function (t) { return { src: t.src, who: m.name }; }), i);
       });
     });
+    var yj = modalBody.querySelector(".yb-jump");
+    if (yj) yj.addEventListener("click", function () { modal.classList.remove("open"); window.ClassSite.openYearbook(+yj.dataset.ybpage); });
     if (window.ClassSite && typeof window.ClassSite.onModalOpen === "function") window.ClassSite.onModalOpen(m, modalBody);
     modal.classList.add("open");
     document.body.style.overflow = "hidden";
@@ -689,6 +695,7 @@
       window.scrollTo(0, savedScroll); setZoom(false);
     }
     if (btn) btn.addEventListener("click", function () { open(0); });
+    window.ClassSite.openYearbook = function (i) { open(Math.max(0, Math.min(pages.length - 1, i | 0))); };
     $("#flip-prev").addEventListener("click", function (e) { e.preventDefault(); e.stopPropagation(); go(prevIdx()); });
     $("#flip-next").addEventListener("click", function (e) { e.preventDefault(); e.stopPropagation(); go(nextIdx()); });
     $("#flip-close").addEventListener("click", close);
