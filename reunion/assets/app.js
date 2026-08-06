@@ -772,12 +772,13 @@
         var chips = idx[m.id].map(function (i) { return '<button class="flip-res-page" data-p="' + i + '">p.' + (i + 1) + "</button>"; }).join("");
         return '<div class="flip-res"><span class="flip-res-name">' + esc(m.name) + (m.maidenName ? ' <span class="muted">(' + esc(m.maidenName) + ")</span>" : "") + '</span><span class="flip-res-pages">' + chips + "</span></div>";
       }).join("");
-      $$(".flip-res-page", sResults).forEach(function (b) { b.addEventListener("click", function () { go(+b.dataset.p); toggleSearch(false); }); });
+      $$(".flip-res-page", sResults).forEach(function (b) { b.addEventListener("click", function () { sInput.blur(); go(+b.dataset.p); toggleSearch(false); }); });
     }
     function toggleSearch(on) {
       if (on === undefined) on = sPanel.hidden;
       sPanel.hidden = !on; findBtn.classList.toggle("on", on);
       if (on) { thumbs.hidden = true; sInput.value = ""; renderSearch(""); setTimeout(function () { sInput.focus(); }, 30); }
+      else { sInput.blur(); window.scrollTo(0, 0); }   // dismiss the mobile keyboard so the fixed overlay snaps back
     }
     if (findBtn) {
       findBtn.addEventListener("click", function () { toggleSearch(); });
