@@ -390,7 +390,7 @@ window.CLASS_DATA = {
   },
   {
    "id": "6146053",
-   "name": "Weston Burgess",
+   "name": "Weston Burgiss",
    "status": "missing",
    "photoThen": "assets/img/then/6146053.jpg"
   },
@@ -775,7 +775,7 @@ window.CLASS_DATA = {
   },
   {
    "id": "6146095",
-   "name": "Shelly Daughtrey",
+   "name": "Shelly Daughtery",
    "status": "active",
    "maidenName": "Milligan",
    "city": "Dunlap",
@@ -901,7 +901,7 @@ window.CLASS_DATA = {
   },
   {
    "id": "6146108",
-   "name": "Phil Dyer",
+   "name": "Phil Dyar",
    "status": "missing",
    "photoThen": "assets/img/then/6146108.jpg"
   },
@@ -3071,48 +3071,6 @@ window.CLASS_DATA = {
    "name": "Ronnie Agee",
    "status": "missing",
    "photoThen": "assets/img/then/ronnie-agee.jpg"
-  },
-  {
-   "id": "weston-burgiss",
-   "name": "Weston Burgiss",
-   "status": "missing",
-   "photoThen": "assets/img/then/weston-burgiss.jpg"
-  },
-  {
-   "id": "angelena-curvin",
-   "name": "Angelena Curvin",
-   "status": "missing",
-   "photoThen": "assets/img/then/angelena-curvin.jpg"
-  },
-  {
-   "id": "shelly-daughtery",
-   "name": "Shelly Daughtery",
-   "status": "missing",
-   "photoThen": "assets/img/then/shelly-daughtery.jpg"
-  },
-  {
-   "id": "phil-dyar",
-   "name": "Phil Dyar",
-   "status": "missing",
-   "photoThen": "assets/img/then/phil-dyar.jpg"
-  },
-  {
-   "id": "heather-shultz",
-   "name": "Heather Shultz",
-   "status": "missing",
-   "photoThen": "assets/img/then/heather-shultz.jpg"
-  },
-  {
-   "id": "crystal-l-smith",
-   "name": "Crystal L. Smith",
-   "status": "missing",
-   "photoThen": "assets/img/then/crystal-l-smith.jpg"
-  },
-  {
-   "id": "kristen-smith",
-   "name": "Kristen Smith",
-   "status": "missing",
-   "photoThen": "assets/img/then/kristen-smith.jpg"
   }
  ],
  "gallery": []
