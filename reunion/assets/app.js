@@ -665,7 +665,27 @@
     function nextIdx() { return spread ? (idx === 0 ? 1 : idx + 2) : idx + 1; }
     function prevIdx() { return spread ? (idx <= 1 ? 0 : idx - 2) : idx - 1; }
     function preload(i) { if (pages[i]) { var im = new Image(); im.src = pages[i].src; } }
-    function setZoom(on) { zoomed = on; wrap.classList.toggle("zoomed", on); $("#flip-zoom").classList.toggle("on", on); if (!on) wrap.scrollTo(0, 0); }
+    var Z = 2.4, zx = 0, zy = 0, panned = false;
+    function applyTransform() { wrap.style.transform = zoomed ? ("translate(" + zx + "px," + zy + "px) scale(" + Z + ")") : ""; }
+    function clampPan() {
+      var s = stage.getBoundingClientRect();
+      var maxX = Math.max(0, (wrap.offsetWidth * Z - s.width) / 2);
+      var maxY = Math.max(0, (wrap.offsetHeight * Z - s.height) / 2);
+      zx = Math.max(-maxX, Math.min(maxX, zx));
+      zy = Math.max(-maxY, Math.min(maxY, zy));
+    }
+    function setZoom(on, ev) {
+      zoomed = on; wrap.classList.toggle("zoomed", on); $("#flip-zoom").classList.toggle("on", on);
+      if (on) {
+        if (ev) {   // zoom toward the point that was clicked/tapped
+          var r = wrap.getBoundingClientRect();
+          zx = (ev.clientX - (r.left + r.width / 2)) * (1 - Z);
+          zy = (ev.clientY - (r.top + r.height / 2)) * (1 - Z);
+        } else { zx = 0; zy = 0; }
+        clampPan();
+      } else { zx = 0; zy = 0; }
+      applyTransform();
+    }
     function clampIdx(i) { i = Math.max(0, Math.min(pages.length - 1, i)); if (spread && i > 0 && i % 2 === 0) i -= 1; return i; }  // land on odd-left of a facing pair
     function render() {
       var R = (spread && idx !== 0) ? pages[idx + 1] : null;   // cover (page 1) alone
@@ -709,8 +729,15 @@
     $("#flip-close").addEventListener("click", close);
     $("#flip-zoom").addEventListener("click", function () { setZoom(!zoomed); });
     $("#flip-thumbs-toggle").addEventListener("click", function () { thumbs.hidden = !thumbs.hidden; });
-    imgL.addEventListener("click", function () { setZoom(!zoomed); });
-    imgR.addEventListener("click", function () { setZoom(!zoomed); });
+    imgL.addEventListener("click", function (e) { if (panned) return; setZoom(!zoomed, e); });
+    imgR.addEventListener("click", function (e) { if (panned) return; setZoom(!zoomed, e); });
+    // Drag to pan while zoomed (mouse + touch via pointer events).
+    var dragging = false, dsx = 0, dsy = 0, dox = 0, doy = 0, moved = 0;
+    wrap.addEventListener("pointerdown", function (e) { if (!zoomed) return; dragging = true; moved = 0; dsx = e.clientX; dsy = e.clientY; dox = zx; doy = zy; wrap.classList.add("dragging"); try { wrap.setPointerCapture(e.pointerId); } catch (x) {} });
+    wrap.addEventListener("pointermove", function (e) { if (!dragging) return; var dx = e.clientX - dsx, dy = e.clientY - dsy; moved = Math.max(moved, Math.abs(dx) + Math.abs(dy)); zx = dox + dx; zy = doy + dy; clampPan(); applyTransform(); });
+    var endDrag = function () { if (!dragging) return; dragging = false; wrap.classList.remove("dragging"); if (moved > 6) { panned = true; setTimeout(function () { panned = false; }, 80); } };
+    wrap.addEventListener("pointerup", endDrag);
+    wrap.addEventListener("pointercancel", endDrag);
     window.addEventListener("resize", relayout);
     document.addEventListener("keydown", function (e) {
       if (!fb.classList.contains("open")) return;
