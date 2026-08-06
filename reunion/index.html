@@ -127,7 +127,10 @@
   <!-- YEARBOOK -->
   <section id="view-yearbook" class="view">
     <div class="wrap">
-      <div class="section-head"><div><h2>The Yearbook</h2><p><span id="yb-count">0</span> senior portraits · hover a face, click to open their profile</p></div></div>
+      <div class="section-head">
+        <div><h2>The Yearbook</h2><p><span id="yb-count">0</span> senior portraits · hover a face, click to open their profile</p></div>
+        <button class="btn" id="open-flipbook" style="display:none">📖 Flip through the full 1993 yearbook</button>
+      </div>
       <div id="yearbook-wall" class="yearwall"></div>
     </div>
   </section>
@@ -363,6 +366,25 @@
     <button class="lb-nav lb-next" data-lb-next aria-label="Next">›</button>
   </div>
 
+  <!-- Yearbook flip-through -->
+  <div id="flipbook" class="flip" aria-hidden="true">
+    <div class="flip-bar">
+      <span class="flip-title">📖 The 1993 Trojan Yearbook</span>
+      <span class="flip-count" id="flip-count"></span>
+      <div class="flip-bar-tools">
+        <button class="flip-btn" id="flip-zoom" aria-label="Zoom">🔍 Zoom</button>
+        <button class="flip-btn" id="flip-thumbs-toggle" aria-label="Pages">▦ Pages</button>
+        <button class="flip-btn flip-x" id="flip-close" aria-label="Close">✕</button>
+      </div>
+    </div>
+    <div class="flip-stage" id="flip-stage">
+      <button class="flip-arrow flip-prev" id="flip-prev" aria-label="Previous page">‹</button>
+      <div class="flip-page-wrap" id="flip-page-wrap"><img id="flip-img" alt="" draggable="false"></div>
+      <button class="flip-arrow flip-next" id="flip-next" aria-label="Next page">›</button>
+    </div>
+    <div class="flip-thumbs" id="flip-thumbs" hidden></div>
+  </div>
+
   <!-- Auth modal -->
   <div id="auth-modal" class="modal" aria-hidden="true">
     <div class="modal-card" style="max-width:420px">
@@ -402,6 +424,7 @@
   </div>
 
   <script src="data/class-data.js"></script>
+  <script src="data/yearbook-pages.js"></script>
   <script src="assets/app.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/supabase-config.js"></script>

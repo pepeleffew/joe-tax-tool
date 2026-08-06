@@ -500,3 +500,32 @@ body.nolive #add-photos-btn, body.nolive .gb-form, body.nolive .rsvp-box { displ
 .ch-body { display: flex; flex-direction: column; line-height: 1.25; }
 .ch-song { font-weight: 700; }
 .ch-artist { font-size: 13px; color: var(--text-dim); }
+
+/* ---- Yearbook flip-through book ---- */
+body.flip-lock { overflow: hidden; }
+.flip { position: fixed; inset: 0; z-index: 3000; background: #0b1020; display: none; flex-direction: column; }
+.flip.open { display: flex; }
+.flip-bar { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #0e1830; color: #fff; border-bottom: 1px solid rgba(255,255,255,.08); }
+.flip-title { font-family: var(--display); text-transform: uppercase; letter-spacing: .5px; font-size: 15px; }
+.flip-count { color: #9fb0c9; font-size: 13px; }
+.flip-bar-tools { margin-left: auto; display: flex; gap: 8px; }
+.flip-btn { background: rgba(255,255,255,.1); color: #fff; border: 1px solid rgba(255,255,255,.18); border-radius: 9px; padding: 7px 12px; font-size: 13px; font-weight: 600; cursor: pointer; }
+.flip-btn:hover { background: rgba(255,255,255,.2); }
+.flip-btn.on { background: var(--accent); color: #10233f; border-color: var(--accent); }
+.flip-x { font-size: 15px; }
+.flip-stage { flex: 1; position: relative; display: flex; align-items: center; justify-content: center; min-height: 0; padding: 14px; }
+.flip-page-wrap { max-width: 100%; max-height: 100%; overflow: auto; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.55); -webkit-overflow-scrolling: touch; }
+.flip-page-wrap img { display: block; max-width: min(720px, 92vw); max-height: calc(100vh - 132px); width: auto; height: auto; cursor: zoom-in; background: #fff; }
+.flip-page-wrap.zoomed { max-width: 100%; max-height: 100%; }
+.flip-page-wrap.zoomed img { max-width: none; max-height: none; width: min(1700px, 200vw); cursor: zoom-out; }
+.flip-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; width: 52px; height: 74px; border: none; border-radius: 12px; background: rgba(255,255,255,.14); color: #fff; font-size: 34px; line-height: 1; cursor: pointer; }
+.flip-arrow:hover { background: rgba(255,255,255,.26); }
+.flip-arrow:disabled { opacity: .22; cursor: default; }
+.flip-prev { left: 14px; }
+.flip-next { right: 14px; }
+.flip-thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: 8px; padding: 12px 16px; background: #0e1830; border-top: 1px solid rgba(255,255,255,.08); max-height: 32vh; overflow-y: auto; }
+.flip-thumb { position: relative; padding: 0; border: 2px solid transparent; border-radius: 6px; overflow: hidden; cursor: pointer; background: #16223f; line-height: 0; }
+.flip-thumb img { width: 100%; height: 92px; object-fit: cover; object-position: center top; display: block; }
+.flip-thumb span { position: absolute; right: 3px; bottom: 3px; background: rgba(0,0,0,.7); color: #fff; font-size: 10px; padding: 1px 5px; border-radius: 4px; }
+.flip-thumb.active { border-color: var(--accent); }
+@media (max-width: 640px) { .flip-arrow { width: 40px; height: 60px; font-size: 26px; } .flip-title { font-size: 13px; } .flip-btn { padding: 6px 9px; font-size: 12px; } .flip-page-wrap img { max-height: calc(100vh - 118px); } }
