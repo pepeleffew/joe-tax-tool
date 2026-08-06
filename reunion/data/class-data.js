@@ -2552,7 +2552,8 @@ window.CLASS_DATA = {
    "id": "6146461",
    "name": "Adam Sneed",
    "status": "memory",
-   "passedYear": "1993"
+   "passedYear": "1993",
+   "photoThen": "assets/img/then/6146461.jpg"
   },
   {
    "id": "6146309",
