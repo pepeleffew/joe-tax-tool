@@ -382,10 +382,15 @@
       <span class="flip-title">📖 The 1993 Trojan Yearbook</span>
       <span class="flip-count" id="flip-count"></span>
       <div class="flip-bar-tools">
+        <button class="flip-btn" id="flip-find" aria-label="Find a classmate">🔎 Find</button>
         <button class="flip-btn" id="flip-zoom" aria-label="Zoom">🔍 Zoom</button>
         <button class="flip-btn" id="flip-thumbs-toggle" aria-label="Pages">▦ Pages</button>
         <button class="flip-btn flip-x" id="flip-close" aria-label="Close">✕</button>
       </div>
+    </div>
+    <div class="flip-search" id="flip-search" hidden>
+      <input id="flip-search-input" type="search" placeholder="Search classmates by name…" autocomplete="off">
+      <div class="flip-search-results" id="flip-search-results"></div>
     </div>
     <div class="flip-stage" id="flip-stage">
       <button class="flip-arrow flip-prev" id="flip-prev" aria-label="Previous page">‹</button>

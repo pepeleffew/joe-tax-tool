@@ -758,6 +758,31 @@
     }
     if (btn) btn.addEventListener("click", function () { open(0); });
     window.ClassSite.openYearbook = function (i) { open(Math.max(0, Math.min(pages.length - 1, i | 0))); };
+
+    /* ---- Find-a-classmate search inside the book ---- */
+    var findBtn = $("#flip-find"), sPanel = $("#flip-search"), sInput = $("#flip-search-input"), sResults = $("#flip-search-results");
+    function renderSearch(q) {
+      q = (q || "").trim().toLowerCase();
+      if (q.length < 2) { sResults.innerHTML = '<div class="flip-search-hint">Type a name to find every page they appear on.</div>'; return; }
+      var mm = (window.CLASS_DATA && window.CLASS_DATA.classmates) || [];
+      var idx = window.YEARBOOK_PAGES_OF || {};
+      var hits = mm.filter(function (m) { return idx[m.id] && (m.name + " " + (m.maidenName || "")).toLowerCase().indexOf(q) > -1; }).slice(0, 40);
+      if (!hits.length) { sResults.innerHTML = '<div class="flip-search-hint">No match in the pages loaded so far.</div>'; return; }
+      sResults.innerHTML = hits.map(function (m) {
+        var chips = idx[m.id].map(function (i) { return '<button class="flip-res-page" data-p="' + i + '">p.' + (i + 1) + "</button>"; }).join("");
+        return '<div class="flip-res"><span class="flip-res-name">' + esc(m.name) + (m.maidenName ? ' <span class="muted">(' + esc(m.maidenName) + ")</span>" : "") + '</span><span class="flip-res-pages">' + chips + "</span></div>";
+      }).join("");
+      $$(".flip-res-page", sResults).forEach(function (b) { b.addEventListener("click", function () { go(+b.dataset.p); toggleSearch(false); }); });
+    }
+    function toggleSearch(on) {
+      if (on === undefined) on = sPanel.hidden;
+      sPanel.hidden = !on; findBtn.classList.toggle("on", on);
+      if (on) { thumbs.hidden = true; sInput.value = ""; renderSearch(""); setTimeout(function () { sInput.focus(); }, 30); }
+    }
+    if (findBtn) {
+      findBtn.addEventListener("click", function () { toggleSearch(); });
+      sInput.addEventListener("input", function () { renderSearch(sInput.value); });
+    }
     $("#flip-prev").addEventListener("click", function (e) { e.preventDefault(); e.stopPropagation(); go(prevIdx()); });
     $("#flip-next").addEventListener("click", function (e) { e.preventDefault(); e.stopPropagation(); go(nextIdx()); });
     $("#flip-close").addEventListener("click", close);
