@@ -642,43 +642,54 @@
     var fb = $("#flipbook"), btn = $("#open-flipbook");
     if (!fb || !pages.length) return;
     if (btn) btn.style.display = "";
-    var img = $("#flip-img"), wrap = $("#flip-page-wrap"), stage = $("#flip-stage");
+    var imgL = $("#flip-img-l"), imgR = $("#flip-img-r"), wrap = $("#flip-page-wrap"), stage = $("#flip-stage");
     var counter = $("#flip-count"), thumbs = $("#flip-thumbs");
     var idx = 0, zoomed = false, thumbsBuilt = false;
+    var spread = false;                                   // two pages side by side (wide screens)
+    function calcSpread() { return window.innerWidth >= 900; }
+    function step() { return spread ? 2 : 1; }
     function preload(i) { if (pages[i]) { var im = new Image(); im.src = pages[i].src; } }
     function setZoom(on) { zoomed = on; wrap.classList.toggle("zoomed", on); $("#flip-zoom").classList.toggle("on", on); if (!on) wrap.scrollTo(0, 0); }
+    function clampIdx(i) { i = Math.max(0, Math.min(pages.length - 1, i)); if (spread) i -= (i % 2); return i; }
     function render() {
-      var p = pages[idx]; if (!p) return;
-      img.src = p.src; img.alt = "Yearbook page " + (idx + 1);
-      counter.textContent = (idx + 1) + " / " + pages.length;
-      $("#flip-prev").disabled = idx === 0;
-      $("#flip-next").disabled = idx === pages.length - 1;
+      var L = pages[idx], R = spread ? pages[idx + 1] : null;
+      wrap.classList.toggle("spread", !!R);
+      imgL.src = L.src; imgL.alt = "Yearbook page " + (idx + 1);
+      if (R) { imgR.src = R.src; imgR.alt = "Yearbook page " + (idx + 2); imgR.style.display = ""; }
+      else { imgR.removeAttribute("src"); imgR.style.display = "none"; }
+      counter.textContent = R ? (idx + 1) + "–" + (idx + 2) + " / " + pages.length : (idx + 1) + " / " + pages.length;
+      $("#flip-prev").disabled = idx <= 0;
+      $("#flip-next").disabled = idx + step() >= pages.length;
       setZoom(false);
-      preload(idx + 1); preload(idx - 1);
+      preload(idx + step()); preload(idx + step() + 1); preload(idx - 1);
       if (thumbsBuilt) {
-        var a = thumbs.querySelector(".flip-thumb.active"); if (a) a.classList.remove("active");
-        var t = thumbs.children[idx]; if (t) { t.classList.add("active"); t.scrollIntoView({ block: "nearest" }); }
+        $$(".flip-thumb.active", thumbs).forEach(function (a) { a.classList.remove("active"); });
+        [idx, R ? idx + 1 : -1].forEach(function (k) { var t = thumbs.children[k]; if (t) t.classList.add("active"); });
+        var t0 = thumbs.children[idx]; if (t0) t0.scrollIntoView({ block: "nearest" });
       }
     }
-    function go(n) { idx = Math.max(0, Math.min(pages.length - 1, n)); render(); }
+    function go(n) { idx = clampIdx(n); render(); }
+    function relayout() { var s = calcSpread(); if (s !== spread) { spread = s; go(idx); } }
     function buildThumbsOnce() {
       if (thumbsBuilt) return; thumbsBuilt = true;
       thumbs.innerHTML = pages.map(function (p, i) { return '<button class="flip-thumb" data-i="' + i + '"><img loading="lazy" src="' + esc(p.src) + '" alt="Page ' + (i + 1) + '"><span>' + (i + 1) + '</span></button>'; }).join("");
       $$(".flip-thumb", thumbs).forEach(function (b) { b.addEventListener("click", function () { go(+b.dataset.i); }); });
     }
-    function open(start) { buildThumbsOnce(); go(start || 0); fb.classList.add("open"); fb.setAttribute("aria-hidden", "false"); document.body.classList.add("flip-lock"); }
+    function open(start) { spread = calcSpread(); buildThumbsOnce(); go(start || 0); fb.classList.add("open"); fb.setAttribute("aria-hidden", "false"); document.body.classList.add("flip-lock"); }
     function close() { fb.classList.remove("open"); fb.setAttribute("aria-hidden", "true"); document.body.classList.remove("flip-lock"); setZoom(false); }
     if (btn) btn.addEventListener("click", function () { open(0); });
-    $("#flip-prev").addEventListener("click", function () { go(idx - 1); });
-    $("#flip-next").addEventListener("click", function () { go(idx + 1); });
+    $("#flip-prev").addEventListener("click", function () { go(idx - step()); });
+    $("#flip-next").addEventListener("click", function () { go(idx + step()); });
     $("#flip-close").addEventListener("click", close);
     $("#flip-zoom").addEventListener("click", function () { setZoom(!zoomed); });
     $("#flip-thumbs-toggle").addEventListener("click", function () { thumbs.hidden = !thumbs.hidden; });
-    img.addEventListener("click", function () { setZoom(!zoomed); });
+    imgL.addEventListener("click", function () { setZoom(!zoomed); });
+    imgR.addEventListener("click", function () { setZoom(!zoomed); });
+    window.addEventListener("resize", relayout);
     document.addEventListener("keydown", function (e) {
       if (!fb.classList.contains("open")) return;
-      if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); go(idx + 1); }
-      else if (e.key === "ArrowLeft") go(idx - 1);
+      if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); go(idx + step()); }
+      else if (e.key === "ArrowLeft") go(idx - step());
       else if (e.key === "Escape") close();
     });
     var sx = 0, sy = 0, tracking = false;
@@ -686,7 +697,7 @@
     stage.addEventListener("touchend", function (e) {
       if (!tracking || zoomed) return; tracking = false;
       var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
-      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) { go(idx + (dx < 0 ? 1 : -1)); }
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) { go(idx + (dx < 0 ? step() : -step())); }
     }, { passive: true });
   })();
 

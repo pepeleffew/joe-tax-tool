@@ -513,13 +513,14 @@ body.flip-lock { overflow: hidden; }
 .flip-btn:hover { background: rgba(255,255,255,.2); }
 .flip-btn.on { background: var(--accent); color: #10233f; border-color: var(--accent); }
 .flip-x { font-size: 15px; }
-.flip-stage { flex: 1; position: relative; display: flex; align-items: center; justify-content: center; min-height: 0; padding: 12px; }
-/* Non-zoomed: the page always fits inside the visible stage — no scrolling. */
-.flip-page-wrap { display: flex; max-width: 100%; max-height: 100%; min-height: 0; overflow: hidden; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.55); }
-.flip-page-wrap img { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; cursor: zoom-in; background: #fff; }
-/* Zoomed: allow the page to overflow and pan/scroll to read fine print. */
-.flip-page-wrap.zoomed { overflow: auto; -webkit-overflow-scrolling: touch; }
-.flip-page-wrap.zoomed img { max-width: none; max-height: none; width: min(1700px, 200vw); object-fit: initial; cursor: zoom-out; }
+.flip-stage { flex: 1; position: relative; display: flex; align-items: center; justify-content: center; min-height: 0; padding: 10px; }
+/* Non-zoomed: the page(s) always fit inside the visible stage — no scrolling. */
+.flip-page-wrap { display: flex; align-items: center; justify-content: center; gap: 2px; max-width: 100%; max-height: 100%; min-height: 0; overflow: hidden; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.55); }
+.flip-pg { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; cursor: zoom-in; background: #fff; }
+.flip-page-wrap.spread .flip-pg { max-width: 50%; }        /* two-page book spread on wide screens */
+/* Zoomed: allow the page(s) to overflow and pan/scroll to read fine print. */
+.flip-page-wrap.zoomed { overflow: auto; -webkit-overflow-scrolling: touch; max-width: 100%; max-height: 100%; }
+.flip-page-wrap.zoomed .flip-pg { max-width: none; max-height: none; width: min(1500px, 92vw); object-fit: initial; cursor: zoom-out; }
 .flip-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; width: 52px; height: 74px; border: none; border-radius: 12px; background: rgba(255,255,255,.14); color: #fff; font-size: 34px; line-height: 1; cursor: pointer; }
 .flip-arrow:hover { background: rgba(255,255,255,.26); }
 .flip-arrow:disabled { opacity: .22; cursor: default; }
