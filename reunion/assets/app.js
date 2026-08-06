@@ -647,21 +647,23 @@
     var idx = 0, zoomed = false, thumbsBuilt = false;
     var spread = false;                                   // two pages side by side (wide screens)
     function calcSpread() { return window.innerWidth >= 900; }
-    function step() { return spread ? 2 : 1; }
+    // Book pagination: page 1 (the cover) shows ALONE; then facing pairs 2-3, 4-5…
+    function nextIdx() { return spread ? (idx === 0 ? 1 : idx + 2) : idx + 1; }
+    function prevIdx() { return spread ? (idx <= 1 ? 0 : idx - 2) : idx - 1; }
     function preload(i) { if (pages[i]) { var im = new Image(); im.src = pages[i].src; } }
     function setZoom(on) { zoomed = on; wrap.classList.toggle("zoomed", on); $("#flip-zoom").classList.toggle("on", on); if (!on) wrap.scrollTo(0, 0); }
-    function clampIdx(i) { i = Math.max(0, Math.min(pages.length - 1, i)); if (spread) i -= (i % 2); return i; }
+    function clampIdx(i) { i = Math.max(0, Math.min(pages.length - 1, i)); if (spread && i > 0 && i % 2 === 0) i -= 1; return i; }  // land on odd-left of a facing pair
     function render() {
-      var L = pages[idx], R = spread ? pages[idx + 1] : null;
+      var R = (spread && idx !== 0) ? pages[idx + 1] : null;   // cover (page 1) alone
       wrap.classList.toggle("spread", !!R);
-      imgL.src = L.src; imgL.alt = "Yearbook page " + (idx + 1);
+      imgL.src = pages[idx].src; imgL.alt = "Yearbook page " + (idx + 1);
       if (R) { imgR.src = R.src; imgR.alt = "Yearbook page " + (idx + 2); imgR.style.display = ""; }
       else { imgR.removeAttribute("src"); imgR.style.display = "none"; }
       counter.textContent = R ? (idx + 1) + "–" + (idx + 2) + " / " + pages.length : (idx + 1) + " / " + pages.length;
       $("#flip-prev").disabled = idx <= 0;
-      $("#flip-next").disabled = idx + step() >= pages.length;
+      $("#flip-next").disabled = nextIdx() > pages.length - 1;
       setZoom(false);
-      preload(idx + step()); preload(idx + step() + 1); preload(idx - 1);
+      preload(nextIdx()); preload(nextIdx() + 1); preload(prevIdx());
       if (thumbsBuilt) {
         $$(".flip-thumb.active", thumbs).forEach(function (a) { a.classList.remove("active"); });
         [idx, R ? idx + 1 : -1].forEach(function (k) { var t = thumbs.children[k]; if (t) t.classList.add("active"); });
@@ -678,8 +680,8 @@
     function open(start) { spread = calcSpread(); buildThumbsOnce(); go(start || 0); fb.classList.add("open"); fb.setAttribute("aria-hidden", "false"); document.body.classList.add("flip-lock"); }
     function close() { fb.classList.remove("open"); fb.setAttribute("aria-hidden", "true"); document.body.classList.remove("flip-lock"); setZoom(false); }
     if (btn) btn.addEventListener("click", function () { open(0); });
-    $("#flip-prev").addEventListener("click", function () { go(idx - step()); });
-    $("#flip-next").addEventListener("click", function () { go(idx + step()); });
+    $("#flip-prev").addEventListener("click", function () { go(prevIdx()); });
+    $("#flip-next").addEventListener("click", function () { go(nextIdx()); });
     $("#flip-close").addEventListener("click", close);
     $("#flip-zoom").addEventListener("click", function () { setZoom(!zoomed); });
     $("#flip-thumbs-toggle").addEventListener("click", function () { thumbs.hidden = !thumbs.hidden; });
@@ -688,8 +690,8 @@
     window.addEventListener("resize", relayout);
     document.addEventListener("keydown", function (e) {
       if (!fb.classList.contains("open")) return;
-      if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); go(idx + step()); }
-      else if (e.key === "ArrowLeft") go(idx - step());
+      if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); go(nextIdx()); }
+      else if (e.key === "ArrowLeft") go(prevIdx());
       else if (e.key === "Escape") close();
     });
     var sx = 0, sy = 0, tracking = false;
@@ -697,7 +699,7 @@
     stage.addEventListener("touchend", function (e) {
       if (!tracking || zoomed) return; tracking = false;
       var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
-      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) { go(idx + (dx < 0 ? step() : -step())); }
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) { go(dx < 0 ? nextIdx() : prevIdx()); }
     }, { passive: true });
   })();
 
