@@ -542,3 +542,17 @@ body.flip-lock { position: fixed; left: 0; right: 0; width: 100%; overflow: hidd
 .yb-chip { cursor: pointer; }
 .yb-chip.yb-portrait { border-color: var(--accent); color: var(--accent); font-weight: 700; }
 .yb-chip:hover { background: var(--surface-2); }
+
+/* ---- Class Superlatives ---- */
+.sup-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; }
+.sup-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 20px 20px;
+  text-align: center; box-shadow: var(--shadow); display: flex; flex-direction: column; align-items: center; gap: 7px; transition: transform .16s, box-shadow .16s; }
+.sup-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(16,24,40,.16); }
+.sup-ic { font-size: 38px; line-height: 1; }
+.sup-title { font-family: var(--display); text-transform: uppercase; letter-spacing: .5px; font-size: 18px; }
+.sup-people { font-size: 15px; line-height: 1.5; }
+.sup-name { border: 0; background: none; color: var(--accent); font: inherit; font-weight: 700; cursor: pointer; padding: 0; }
+.sup-name.plain { color: var(--text); cursor: default; font-weight: 700; }
+.sup-name:hover:not(.plain) { text-decoration: underline; }
+.sup-amp { color: var(--text-dim); }
+.sup-jump { margin-top: 8px; cursor: pointer; }

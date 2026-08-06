@@ -162,6 +162,40 @@
   modal.addEventListener("click", function (e) { if (e.target === modal || e.target.closest("[data-close]")) closeModal(); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeModal(); });
 
+  /* ---- Class Superlatives (1993 Who's Who) ---- */
+  function renderSuperlatives() {
+    var el = $("#superlatives-grid"); if (!el) return;
+    var SUP = [
+      ["🌟", "Best All Around", ["Jon Elliott", "Natalie Gill"], 44],
+      ["⭐", "Most Popular", ["Clint Stanfield", "Melanie Hawkins"], 44],
+      ["🧠", "Most Intelligent", ["Jason Yeatts", "Jennifer Hill"], 45],
+      ["🎓", "Most Likely to Succeed", ["Randy Nixon", "Cherrity Chambers"], 45],
+      ["👔", "Best Dressed", ["Jason Brown", "Makala Block"], 48],
+      ["🎭", "Most Talented", ["Chris Nash", "Dawn Pletcher"], 48],
+      ["🙈", "Most Bashful", ["Ryan Shafer", "Lori Guinn"], 49],
+      ["😜", "Wittiest", ["Mike Bledsoe", "Julie Henry"], 49],
+      ["📣", "Most School Spirit", ["Tommy Chastain", "Christie Friddell"], 52],
+      ["🏅", "Most Athletic", ["Brian Mosby", "Shannon Raines"], 52],
+      ["😊", "Friendliest", ["Brad Higgins", "Angie Hancock"], 53],
+      ["💎", "Most Unique", ["David Foster", "Mandy Englund"], 53],
+      ["👑", "Beaus &amp; Beauties", ["Jason Sutton", "Amy Parsley", "Ryan Blanks", "Sarah Layne"], 56]
+    ];
+    var byNorm = {};
+    var nm = function (s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/g, " ").trim(); };
+    mates.forEach(function (m) { byNorm[nm(m.name)] = m; });
+    el.innerHTML = SUP.map(function (s) {
+      var people = s[2].map(function (p) {
+        var m = byNorm[nm(p)];
+        return m ? '<button class="sup-name" data-mid="' + esc(m.id) + '">' + esc(p) + "</button>" : '<span class="sup-name plain">' + esc(p) + "</span>";
+      }).join('<span class="sup-amp"> &amp; </span>');
+      return '<div class="sup-card reveal"><div class="sup-ic">' + s[0] + '</div><div class="sup-title">' + s[1] + '</div>' +
+        '<div class="sup-people">' + people + '</div><button class="chip sup-jump" data-page="' + s[3] + '">📖 See in the yearbook</button></div>';
+    }).join("");
+    $$(".sup-name", el).forEach(function (b) { b.addEventListener("click", function () { var m = mates.filter(function (x) { return x.id === b.dataset.mid; })[0]; if (m) openModal(m); }); });
+    $$(".sup-jump", el).forEach(function (b) { b.addEventListener("click", function () { if (window.ClassSite && window.ClassSite.openYearbook) window.ClassSite.openYearbook(+b.dataset.page); }); });
+  }
+  renderSuperlatives();
+
   /* ---- Directory ---- */
   var dirState = { q: "", filter: "all" };
   function matchQ(m, q) {
