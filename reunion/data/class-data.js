@@ -3065,12 +3065,6 @@ window.CLASS_DATA = {
    "name": "Eric Zills",
    "status": "missing",
    "photoThen": "assets/img/then/6146360.jpg"
-  },
-  {
-   "id": "ronnie-agee",
-   "name": "Ronnie Agee",
-   "status": "missing",
-   "photoThen": "assets/img/then/ronnie-agee.jpg"
   }
  ],
  "gallery": []
